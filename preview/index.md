@@ -1,5 +1,5 @@
-# PREVIEW - [kdXiaoyi.github.io](https://kdx233.github.io)
-这是kdXiaoyi.github.io的预览功能导航页面
+# PREVIEW
+这是[kdXiaoyi.github.io](/index.htm)的预览功能导航页面
 
 **在此处列出的任何东西均不受支持。它们或许会在将来实装或移除。**
 
