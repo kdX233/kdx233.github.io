@@ -1,1 +1,34 @@
-invalid request
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>requesting-resource-failed</title>
+    </head>
+    <body>
+        <h1>Requesting-resource-failed</h1>
+        <p>
+            <span>Failed in requesting resource.</span><br>
+            <span>You should provide true file URL.</span>
+        </p>
+        <p>
+            <span>You also could scan all resources files at </span>
+            <a href="https://github.com/kdX233/kdx233.github.io/tree/master/res">there</a><span>,or apis at</span>
+            <a href="https://kdxiaoyi.github.io/api/index.htm">there</a><span>.</span><br>
+            <span>Please check for errors at </span>
+            <a href="https://kdxiaoyi.github.io/api/index.htm?help=1">there</a><span>.</span>
+        </p>
+    </body>
+    <script type="text/javascript">
+        function showtime() {
+	        var nowTime = new Date();
+	        var hours = nowTime.getHours();
+	        var minutes = nowTime.getMinutes();
+	        var seconds = nowTime.getSeconds();
+	        var timer = " " + ((hours > 12) ? hours - 12 : hours);
+	        timer += ((minutes < 10) ? "0:": ":") + minutes;
+	        timer += ((seconds < 10) ? "0:": ":") + seconds;
+	        timer += " " + ((hours > 12) ? "pm": "am");
+	        document.getElementById('cooo').innerHTML = timer;
+	        setTimeout("showtime()", 1000);
+        }
+    </script>
+</html>
