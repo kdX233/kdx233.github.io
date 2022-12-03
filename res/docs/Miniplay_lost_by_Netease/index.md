@@ -20,6 +20,7 @@
 ## 判决书电子档文件
 本文提供判决书电子档文件（[（2021）粤民终1035号](http://tingshen.court.gov.cn/live/21866325)）下载：<br>
 源文件名：`《我的世界》诉《迷你世界》二审判决书`
+
 | 格式 | 近似体积 | 链接 |
 |-|-|-|
 | `.pdf` | `≈5MB` | [下载副本](https://kdx233.github.io/res/docs/Miniplay_lost_by_Netease/pdf_version.pdf) / [备用下载](https://raw.githubusercontent.com/kdX233/kdx233.github.io/master/res/docs/Miniplay_lost_by_Netease/pdf_version.pdf) |
