@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>setCopiedBroad - kdXiaoyi.github.io</title>
+        <script>
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+        };
+        function copyToClip(content) {
+            console.log("欲复制的内容="+content);
+            var ele = document.createElement("input"); //创建一个input标签
+            ele.setAttribute("value", content); // 设置改input的value值
+            document.body.appendChild(ele); // 将input添加到body
+            ele.select();  // 获取input的文本内容
+            document.execCommand('copy'); // 执行copy指令
+            // document.body.removeChild(ele); // 删除input标签
+        }
+        </script>
+    </head>
+    <body>
+        <script>
+            // 读tip
+            var tip = getQueryString('tip');
+            console.log ('tip 已读，='+tip)
+
+            // 设置剪切板
+            copyToClip(getQueryString('str'));
+
+            // 给提示（tip）
+            if (tip != 'non'){
+                console.log('tip != non');
+                if (tip == null){
+                    console.log('Use default tip');
+                    alert('Copied!')
+                } else {
+                    console.log('Use DIY tip')
+                    alert(tip)
+                }
+            };
+
+            // 返回
+            if(getQueryString('nback') != 1){window.history.back();alert('执行返回操作')};
+        </script>
+    </body>
+</html>
