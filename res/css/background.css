@@ -4,29 +4,36 @@
 } */
 /*将上一项解除注释以启用全站黑白 (VScode:Ctrl+K Ctrl+;)*/
 body{
-    position:fixed;
-            top: 0;
-            left: 0;
+    /*position:fixed;*/
+    top: 0;
+    left: 0;
     width:100%;
     height:100%;
     min-width: 1000px;
     background: 
-        /*此行放滤镜*/url(https://s1.ax1x.com/2022/12/15/zojKsJ.png),url(https://s1.ax1x.com/2022/12/15/zojKsJ.png),url(https://s1.ax1x.com/2022/12/15/zojFZn.png),
+        /*此行放滤镜*/url(https://s1.ax1x.com/2022/12/15/zTZ2lj.png),url(https://s1.ax1x.com/2022/12/15/zojKsJ.png),url(https://s1.ax1x.com/2022/12/15/zTZKyR.png),
         url(https://s1.ax1x.com/2022/12/14/zIoB7D.jpg);
             /*背景图片地址设置*/
             /*半透明图片(2048x2048)地址：
             pdd源文件 https://share.weiyun.com/BrJEIHtw
+            2.5% https://imgse.com/i/zTZ2lj https://s1.ax1x.com/2022/12/15/zTZ2lj.png
             5%  https://imgse.com/i/zojKsJ https://s1.ax1x.com/2022/12/15/zojKsJ.png
+            10% https://imgse.com/i/zTZgpQ https://s1.ax1x.com/2022/12/15/zTZgpQ.png
             25% https://imgse.com/i/zoOf1g https://s1.ax1x.com/2022/12/15/zoOf1g.png
             35% https://imgse.com/i/zoOhcQ https://s1.ax1x.com/2022/12/15/zoOhcQ.png
             40% https://imgse.com/i/zoXaEq https://s1.ax1x.com/2022/12/15/zoXaEq.png
             45% https://imgse.com/i/zoXNbn https://s1.ax1x.com/2022/12/15/zoXNbn.png
             50% https://imgse.com/i/zoO4Xj https://s1.ax1x.com/2022/12/15/zoO4Xj.png
             60% https://imgse.com/i/zojFZn https://s1.ax1x.com/2022/12/15/zojFZn.png
+            70% https://imgse.com/i/zTZnSJ https://s1.ax1x.com/2022/12/15/zTZnSJ.png
+            80% https://imgse.com/i/zTZKyR https://s1.ax1x.com/2022/12/15/zTZKyR.png
+            90% https://imgse.com/i/zTZeW4 https://s1.ax1x.com/2022/12/15/zTZeW4.png
             */
     background-repeat: no-repeat;
+    background-position: 50%;
     background-size: cover;
     -webkit-background-size: cover;
     -o-background-size: cover;
     background-position: center 0;
+    background-attachment: fixed;
 }
