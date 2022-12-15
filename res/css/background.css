@@ -1,14 +1,32 @@
+/* html{
+    filter:progid:DXImageTransForm.Microsoft.BasicImage(grayscale=1);-webkit-filter:saturate(0);
+    -webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none; 
+} */
+/*将上一项解除注释以启用全站黑白 (VScode:Ctrl+K Ctrl+;)*/
 body{
     position:fixed;
             top: 0;
             left: 0;
     width:100%;
     height:100%;
-            min-width: 1000px;
-            background: url(https://kdx233.github.io/res/images/background.png);/*图片路径*/
-            background-repeat: no-repeat;
-            background-size: cover;
-            -webkit-background-size: cover;
-            -o-background-size: cover;
-            background-position: center 0;
+    min-width: 1000px;
+    background: 
+        /*此行放滤镜*/url(https://s1.ax1x.com/2022/12/15/zojKsJ.png),url(https://s1.ax1x.com/2022/12/15/zojKsJ.png),url(https://s1.ax1x.com/2022/12/15/zojFZn.png),
+        url(https://s1.ax1x.com/2022/12/14/zIoB7D.jpg);
+            /*背景图片地址设置*/
+            /*半透明图片(2048x2048)地址：
+            pdd源文件 https://share.weiyun.com/BrJEIHtw
+            5%  https://imgse.com/i/zojKsJ https://s1.ax1x.com/2022/12/15/zojKsJ.png
+            25% https://imgse.com/i/zoOf1g https://s1.ax1x.com/2022/12/15/zoOf1g.png
+            35% https://imgse.com/i/zoOhcQ https://s1.ax1x.com/2022/12/15/zoOhcQ.png
+            40% https://imgse.com/i/zoXaEq https://s1.ax1x.com/2022/12/15/zoXaEq.png
+            45% https://imgse.com/i/zoXNbn https://s1.ax1x.com/2022/12/15/zoXNbn.png
+            50% https://imgse.com/i/zoO4Xj https://s1.ax1x.com/2022/12/15/zoO4Xj.png
+            60% https://imgse.com/i/zojFZn https://s1.ax1x.com/2022/12/15/zojFZn.png
+            */
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
 }
