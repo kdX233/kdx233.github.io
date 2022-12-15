@@ -11,7 +11,14 @@ kdXiaoyi.github.io 同款背景CSS样式<br>
 - 将标题换为黑色字 ~~因为我用的白色遮罩~~
 
 <br>相关技术信息见下文（#no-github-pages-header.css）
+
 ## [no-github-pages-header.css](./no-github-pages-header.css)
 去除Github pages（theme: jekyll-theme-cayman）上方标题栏，使其变得透明。<br>
 **<big>由于用户CSS比默认CSS行靠前，所以此CSS会失效，建议使用上面的``github.pages.css``</big>**
 - 将`.page-header`的背景色全用`rgba(255,255,255,0)`（纯透明）替换
+
+## [google.OpenSans-400,700-swap.css](google.OpenSans-400,700-swap.css)
+Github pages会请求下面的字体css，这里直接clone过来加速请求
+```
+https://fonts.googleapis.com/css?family=Open+Sans:&display=swap
+```
