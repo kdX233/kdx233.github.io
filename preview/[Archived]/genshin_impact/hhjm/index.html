@@ -1,0 +1,189 @@
+<html lang="zh-Hans">
+<head>
+    <title>稻妻荒岛解密小游戏模拟 - kdXiaoyi.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+
+    <style>
+        #jm-box {
+            border: 1px solid #ccc;
+            padding: 60px;
+            width: 300px;
+            height: 300px;
+            position: relative;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+            margin: 0 auto;
+        }
+
+        .jm-item {
+            width: 60px;
+            height: 60px;
+            color: white;
+            background-color: #cccccc;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 60px;
+            cursor: pointer;
+        }
+
+        #jm-item-b,
+        #jm-item-d {
+            position: absolute;
+            right: 60px;
+        }
+
+        #jm-item-b {
+            top: 60px;
+        }
+
+        #jm-item-d {
+            top: 180px;
+        }
+
+
+        #jm-item-e {
+            position: absolute;
+            right: 120px;
+            top: 120px;
+            cursor: not-allowed;
+        }
+
+        .jm-item-name {
+            padding: 8px 0 4px;
+            font-size: 12px;
+        }
+
+    </style>
+
+</head>
+<body>
+    <a href="../"><h6>< 返回</h6></a>
+<p style="width:300px; margin: 0 auto 8px;" >稻妻荒岛解密小游戏模拟</p>
+<div id="jm-box">
+    <div id="jm-item-a" class="jm-item">
+        <div class="jm-item-name">A</div>
+        <div id="jm-item-a-value"></div>
+    </div>
+    <div id="jm-item-b" class="jm-item">
+        <div class="jm-item-name">B</div>
+        <div id="jm-item-b-value"></div>
+    </div>
+    <div id="jm-item-c" class="jm-item">
+        <div class="jm-item-name">C</div>
+        <div id="jm-item-c-value"></div>
+    </div>
+    <div id="jm-item-d" class="jm-item">
+        <div class="jm-item-name">D</div>
+        <div id="jm-item-d-value"></div>
+    </div>
+    <div id="jm-item-e" class="jm-item">
+        <div class="jm-item-name">-</div>
+        <div id="jm-item-e-value">1</div>
+    </div>
+</div>
+
+<p style="width: 300px;margin: 0 auto;" >
+    游戏规则：
+    <ol style="width: 300px;margin: 0 auto;">
+        <li>每次刷新数字都是随机的，<br>也可以点击 <a href="javascript:reRandom()">重新随机</a></li>
+        <li>点击格子，格子的数就加1，并且连携相邻的格子也一起加1<br>（例如点A，那么A+1的同时B和C也+1）</li>
+        <li>每个格子最多加到4，超过4自动变成1</li>
+        <li>只能加不能减</li>
+        <li>最终要所有的格子都变成和中间格子的数一样的值才算成功</li>
+        <a href="./help"><li> 攻略链接 </li></a>
+        <li>成功示例：<br><img src="./success.png" style="width:300px;"/></li>
+        <li style="color:#ccc;font-size:12px;" >注：该解密是模拟原神稻妻荒海的解密游戏</li>
+    </ol>
+</p>
+
+</body>
+
+<script>
+
+    // let values = [2, 3, 1, 4]
+
+    let values = {
+        a: {
+            dom: document.getElementById('jm-item-a-value'),
+            value: 0,
+            link: ['b', 'c'],
+        },
+        b: {
+            dom: document.getElementById('jm-item-b-value'),
+            value: 0,
+            link: ['a', 'd'],
+        },
+        c: {
+            dom: document.getElementById('jm-item-c-value'),
+            value: 0,
+            link: ['a', 'd'],
+        },
+        d: {
+            dom: document.getElementById('jm-item-d-value'),
+            value: 0,
+            link: ['b', 'c'],
+        },
+    };
+
+
+    function setValue(item, value, linker) {
+        item.value = value;
+        if (item.value > 4) {
+            item.value = 1
+        };
+        item.dom.innerText = item.value;
+
+        if (linker) {
+            item.link.forEach(key => {
+                setValue(values[key], values[key].value + 1)
+            })
+        };
+    }
+
+    function reRandom() {
+        console.log("new event - random");
+        setValue(values.a, Math.ceil(Math.random() * 4));
+        setValue(values.b, Math.ceil(Math.random() * 4));
+        setValue(values.c, Math.ceil(Math.random() * 4));
+        setValue(values.d, Math.ceil(Math.random() * 4));
+    }
+    reRandom()
+
+
+    function plusValue(item) {
+        setValue(item, item.value + 1, true);
+        if(values.a.value === 1 && values.b.value === 1 && values.c.value === 1 && values.d.value === 1){
+            console.log("new event - win");
+            setTimeout(function () {
+                alert("恭喜您解密成功！") 
+            },1)
+        }
+    }
+
+    document.getElementById('jm-item-a').onclick = function () {
+        console.log("new event - click A");
+        plusValue(values.a)
+    }
+
+
+    document.getElementById('jm-item-b').onclick = function () {
+        console.log("new event - click B");
+        plusValue(values.b)
+    }
+
+
+    document.getElementById('jm-item-c').onclick = function () {
+        console.log("new event - click C");
+        plusValue(values.c)
+    }
+
+
+    document.getElementById('jm-item-d').onclick = function () {
+        console.log("new event - click D");
+        plusValue(values.d)
+    }
+
+</script>
+
+</html>
