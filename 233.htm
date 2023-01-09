@@ -19,8 +19,12 @@
             };
             return null;
         };
+        function getIntegerRandom(min,max) {
+            // Math.round(Math.random()*(n-m)+m) 返回m<=x<=n的random整数值
+            return Math.round(Math.random()*(max-min)+min);
+        }
         function back() {
-            var p = getQueryString('p');
+            var p = Number(getQueryString('p'));
             console.log ('getQuerySrting from url: p='+p);
             if (p >= 1) {
                 if (p <= urls.length) {
@@ -28,16 +32,17 @@
                     console.log ('Check the value of [p] is passed.');
                     console.log ('get url is :'+urls[p-1]);
                     window.location=urls[p-1];
+                    return;
                 };
             };
             // 不在，则随机取值
-            // Math.round(Math.random()*(n-m)+m) 返回m<=x<=n的random整数值
             // 此处n为数组上限（urls.length），m为数组下限（1），最终处理时需-1
             console.log ('Check the value of [p] is NOT passed. Use random.');
-            var p = Math.round(Math.random()*(urls.length-1)+1);
+            var p = getIntegerRandom(1,urls.length)
             console.log ('Random : p='+p);
             console.log ('get url is :'+urls[p-1]);
             window.location=urls[p-1];
+            return;
         };
         setTimeout (back(),1500); //延迟1.5s后调用back()
     </script>
