@@ -1,15 +1,44 @@
 <head readme="">
     <title>正在加载数据…… | kdXiaoyi.github.io</title>
     <script>
-        function back() {
-            window.location="https://b23.tv/BV1uT4y1P7CX";
-            return;
-       }
-       setTimeout (back(),1500);
+        // 定义此数组控制目标URL
+        var urls = [
+            "https://b23.tv/BV1uT4y1P7CX", //Rickroll
+            "https://kdxiaoyi.github.io/blogs/sweet" // Candies in Genshin Impact
+        ]
     </script>
 </head>
 <body>
-    <h1>正在加载数据……</h1>
-    <input id="url" name="url" value="#Loading benefits..."></input>
-    <a href="https://b23.tv/BV1uT4y1P7CX"><h6>kdXiaoyi.github.io</h6></a>
+    <!-- <a href="https://b23.tv/BV1uT4y1P7CX"><h6>kdXiaoyi.github.io</h6></a> -->
+    <script>
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            };
+            return null;
+        };
+        function back() {
+            var p = getQueryString('p');
+            console.log ('getQuerySrting from url: p='+p);
+            if (p >= 1) {
+                if (p <= urls.length) {
+                    // p参数在给定范围内
+                    console.log ('Check the value of [p] is passed.');
+                    console.log ('get url is :'+urls[p-1]);
+                    window.location=urls[p-1];
+                };
+            };
+            // 不在，则随机取值
+            // Math.round(Math.random()*(n-m)+m) 返回m<=x<=n的random整数值
+            // 此处n为数组上限（urls.length），m为数组下限（1），最终处理时需-1
+            console.log ('Check the value of [p] is NOT passed. Use random.');
+            var p = Math.round(Math.random()*(urls.length-1)+1);
+            console.log ('Random : p='+p);
+            console.log ('get url is :'+urls[p-1]);
+            window.location=urls[p-1];
+        };
+        setTimeout (back(),1500); //延迟1.5s后调用back()
+    </script>
 </body>
