@@ -12,7 +12,7 @@ body{
     min-width: 1000px;
     background: 
         /*此行放滤镜*/url(https://s1.ax1x.com/2022/12/15/zTZ2lj.png),url(https://s1.ax1x.com/2022/12/15/zojKsJ.png),url(https://s1.ax1x.com/2022/12/15/zTZKyR.png),       
-        /*背景图片地址设置*/url(https://s1.ax1x.com/2022/12/14/zIoB7D.jpg);
+        /*背景图片地址设置*/url(https://s1.ax1x.com/2023/01/27/pSNL2WD.png);
             /*半透明图片(2048x2048)地址：
             pdd源文件 https://share.weiyun.com/BrJEIHtw
             2.5% https://imgse.com/i/zTZ2lj https://s1.ax1x.com/2022/12/15/zTZ2lj.png
@@ -27,6 +27,9 @@ body{
             70% https://imgse.com/i/zTZnSJ https://s1.ax1x.com/2022/12/15/zTZnSJ.png
             80% https://imgse.com/i/zTZKyR https://s1.ax1x.com/2022/12/15/zTZKyR.png
             90% https://imgse.com/i/zTZeW4 https://s1.ax1x.com/2022/12/15/zTZeW4.png
+            */
+            /*
+            无压背景(4800*2700)：https://s1.ax1x.com/2022/12/14/zIoB7D.jpg
             */
     background-repeat: no-repeat;
     background-position: 50%;
