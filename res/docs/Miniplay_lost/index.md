@@ -24,7 +24,7 @@
 | 格式 | 近似体积 | 链接 |
 |-|-|-|
 | `.pdf` | `≈5MB` | [下载副本](https://kdx233.github.io/res/docs/Miniplay_lost_by_Netease/pdf_version.pdf) / [备用下载](https://raw.githubusercontent.com/kdX233/kdx233.github.io/master/res/docs/Miniplay_lost_by_Netease/pdf_version.pdf) |
-| `.doc` | `≈18MB` | [在线预览](https://kdxiaoyi.github.io/api/ms-office.htm?src=http://kdx233.github.io/res/docs/Miniplay_lost_by_Netease/doc_backup_version.docx)<br>[下载副本](https://kdx233.github.io/res/docs/Miniplay_lost_by_Netease/doc_backup_version.docx) / [备用下载](https://raw.githubusercontent.com/kdX233/kdx233.github.io/master/res/docs/Miniplay_lost_by_Netease/doc_backup_version.docx) |
+| `.doc` | `≈18MB` | [在线预览](https://kdxiaoyi.github.io/api/third-party/ms-office.htm?src=http://kdx233.github.io/res/docs/Miniplay_lost_by_Netease/doc_backup_version.docx)<br>[下载副本](https://kdx233.github.io/res/docs/Miniplay_lost_by_Netease/doc_backup_version.docx) / [备用下载](https://raw.githubusercontent.com/kdX233/kdx233.github.io/master/res/docs/Miniplay_lost_by_Netease/doc_backup_version.docx) |
 
 # 参考资料
 **在资料被引用后源地址可能发生变化**
@@ -42,7 +42,7 @@
 2021-07-27 09:48 中国庭审公开网
 ### 5
 [《我的世界》诉《迷你世界》二审判决书](http://b23.tv/BV1544y1Q7nC)<br>
-2022-11-30 广东省高级人民法院 | DOC副本存档于[这里](https://kdxiaoyi.github.io/api/ms-office.htm?src=http://kdx233.github.io/res/docs/Miniplay_lost_by_Netease/doc_backup_version.docx)
+2022-11-30 广东省高级人民法院 | DOC副本存档于[这里](https://kdxiaoyi.github.io/api/third-party/ms-office.htm?src=http://kdx233.github.io/res/docs/Miniplay_lost_by_Netease/doc_backup_version.docx)
 ### 6
 [直播民事著作权权属、侵权纠纷 - （2019）粤03民初2157号](http://tingshen.court.gov.cn/live/15821805)<br>
 2020-11-26 中国庭审公开网 | 副本存档于[这里](https://b23.tv/av929709899)
