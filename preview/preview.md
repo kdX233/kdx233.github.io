@@ -20,3 +20,7 @@ tip= <value>
 #### tip
 提示信息。
 默认`Copied!`，为`non`时不提示
+
+
+
+file:///E:/Projects/Github.io/kdx233.Github.io/preview/api/copy.htm?str=123456&nback=1
