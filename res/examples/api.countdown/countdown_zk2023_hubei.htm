@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- 
+	Editor: kdXiaoyi
+	Change From: https://github.com/kdXiaoyi/kdxiaoyi.github.io/blob/main/api/third-party/countdown.htm
+	-------
+	这是一个分支版本，专门用于计时到2023年6月20日。
+	是的没错，（湖北省）2023年中考倒计时
+	当然它也可以加参数自用，但是不推荐
+ -->
+<html lang="zh-cn">
+	<head>
+		<meta charset="UTF-8">
+		<title>Countdown - kdXiaoyi</title>
+		<link rel="icon" href="https://kdxiaoyi.github.io/favicon.ico"></link>
+	</head>
+	<body>
+        <p id="Timeleft">请稍后……</p>
+	</body>
+	<script type="text/javascript">
+        function getQueryString(name) {let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");let r = window.location.search.substr(1).match(reg);if (r != null) {return unescape(r[2]);};return null;}
+		function RefreshCountdown(EndY,EndM,EndD){
+			//当前时间
+			let now = Date.now();
+				//结束时间
+				end = new Date(EndY,EndM-1,EndD);
+				ends = end.getTime();
+			let ss = ends - now;
+			let s = Math.floor(ss/1000);
+			//相差天数
+			let day= Math.floor(s / 60 / 60 / 24);
+			//相差小时数
+			let hours = Math.floor(s / 60 / 60 % 24);
+			//相差分钟数
+			let min = Math.floor(s / 60 % 60 );
+			//相差秒数
+			let sec = Math.floor(s % 60 );
+			if (HideMode==1) {document.getElementById('Timeleft').innerHTML = day+"天"+hours+"小时"+min+"分"+sec+"秒";} else {document.getElementById('Timeleft').innerHTML = "距离"+y+"年"+m+"月"+d+"日"+"还有： "+day+"天 "+hours+"小时 "+min+"分 "+sec+"秒";};
+		}
+		function RefreshCountup(StartY,StartM,StartD){
+			//当前时间
+			let now = Date.now();
+				//结束时间
+				end = new Date(StartY,StartM-1,StartD);
+				ends = end.getTime();
+			let ss = ends - now;
+			let s = Math.floor(ss/1000);
+			//相差天数
+			let day= -1*Math.floor(s / 60 / 60 / 24);
+			//相差小时数
+			let hours = -1*Math.floor(s / 60 / 60 % 24);
+			//相差分钟数
+			let min = -1*Math.floor(s / 60 % 60 );
+			//相差秒数
+			let sec = -1*Math.floor(s % 60 );
+			if (HideMode==1) {document.getElementById('Timeleft').innerHTML = day+"天"+hours+"小时"+min+"分"+sec+"秒";} else {document.getElementById('Timeleft').innerHTML = "距离"+y+"年"+m+"月"+d+"日"+"已经： "+day+"天 "+hours+"小时 "+min+"分 "+sec+"秒 了";};
+		};
+		//初始化参数
+        var y=getQueryString('y');var m=getQueryString('m');var d=getQueryString('d');var HideMode=getQueryString('hide')
+		var dataInvalid=0 //声明变量，防止部分浏览器报错
+		if (Math.floor(y) != y) {var y=2023;console.log('The value of [y] is invaid.');};
+		if (Math.floor(m) != m) {var m=6;console.log('The value of [m] is invaid.');};
+		if (Math.floor(d) != d) {var d=20;console.log('The value of [d] is invaid.');};
+        if (dataInvalid==1) {
+			console.log('Data invalid');//数据不为整数
+			document.getElementById('Timeleft').innerHTML = "无效参数 <a href=\"https://github.com/kdXiaoyi/kdxiaoyi.github.io/blob/main/api/_help.md#apicountdowninvaid\">API/countdown:invaid</a><br>"+y+"/"+m+"/"+d;
+		} else {
+			var ShouldAddTime=0//数据为整数后，声明变量
+			//判断应采用正计时还是倒计时   ShouldAddTime=1为正计时
+			let s1 = Math.floor((new Date(y,m-1,d).getTime() - Date.now())/1000);
+			if (Math.floor(s1 / 60 / 60 / 24) < 0) {var ShouldAddTime=1;};
+			if (Math.floor(s1 / 60 / 60 % 24) < 0) {var ShouldAddTime=1;};
+			if (Math.floor(s1 / 60 % 60 ) < 0) {var ShouldAddTime=1;};
+			if (Math.floor(s1 % 60 ) < 0) {var ShouldAddTime=1;};
+			if (ShouldAddTime==1) {
+				console.log('Enable positive timing mode.');
+				var intervalID = setInterval(() => {RefreshCountup(y,m,d)}, 1000);
+			} else {
+				var intervalID = setInterval(() => {RefreshCountdown(y,m,d)}, 1000);
+			};
+		};
+	</script>
+	<style type="text/css">
+		p{text-align: center;float:center;margin-right: 10px;}
+        input{border: 0;}
+	</style>
+</html>
