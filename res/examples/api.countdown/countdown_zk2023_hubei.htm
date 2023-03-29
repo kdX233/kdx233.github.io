@@ -13,24 +13,30 @@
 		<title>Countdown - kdXiaoyi</title>
 		<link rel="icon" href="https://kdxiaoyi.github.io/favicon.ico"></link>
 	</head>
+	<script type="text/javascript" language="JavaScript" src="./load_sayinglist.js"></script>
 	<body>
-        <p id="Timeleft">请稍后……</p><p id="saying"></p>
+        <a href="javascript:RefreshSaying()"><p id="Timeleft">请稍后……</p></a><br>
+		<a href="javascript:SearchSaying()"><p id="saying"></p></a>
 	</body>
-	<script type="text/javascript">
-		var SayingList = [
-			"其实这句话永远都不会出现，是不是很神奇呢？","愿你：春风不度马蹄疾，一日看尽长安花。","updata_from_web",
-			"明日复明日，明日何其多","明年此日青云去，却笑人间举子忙。","为君一击，鹏抟九天。"
-		]
+	<script type="text/javascript" language="JavaScript">
 		function RefreshSaying(){
-			console.log('Refresh Saying');
-			var theSaying=SayingList[getIntegerRandom(1,SayingList.length)-1];
-			if (theSaying==SayingList[0]) {/*防打脸*/var theSaying=SayingList[1];};
-			if (theSaying==SayingList[2]) {var theSaying=SayingList[1];};
+			let random=getIntegerRandom(1,SayingList.length)
+			console.log('>>> 一言刷新进程 @'+Date.now()+' | 目标：一言列表第'+random+'项，共计'+SayingList.length+'项。其为['+SayingList[random-1]+']');
+			var theSaying=SayingList[random-1];
+			if (theSaying==SayingList[0]) {/*防打脸*/   var theSaying=SayingList[1];};
 			document.getElementById('saying').innerHTML = theSaying;
 			return;
 		};
 		function getIntegerRandom(min,max) {// Math.round(Math.random()*(n-m)+m) 返回m<=x<=n的random整数值
+			// 伪·真随机NB，纯拼运气是吧
             return Math.round(Math.random()*(max-min)+min);}
+		function SearchSaying() {
+			let searchStrGetting=document.getElementById('saying').innerHTML.split('<br><i>');
+			let searchStr=searchStrGetting[0];
+			console.log('发起一言搜索请求。关键字['+searchStr+']');
+			window.open("https://cn.bing.com/search?q="+searchStr, "_blank");
+			return;
+		};
         function getQueryString(name) {let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");let r = window.location.search.substr(1).match(reg);if (r != null) {return unescape(r[2]);};return null;}
 		function RefreshCountdown(EndY,EndM,EndD){
 			//当前时间
@@ -49,9 +55,9 @@
 			//相差秒数
 			let sec = Math.floor(s % 60 );
 			if (HideMode==1) {
-				if (ZK_mode==1) {document.getElementById('Timeleft').innerHTML = day+"天"+hours+"小时"+min+"分"+sec+"秒";} else {document.getElementById('Timeleft').innerHTML = day+"天"+hours+"小时"+min+"分"+sec+"秒";};
+				if (ZK_mode==1) {document.getElementById('Timeleft').innerHTML = "<b>"+day+"天"+hours+"小时"+min+"分"+sec+"秒</b>";} else {document.getElementById('Timeleft').innerHTML = day+"天"+hours+"小时"+min+"分"+sec+"秒";};
 			} else {
-				if (ZK_mode==1) {document.getElementById('Timeleft').innerHTML = "距离2023年中考还有： "+day+"天 "+hours+"小时 "+min+"分 "+sec+"秒 了";} else {document.getElementById('Timeleft').innerHTML = "距离"+y+"年"+m+"月"+d+"天"+"还有： "+day+"天 "+hours+"小时 "+min+"分 "+sec+"秒 了";};
+				if (ZK_mode==1) {document.getElementById('Timeleft').innerHTML = "<b>距离2023年中考还有： "+day+"天 "+hours+"小时 "+min+"分 "+sec+"秒</b>";} else {document.getElementById('Timeleft').innerHTML = "距离"+y+"年"+m+"月"+d+"天"+"还有： "+day+"天 "+hours+"小时 "+min+"分 "+sec+"秒 了";};
 			};}
 		function RefreshCountup(StartY,StartM,StartD){
 			//当前时间
@@ -109,5 +115,7 @@
 	<style type="text/css">
 		p{text-align: center;float:center;margin-right: 10px;}
         input{border: 0;}
+		a {color:black;text-decoration: none;}
+		.saying {text-align: center;}
 	</style>
 </html>
