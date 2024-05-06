@@ -1,4 +1,4 @@
-# PREVIEW - kdxiaoyi.github.io 许可协议
+# PREVIEW - kdxhub.github.io 许可协议
 如果没有任何 特殊/附加/转载 声明，在此站点上发布的一切都应遵守下列协议。《版权法》（中国）另有规定的除外。
 
 **任何违法此声明的个人/团体/组织都将受到在中国的、最大程度的法律诉讼。**
@@ -19,7 +19,7 @@
 
 ## 对于源代码：GNU Affero General Public License v3.0
 - 在这里阅读[源文件](https://www.gnu.org/licenses/agpl-3.0)
-- 还可以：阅读 [简体中文译本](https://jxself.org/translations/gpl-3.zh.shtml) 或 [英文副本](https://kdxiaoyi.github.io/LICENSE_AGPL-3.0)
+- 还可以：阅读 [简体中文译本](https://jxself.org/translations/gpl-3.zh.shtml) 或 [英文副本](https://kdxhub.github.io/LICENSE_AGPL-3.0)
 - **有且仅有来自 [GNU工程官方](https://www.gnu.org/licenses/) 的协议文件（及完整副本）具有法律效益。其余任何副本均仅作便于理解的参考**
 - 以下是对AGPL-3.0的解释。仅供参考。以[源文本](https://www.gnu.org/licenses/agpl-3.0)为主。
 
