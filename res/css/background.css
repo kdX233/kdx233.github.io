@@ -12,11 +12,11 @@ body{
     min-width: 100%;
     background: 
         /*此处放滤镜*/
-        url(https://s1.ax1x.com/2022/12/15/zTZgpQ.png)
+        url(https://s1.ax1x.com/2022/12/15/zTZgpQ.png),
         
         /*背景图片地址设置*/
         /*url(https://s1.ax1x.com/2023/01/27/pSNL2WD.png);*/
-        url(https://s21.ax1x.com/2024/05/24/pkQwAte.jpg)
+        url(https://s21.ax1x.com/2024/05/24/pkQwAte.jpg);
         
         
             /*半透明图片(2048x2048)地址：
