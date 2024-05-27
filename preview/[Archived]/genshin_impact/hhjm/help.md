@@ -1,4 +1,8 @@
-# [荒岛解密](./index.html) 攻略
+---
+title: "[荒岛解密](./index.html) 攻略"
+---
+<small><a href="/">首页</a> | <a href="/blogs">Blogs</a> | <a href="/Project">项目合集</a> | <a href="https://space.bilibili.com/1987247870">Bilibili↗</a><br><a href="./">←返回</a></small><br>
+
 ## 文字教程
 1. 随机选择一个角点击直到与其对角相等
 

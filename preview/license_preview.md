@@ -1,4 +1,7 @@
-# PREVIEW - kdxhub.github.io 许可协议
+---
+title: "KDXIAOYI's PERVIEW LECENSE"
+---
+<small><a href="/">首页</a> | <a href="/blogs">Blogs</a> | <a href="/Project">项目合集</a> | <a href="https://space.bilibili.com/1987247870">Bilibili↗</a><br><a href="./">←返回</a></small><br>
 如果没有任何 特殊/附加/转载 声明，在此站点上发布的一切都应遵守下列协议。《版权法》（中国）另有规定的除外。
 
 **任何违法此声明的个人/团体/组织都将受到在中国的、最大程度的法律诉讼。**
