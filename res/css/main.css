@@ -1,0 +1,30 @@
+html, body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  position: absolute;
+}
+:not(:defined){
+  display: none;
+}
+import 'sober/style/scroll-view.css'
+
+/** 下面这两个空白css删了就出bug，原因未知 **/
+.app {}
+.appScroll {}
+
+.welcome {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100vh;
+  margin: 0 0 0 0;
+  text-align: center;
+}
+
+.codearea {
+  display: block;
+  white-space: pre-wrap;
+}
