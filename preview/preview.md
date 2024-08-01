@@ -5,7 +5,7 @@ title: "Preview Projects"
 创建：20??-??-?? | 最后更新：20??-??-??</small><br>
 
 **在此处列出的任何东西均不受支持。它们或许会在将来实装或移除。**<br>
-**在此处列出的东西具有[单独的许可协议](https://kdx233.github.io/preview/license_preview)。**
+**在此处列出的东西具有[单独的许可协议](https://rs.kdxiaoyi.top/preview/license_preview)。**
 
 # 2022-11-22
 ## api:copy
@@ -29,4 +29,4 @@ tip= <value>
 
 
 
-file:///E:/Projects/Github.io/kdx233.Github.io/preview/api/copy.htm?str=123456&nback=1
+file:///E:/Projects/Github.io/rs.kdxiaoyi.top/preview/api/copy.htm?str=123456&nback=1

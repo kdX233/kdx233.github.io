@@ -1,10 +1,10 @@
 # CSS Library
 ## 调用方法
-如无特殊注明则为`https://kdx233.github.io/res/css/`+`标题名`<br>
-比如`https://kdx233.github.io/res/css/background.css`
+如无特殊注明则为`https://rs.kdxiaoyi.top/res/css/`+`标题名`<br>
+比如`https://rs.kdxiaoyi.top/res/css/background.css`
 ## [background.css](./background.css)
-kdxhub.github.io 同款背景CSS样式<br>
-- [demo](https://kdx233.github.io/preview/background.html)
+kdxiaoyi.top 同款背景CSS样式<br>
+- [demo](https://rs.kdxiaoyi.top/preview/background.html)
 
 ## [github.pages.css](./github.pages.css)
 一个自定义的pages样式文件（theme: jekyll-theme-cayman）：

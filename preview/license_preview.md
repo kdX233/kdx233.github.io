@@ -22,7 +22,7 @@ title: "KDXIAOYI's PERVIEW LECENSE"
 
 ## 对于源代码：GNU Affero General Public License v3.0
 - 在这里阅读[源文件](https://www.gnu.org/licenses/agpl-3.0)
-- 还可以：阅读 [简体中文译本](https://jxself.org/translations/gpl-3.zh.shtml) 或 [英文副本](https://kdxhub.github.io/LICENSE_AGPL-3.0)
+- 还可以：阅读 [简体中文译本](https://jxself.org/translations/gpl-3.zh.shtml) 或 [英文副本](https://kdxiaoyi.top/LICENSE_AGPL-3.0)
 - **有且仅有来自 [GNU工程官方](https://www.gnu.org/licenses/) 的协议文件（及完整副本）具有法律效益。其余任何副本均仅作便于理解的参考**
 - 以下是对AGPL-3.0的解释。仅供参考。以[源文本](https://www.gnu.org/licenses/agpl-3.0)为主。
 

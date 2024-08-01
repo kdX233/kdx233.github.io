@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# 发布于https://kdxhub.github.io/blogs/2024/24
+# 发布于https://kdxiaoyi.top/blogs/2024/24
 # Copyright (C) 2024, kdxiaoyi.
 # All right reserved.
-# 详见https://kdx233.github.io/licen.htm
+# 详见https://rs.kdxiaoyi.top/licen.htm
 
 # 帮助文本
 if [ "1$(echo "$1" | grep "h")" != "1" ];then
