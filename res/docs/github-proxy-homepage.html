@@ -32,10 +32,10 @@
       <s-search>
           <s-icon type="search" slot="start"></s-icon>
           <input id="new_uri" type="text" placeholder="Github文件链接……">
-          <s-icon-button onclick="document.getElementById('new_id').value='';" slot="end"><s-icon type="close" ></s-icon></s-icon-button>
+          <s-icon-button onclick="document.getElementById('new_uri').value='';" slot="end"><s-icon type="close" ></s-icon></s-icon-button>
       </s-search><br><br>
       <s-button onclick="newSearch(getElementById('new_uri').value);"><s-icon type="search" slot="start"></s-icon>发起代理查询</s-button>
-      <p><br><br><small>本代理基于Github项目<a target="_blank" href="https://github.com/hunshcn/gh-proxy">hunshcn/gh-proxy</a></small></p>
+      <p><br><br><small>本代理基于Github项目<a target="_blank" href="https://github.com/hunshcn/gh-proxy">hunshcn/gh-proxy</a>构建</small></p>
     </div>
   </div></s-scroll-view></s-page>
 <script>
@@ -49,6 +49,8 @@ function msg(Message, confirmTips) {if ( confirmTips == undefined ) {snackbar.in
 function setUItitle(Title) {if (Title == undefined) {document.getElementById("titlebar").innerHTML="Github-proxy"} else {document.getElementById("titlebar").innerHTML=Title};return;};
 function setPageTitle(Title) {if (Title == undefined) {document.getElementById("pagetitle").innerHTML="Github-proxy";} else {document.getElementById("pagetitle").innerHTML=Title+` - Github-proxy`;};return;};
 function newSearch(uri) {
+  var reg = /^((https|http):\/\/)?(github\.com\/.+?\/.+?\/(?:releases|archive|blob|raw|suites)|((?:raw|gist)\.(?:githubusercontent|github)\.com))\/.+$/;
+  if (reg.test(uri) == false) {msg('请输入合法网址','٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ');return;};
   goto.setAttribute("href",`https://gh.kdxiaoyi.top/`+uri);
   goto.click();
 };
