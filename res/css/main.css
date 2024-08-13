@@ -24,6 +24,19 @@ import 'sober/style/scroll-view.css'
   text-align: center;
 }
 
+.welcome-text {
+  position: relative;
+  top: 0;
+  height: 100%;
+  width: 90vw;
+  margin: 0 0 10px 0;
+  left: 5vw;
+  right: 5vw;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-warp;
+}
+
 .codearea {
   display: block;
   white-space: pre-wrap;

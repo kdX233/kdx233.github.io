@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8" />
+  <title id="pagetitle">Github-proxy</title>
+  <script src="https://unpkg.com/sober@0.2.13/dist/sober.min.js"></script>
+  <link rel="stylesheet" href="https://rs.kdxiaoyi.top/res/css/sober-theme-turquoise.css" />
+  <!-- link rel="stylesheet" href="https://rs.kdxiaoyi.top/res/css/main.css" /-->
+  <link rel="stylesheet" href="./main.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+</head>
+<body>
+  <div id="noscript" style="text-align: center;"><b>由于您似乎禁用了Javascript或者出于其它原因，页面无法正常加载。<br>a此外，该应用不兼容IE系浏览器。</b></div><!-- 未启用js或者js加载失败的提示 -->
+  <!-- 标题栏 -->
+  <s-appbar>
+    <div id="titlebar" slot="headline"> Github-proxy </div>
+    <s-icon-button slot="action" onclick="author_kdxiaoyi();"><s-icon type="home"></s-icon></s-icon-button>
+  </s-appbar>
+  <s-page weigh="100vw" height="100vh" id="app" class="app"><s-scroll-view><div class="appScroll" style="height: 100vh;width: 100vw">
+    <!-- 跳板元素 -->
+    <s-snackbar id='snackbar'></s-snackbar>
+    <a target="_self" id="goto" style="display:none;" href="void(0)"></a>
+    <!-- 页面主体元素 -->
+    <div id="welcome" class="welcome-text"><!-- 欢迎界面 -->
+      <p><big>欢迎使用Github-proxy</big></p>
+      <p>基于Cloudflare Workers的Github文件代理加速工具</p>
+      <br>
+      <p>
+        GitHub文件链接带不带协议头都可以，支持Release、Archive以及文件，右键复制出来的链接都是符合标准的。<br>
+        release、archive使用cf加速，文件会跳转至JsDelivr<br>
+        <b>注意，不支持项目文件夹</b>
+      </p><br>
+      <s-search>
+          <s-icon type="search" slot="start"></s-icon>
+          <input id="new_uri" type="text" placeholder="Github文件链接……">
+          <s-icon-button onclick="document.getElementById('new_id').value='';" slot="end"><s-icon type="close" ></s-icon></s-icon-button>
+      </s-search><br><br>
+      <s-button onclick="newSearch(getElementById('new_uri').value);"><s-icon type="search" slot="start"></s-icon>发起代理查询</s-button>
+      <p><br><br><small>本代理基于Github项目<a target="_blank" href="https://github.com/hunshcn/gh-proxy">hunshcn/gh-proxy</a></small></p>
+    </div>
+  </div></s-scroll-view></s-page>
+<script>
+function setCookie(cname, cvalue, exdays) { var d = new Date(); d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000)); var expires = "expires=" + d.toGMTString(); document.cookie = cname + "=" + cvalue + "; " + expires };
+function getCookie(cname) { var name = cname + "="; var ca = document.cookie.split(';'); for (var i = 0; i < ca.length; i++) { var c = ca[i].trim(); if (c.indexOf(name) == 0) return c.substring(name.length, c.length) }; return null };
+function getQueryString(name) { let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); let r = window.location.search.substr(1).match(reg); if (r != null) { return unescape(r[2]); }; return null; };
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); };
+function removeElement(ElementId) { document.getElementById(ElementId).remove();return;};
+function author_kdxiaoyi() {let a = document.createElement("a");a.setAttribute("href", 'https://kdxiaoyi.top');a.setAttribute("target", "_blank");a.click();a.remove();return;};
+function msg(Message, confirmTips) {if ( confirmTips == undefined ) {snackbar.innerHTML = Message;} else {snackbar.innerHTML = Message+`<s-button type="text" slot="action"> `+confirmTips+` </s-button>`;};snackbar.show();return;};//封装了一个Material Design的Tipbox
+function setUItitle(Title) {if (Title == undefined) {document.getElementById("titlebar").innerHTML="Github-proxy"} else {document.getElementById("titlebar").innerHTML=Title};return;};
+function setPageTitle(Title) {if (Title == undefined) {document.getElementById("pagetitle").innerHTML="Github-proxy";} else {document.getElementById("pagetitle").innerHTML=Title+` - Github-proxy`;};return;};
+function newSearch(uri) {
+  goto.setAttribute("href",`https://gh.kdxiaoyi.top/`+uri);
+  goto.click();
+};
+//定义变量与常量
+const goto=getElementById("goto");
+const hide="display:none;";const unhide="";
+var id=0;
+const snackbar=document.getElementById("snackbar");
+//移除noscript标识
+console.log ("Github-proxy");console.log("Copyright (C) 2024 kdxiaoyi. All right reserved.\nSee more @ //kdx233.github.io/licen");
+document.getElementById("noscript").setAttribute("style", "display:none;");
+</script>
+</body>
+</html>
