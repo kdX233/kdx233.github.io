@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 <head>
   <meta charset="UTF-8" />
-  <title id="pagetitle">Github-proxy</title>
+  <title id="pagetitle">Github-Proxy</title>
   <script src="https://unpkg.com/sober@0.2.13/dist/sober.min.js"></script>
   <link rel="stylesheet" href="https://rs.kdxiaoyi.top/res/css/sober-theme-turquoise.css" />
   <link rel="stylesheet" href="https://rs.kdxiaoyi.top/res/css/main.css">
@@ -26,7 +26,7 @@
       <br>
       <p>
         GitHub文件链接带不带协议头都可以，支持Release、Archive以及文件，右键复制出来的链接都是符合标准的。<br>
-        release、archive使用cf加速，文件会跳转至JsDelivr<br>
+        Release、Archive使用CloudFlare加速，文件则使用JsDelivr加速<br>
         <b>注意，不支持项目文件夹</b>
       </p><br>
       <s-search>
@@ -35,7 +35,12 @@
           <s-icon-button onclick="document.getElementById('new_uri').value='';" slot="end"><s-icon type="close" ></s-icon></s-icon-button>
       </s-search><br><br>
       <s-button onclick="newSearch(getElementById('new_uri').value);"><s-icon type="search" slot="start"></s-icon>发起代理查询</s-button>
-      <p><br><br><small>本代理基于Github项目<a target="_blank" href="https://github.com/hunshcn/gh-proxy">hunshcn/gh-proxy</a>构建</small></p>
+      <p><br><br>
+        <small>
+          以下域名均导向此服务，您可以任选其一：<br><a href="//gh.kdxiaoyi.top" target="_blank">gh.kdxiaoyi.top</a> | <a href="//kdx233.eu.org" target="_blank"> | <a href="//githubjs.kdx.workers.dev" target="_blank">githubjs.kdx.workers.dev</a></a>
+          <br><br>本代理基于Github项目<a target="_blank" href="https://github.com/hunshcn/gh-proxy">hunshcn/gh-proxy</a>构建
+        </small>
+      </p>
     </div>
   </div></s-scroll-view></s-page>
 <script>
