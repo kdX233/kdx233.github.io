@@ -21,7 +21,7 @@
     <a target="_self" id="goto" style="display:none;" href="void(0)"></a>
     <!-- 页面主体元素 -->
     <div id="welcome" class="welcome-text"><!-- 欢迎界面 -->
-      <p><big>欢迎使用Github-proxy</big></p>
+      <p><big>欢迎使用Github-Proxy</big></p>
       <p>基于Cloudflare Workers的Github文件代理加速工具</p>
       <br>
       <p>
@@ -37,36 +37,53 @@
       <s-button onclick="newSearch(getElementById('new_uri').value);"><s-icon type="search" slot="start"></s-icon>发起代理查询</s-button>
       <p><br><br>
         <small>
-          以下域名均导向此服务，您可以任选其一：<br><a href="//gh.kdxiaoyi.top" target="_blank">gh.kdxiaoyi.top</a> | <a href="//kdx233.eu.org" target="_blank"> | <a href="//githubjs.kdx.workers.dev" target="_blank">githubjs.kdx.workers.dev</a></a>
+          以下域名均导向此服务，您可以任选其一：<br>
+          <a id="link-main" href="//gh.kdxiaoyi.top" target="_blank">gh.kdxiaoyi.top</a> | <a id="link-euorg" href="//kdx233.eu.org" target="_blank">kdx233.eu.org</a> | <a id="link-cf" href="//githubjs.kdx.workers.dev" target="_blank">githubjs.kdx.workers.dev</a>
           <br><br>本代理基于Github项目<a target="_blank" href="https://github.com/hunshcn/gh-proxy">hunshcn/gh-proxy</a>构建
         </small>
       </p>
     </div>
   </div></s-scroll-view></s-page>
 <script>
-function setCookie(cname, cvalue, exdays) { var d = new Date(); d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000)); var expires = "expires=" + d.toGMTString(); document.cookie = cname + "=" + cvalue + "; " + expires };
-function getCookie(cname) { var name = cname + "="; var ca = document.cookie.split(';'); for (var i = 0; i < ca.length; i++) { var c = ca[i].trim(); if (c.indexOf(name) == 0) return c.substring(name.length, c.length) }; return null };
-function getQueryString(name) { let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); let r = window.location.search.substr(1).match(reg); if (r != null) { return unescape(r[2]); }; return null; };
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); };
-function removeElement(ElementId) { document.getElementById(ElementId).remove();return;};
+function removeElement(ElementId) { document.getElementById(ElementId).remove();if (local) {console.log("Removed Element, Id="+ElementId);};return;};
 function author_kdxiaoyi() {let a = document.createElement("a");a.setAttribute("href", 'https://kdxiaoyi.top');a.setAttribute("target", "_blank");a.click();a.remove();return;};
 function msg(Message, confirmTips) {if ( confirmTips == undefined ) {snackbar.innerHTML = Message;} else {snackbar.innerHTML = Message+`<s-button type="text" slot="action"> `+confirmTips+` </s-button>`;};snackbar.show();return;};//封装了一个Material Design的Tipbox
 function setUItitle(Title) {if (Title == undefined) {document.getElementById("titlebar").innerHTML="Github-proxy"} else {document.getElementById("titlebar").innerHTML=Title};return;};
 function setPageTitle(Title) {if (Title == undefined) {document.getElementById("pagetitle").innerHTML="Github-proxy";} else {document.getElementById("pagetitle").innerHTML=Title+` - Github-proxy`;};return;};
 function newSearch(uri) {
-  var reg = /^((https|http):\/\/)?(github\.com\/.+?\/.+?\/(?:releases|archive|blob|raw|suites)|((?:raw|gist)\.(?:githubusercontent|github)\.com))\/.+$/;
+  var reg = /^((https|http):\/\/)?(github\.com\/.+?\/.+?\/(?:releases|archive|blob|raw|suites)|((?:raw|gist)\.(?:githubusercontent|github)\.com))\/.+$/i;
   if (reg.test(uri) == false) {msg('请输入合法网址','٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ');return;};
   goto.setAttribute("href",`https://gh.kdxiaoyi.top/`+uri);
   goto.click();
 };
 //定义变量与常量
 const goto=document.getElementById("goto");
+const mirrorLink=document.getElementById("mirror-link");
 const hide="display:none;";const unhide="";
 var id=0;
 const snackbar=document.getElementById("snackbar");
+//link域识别
+let mainMirrorReg = /kdxiaoyi\.top\//i;
+let euorgMirrorReg = /eu\.org\//i;
+let cfMirrorReg = /workers\.dev\//i;
+let localReg = /(127\.0\.0\.1)|(0\.0\.0\.0)|(localhost)/i;
+{
+  if (localReg.test(window.location.href)) {msg("检测到本地调试状态，代理加速将不可用。","了解");setUItitle(`Github-Proxy [LoaclDebug]`);const local=true;};
+  if (mainMirrorReg.test(window.location.href)) {document.getElementById("link-main").setAttribute("class","disabled-a");};
+  if (euorgMirrorReg.test(window.location.href)) {document.getElementById("link-euorg").setAttribute("class","disabled-a");};
+  if (cfMirrorReg.test(window.location.href)) {document.getElementById("link-cf").setAttribute("class","disabled-a");};
+};
 //移除noscript标识
 console.log ("Github-proxy");console.log("Copyright (C) 2024 kdxiaoyi. All right reserved.\nSee more @ //kdx233.github.io/licen");
 document.getElementById("noscript").setAttribute("style", "display:none;");
 </script>
+<style>
+.disabled-a{
+  color: #000;
+  cursor:auto;
+  pointer-events:none;
+  text-decoration: none;
+}
+</style>
 </body>
 </html>
