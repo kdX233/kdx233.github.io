@@ -1,3 +1,5 @@
+@import('https://rs.kdxiaoyi.top/res/css/font.css')
+
 html, body {
   height: 100%;
   overflow: hidden;
@@ -5,9 +7,11 @@ html, body {
   -webkit-tap-highlight-color: transparent;
   position: absolute;
 }
+
 :not(:defined){
   display: none;
 }
+
 import 'sober/style/scroll-view.css'
 
 /** 下面这两个空白css删了就出bug，原因未知 **/

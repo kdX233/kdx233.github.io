@@ -1,27 +1,14 @@
+@import "https://rs.kdxiaoyi.top/res/css/font.css";
 /*
 魔改的Github Pages CSS
 主要去除了标题栏的背景
 并且修改了字体
-该字体不得商用
 */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
-
-@import('https://rs.kdxiaoyi.top/res/css/google.OpenSans-400,700-swap.css')
-@font-face {
-  font-family: 'hanyi';
-  font-style: normal;
-  font-weight: 400;
-  font-stretch: 100%;
-  font-display: swap;
-  src: url('https://rs.kdxiaoyi.top/res/fonts/hanyi-65J.ttf');
-}
-
 html {
-  font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%
 }
-
 body {
   margin: 0
 }
@@ -489,7 +476,6 @@ td,th {
 body {
   padding: 0;
   margin: 0;
-  font-family: "hanyi", hanyi, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: #606c71
@@ -846,4 +832,3 @@ a:hover {
 .site-footer-credits {
   color: #819198
 }
-@import "https://res/css/no-github-pages-header.css";
