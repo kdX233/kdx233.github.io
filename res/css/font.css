@@ -1,5 +1,5 @@
 @import "https://rs.kdxiaoyi.top/res/css/google.OpenSans-400,700-swap.css";
-@font-face {
+/*@font-face {
   font-family: "siyuan";
   src: url("https://rs.kdxiaoyi.top/res/fonts/SourceHanSansCN-Normal.otf") format("opentype");
 }
@@ -10,7 +10,7 @@
 @font-face {
   font-family: "misans";
   src: url("https://rs.kdxiaoyi.top/res/fonts/MiSans-Regular.woff2") format("woff2");
-}
+}*/
 @font-face {
   font-family: "din";
   src: url("https://rs.kdxiaoyi.top/res/fonts/DINPro-Medium.otf") format("opentype");
