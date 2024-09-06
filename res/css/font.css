@@ -4,14 +4,26 @@
   src: url("https://rs.kdxiaoyi.top/res/fonts/SourceHanSansCN-Medium.otf") format("opentype");
 }
 @font-face {
+  font-family: "misans-l3";
+  src: url("https://rs.kdxiaoyi.top/res/fonts/MiSans L3.otf") format("opentype");
+}
+@font-face {
+  font-family: "misans";
+  src: url("https://rs.kdxiaoyi.top/res/fonts/MiSans-Medium.woff") format("woff");
+}
+@font-face {
   font-family: "din";
   src: url("https://rs.kdxiaoyi.top/res/fonts/DINPro-Medium.otf") format("opentype");
 }
 @font-face {
-  font-family: "misans";
-  src: url("https://rs.kdxiaoyi.top/res/fonts/MiSans L3.otf") format("opentype");
+  font-family: "default";
+  src: 
+    url("https://rs.kdxiaoyi.top/res/fonts/MiSans-Regular.woff") format("woff"),
+    url("https://rs.kdxiaoyi.top/res/fonts/MiSans L3.otf") format("opentype"),
+    url("https://rs.kdxiaoyi.top/res/fonts/SourceHanSansCN-Medium.otf") format("opentype")
+  ;
 }
 
 * {
-  font-family: "din", "misans", "siyuan", "starrail", sans-serif;
+  font-family: "din", "default", system-ui, sans-serif;
 }
