@@ -1,7 +1,7 @@
 @import "https://rs.kdxiaoyi.top/res/css/google.OpenSans-400,700-swap.css";
 @font-face {
   font-family: "siyuan";
-  src: url("https://rs.kdxiaoyi.top/res/fonts/SourceHanSansCN-Medium.otf") format("opentype");
+  src: url("https://rs.kdxiaoyi.top/res/fonts/SourceHanSansCN-Normal.otf") format("opentype");
 }
 @font-face {
   font-family: "misans-l3";
@@ -9,7 +9,7 @@
 }
 @font-face {
   font-family: "misans";
-  src: url("https://rs.kdxiaoyi.top/res/fonts/MiSans-Medium.woff") format("woff");
+  src: url("https://rs.kdxiaoyi.top/res/fonts/MiSans-Regular.woff2") format("woff2");
 }
 @font-face {
   font-family: "din";
@@ -18,9 +18,9 @@
 @font-face {
   font-family: "default";
   src: 
-    url("https://rs.kdxiaoyi.top/res/fonts/MiSans-Regular.woff") format("woff"),
+    url("https://rs.kdxiaoyi.top/res/fonts/MiSans-Regular.woff2") format("woff2"),
     url("https://rs.kdxiaoyi.top/res/fonts/MiSans L3.otf") format("opentype"),
-    url("https://rs.kdxiaoyi.top/res/fonts/SourceHanSansCN-Medium.otf") format("opentype")
+    url("https://rs.kdxiaoyi.top/res/fonts/SourceHanSansCN-Normal.otf") format("opentype")
   ;
 }
 
