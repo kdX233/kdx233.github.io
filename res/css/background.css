@@ -1,3 +1,5 @@
+/* 全站md背景 */
+
 /* html{
     filter:progid:DXImageTransForm.Microsoft.BasicImage(grayscale=1);-webkit-filter:saturate(0);
     -webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none; 
@@ -37,6 +39,24 @@ body{
             /*
             无压背景(4800*2700)：https://s1.ax1x.com/2022/12/14/zIoB7D.jpg
             */
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
+    background-attachment: fixed;
+}
+
+.contentBG {
+    background: 
+        /*此处放滤镜*/
+        url(https://s1.ax1x.com/2022/12/15/zTZeW4.png),
+        
+        /*背景图片地址设置*/
+        /*url(https://s1.ax1x.com/2023/01/27/pSNL2WD.png);*/
+        url(https://s21.ax1x.com/2024/05/24/pkQwAte.jpg);
+
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: cover;
