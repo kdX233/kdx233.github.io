@@ -97,7 +97,13 @@ document.body.innerHTML = `
   </s-page>
 `;
 // 通用API函数
-function scrollToTop() {};
+function scrollToTop() {
+  var toTop_interval_speed = -(contentScroll.scrollTop/(200));
+  var toTop_intervalID = setInterval(() => {
+    contentScroll.scrollBy(0,toTop_interval_speed);
+    if (contentScroll.scrollTop == 0) {clearInterval(toTop_intervalID);};
+  }, 1);
+};
 const UIt=document.getElementById("UIt");
 function setUItitle(Title) {UIt.innerHTML=Title;};
 const link_a=document.createElement("a");
@@ -111,7 +117,7 @@ const contentScroll=document.getElementById("contentScroll");
 const toTopBtn=document.getElementById("toTop");
 const title=document.querySelector("#contentBG > header > h1");
 const title_height=document.querySelector("#contentBG > header").offsetHeight - document.querySelector("#contentBG > header > h2").offsetHeight;
-toTopBtn.addEventListener("animationend", (event) => {if (toTopBtn.onclick=="javascript:void(0);") {toTopBtn.style="display: none;";};});
+toTopBtn.addEventListener("animationend", (event) => {if (toTopBtn.className == "fadeOut") {toTopBtn.style="display: none;";};});
 contentScroll.onscroll = function() {
   if (contentScroll.scrollTop >= title_height) {
     setUItitle(title.innerHTML);
@@ -120,13 +126,13 @@ contentScroll.onscroll = function() {
   };
   if (contentScroll.scrollTop >= contentScroll.offsetHeight) {
     if (toTopBtn.className != "fadeIn") {
+      toTopBtn.setAttribute("onclick","scrollToTop();");
       toTopBtn.setAttribute("class","fadeIn");
       toTopBtn.style="";
-      toTopBtn.onclick="scrollToTop();";
     };
   } else {
     if (toTopBtn.className != "fadeOut") {
-      toTopBtn.onclick="javascript:void(0);";
+      toTopBtn.setAttribute("onclick","javascript:void(0);");
       toTopBtn.setAttribute("class","fadeOut");
       toTopBtn.style="display: none;";
       toTopBtn.style="";
