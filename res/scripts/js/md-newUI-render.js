@@ -61,7 +61,7 @@ document.body.innerHTML = `
       <s-icon-button type="outlined" class="fadeOut" style="display:none;" id="toTop" slot="action" onclick="javascript:void(0);"><s-icon type="arrow_upward"></s-icon></s-icon-button>
     </s-appbar>
     <s-drawer id="sidebar">
-      <div slot="start">
+      <div id="sidebar_left_parent" slot="start">
         <div id="sidebar_left" style="padding:5px 5px 5px 5px;">
           <!--左侧边栏内容-->
           <s-card type="" class="sidebar_head">
@@ -69,22 +69,23 @@ document.body.innerHTML = `
             <div slot="headline"><span style="background:rgba(250,253,252,0.5);">@kdxiaoyi</span></div>
           </s-card><br>
           <s-card type="" class="sidebar_head">
-            <s-chip onclick="openURL('/','')" clickable="true" class="sidebar_btn">
+            <s-chip id="side_ship_0" onclick="openURL('/','')" clickable="true" class="sidebar_btn">
               <s-icon slot="start" type="home"></s-icon>
               主页 Homepage</s-chip>
-            <s-chip onclick="openURL('https://kdxiaoyi.top/blogs','')" clickable="true" class="sidebar_btn">
+            <s-chip id="side_ship_1" onclick="openURL('https://kdxiaoyi.top/blogs','')" clickable="true" class="sidebar_btn">
               <s-icon slot="start"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M320-320h480v-120H698q-21 37-58 58.5T560-360q-42 0-79-21.5T422-440H320v120Zm240-120q34 0 57-23.5t23-56.5h160v-280H320v280h160q0 33 23.5 56.5T560-440ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-240h480-480Z"></path></svg></s-icon>
               博客 Blog</s-chip>
-            <s-chip onclick="openURL('https://kdxiaoyi.top/Project','')" clickable="true" class="sidebar_btn">
+            <s-chip id="side_ship_2" onclick="openURL('https://kdxiaoyi.top/Project','')" clickable="true" class="sidebar_btn">
               <s-icon slot="start"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-40-343 237-137-237-137-237 137 237 137ZM160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11L160-252Zm320-228Z"></path></svg></s-icon>
               项目 Project</s-chip>
-            <s-chip onclick="openURL('https://space.bilibili.com/1987247870')" clickable="true" class="sidebar_btn">
+            <s-chip id="side_ship_3" onclick="openURL('https://space.bilibili.com/1987247870')" clickable="true" class="sidebar_btn">
               <s-icon slot="start"><svg width="100px" height="100px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"/><path d="M18.223 3.086a1.25 1.25 0 0 1 0 1.768L17.08 5.996h1.17A3.75 3.75 0 0 1 22 9.747v7.5a3.75 3.75 0 0 1-3.75 3.75H5.75A3.75 3.75 0 0 1 2 17.247v-7.5a3.75 3.75 0 0 1 3.75-3.75h1.166L5.775 4.855a1.25 1.25 0 1 1 1.767-1.768l2.652 2.652c.079.079.145.165.198.257h3.213c.053-.092.12-.18.199-.258l2.651-2.652a1.25 1.25 0 0 1 1.768 0zm.027 5.42H5.75a1.25 1.25 0 0 0-1.247 1.157l-.003.094v7.5c0 .659.51 1.199 1.157 1.246l.093.004h12.5a1.25 1.25 0 0 0 1.247-1.157l.003-.093v-7.5c0-.69-.56-1.25-1.25-1.25zm-10 2.5c.69 0 1.25.56 1.25 1.25v1.25a1.25 1.25 0 1 1-2.5 0v-1.25c0-.69.56-1.25 1.25-1.25zm7.5 0c.69 0 1.25.56 1.25 1.25v1.25a1.25 1.25 0 1 1-2.5 0v-1.25c0-.69.56-1.25 1.25-1.25z"/></g></svg></s-icon>
               Bilibili ↗</s-chip>
           </s-card><br>
           <s-card type="" class="sidebar_head">
             <div id="saying"><center>Keep the spirit of Touching 𝕏.</center></div>
             <div id="time"><center><small>Since 2022-07-19</small></center></div>
+            <div id="saying"><center><small>以<a href="https://kdxiaoyi.top/our_license/#:~:text=这意味着您可以自由使用文档，但请注意：非商业性使用 （NC）、署名 （BY）、无附加限制">CC BY-NC 4.0</a>协议提供内容</small></center></div>
           </s-card>
         </div>
       </div>
@@ -109,10 +110,6 @@ const UIt=document.getElementById("UIt");
 function setUItitle(Title) {UIt.innerHTML=Title;};
 const link_a=document.createElement("a");
 function openURL(URL,IsInPresentWindow) {if (IsInPresentWindow != undefined) {link_a.target="_self";} else {link_a.target="_blank";};link_a.href=URL;link_a.click();};
-//建站时长刷新
-function RefreshCountup(StartY,StartM,StartD) {let now = Date.now();end = new Date(StartY,StartM-1,StartD);ends = end.getTime();let ss = ends - now;let s = Math.floor(ss/1000);let day= -1*Math.floor(s / 60 / 60 / 24);let hours = -1*Math.floor(s / 60 / 60 % 24);let min = -1*Math.floor(s / 60 % 60 );let sec = -1*Math.floor(s % 60 );timeElement.innerHTML = "<center><small>本站已建立"+day+"天"+hours+"时"+min+"分"+sec+"秒</small></center>";};
-const timeElement=document.getElementById('time');
-var Timing_intervalID = setInterval(() => {RefreshCountup(2022,7,20)}, 1000);
 //title动画和回顶按钮显隐
 const contentScroll=document.getElementById("contentScroll");
 const toTopBtn=document.getElementById("toTop");
@@ -120,7 +117,7 @@ const title=document.querySelector("#contentBG > header > h1");
 const title_height=document.querySelector("#contentBG > header").offsetHeight - document.querySelector("#contentBG > header > h2").offsetHeight;
 toTopBtn.addEventListener("animationend", (event) => {if (toTopBtn.className == "fadeOut") {toTopBtn.style="display: none;";};});
 contentScroll.onscroll = function() {
-  UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";
+  if (contentScroll.scrollTop/title_height <= 1.5) {UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";};
   if (contentScroll.scrollTop >= contentScroll.offsetHeight) {
     if (toTopBtn.className != "fadeIn") {
       toTopBtn.setAttribute("onclick","scrollToTop();");
@@ -140,20 +137,67 @@ contentScroll.onscroll = function() {
 var toTop_intervalID = -1;
 //读取页面标题
 setUItitle(title.innerHTML);
+//修改Scroll-View到真实高度
+const appbar=document.getElementById("appbar");
+const contentBG=document.getElementById("contentBG");
+contentBG.style.height=`${contentBG.offsetHeight+appbar.offsetHeight}px`;
 //章节锚点额外处理（<a href="#xxx"></a>）
 /* 因为这里有个bug，浏览器处理#时会把正文内容置到整个窗口，导致其它元素被隐藏
    所以需要利用absolute布局特性刷新appbar位置 */
-const appbar=document.getElementById("appbar");
 addEventListener("hashchange", (event) => {
   appbar.setAttribute("style","width:100vw;position:absolute;");
   setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
 });
 /* 另外要处理页面首次加载完成后章节锚点不会被处理的问题 */
-window.addEventListener("load", (event) => {
+document.ready=function(callback){if(document.addEventListener){document.addEventListener('DOMContentLoaded',function(){document.removeEventListener('DOMContentLoaded',arguments.callee,false);callback()},false)}else if(document.attachEvent){document.attachEvent('onreadystatechange',function(){if(document.readyState=="complete"){document.detachEvent("onreadystatechange",arguments.callee);callback()}})}else if(document.lastChild==document.body){callback()}}
+document.ready (function() {
+  /* 修复章节锚点跳转 */
   if (window.location.hash != "") {
     openURL(window.location.hash, "");
+    console.log("找到章节锚点 "+window.location.hash);
     appbar.setAttribute("style","width:100vw;position:absolute;");
     setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
   };
-});
+  /* 修复#:~:text=导致的布局异常
+     不完美的修复方法，但是不能接管#:~:text=的处理就只能这样了 */
+  setTimeout(()=>{
+    if (contentScroll.scrollTop != 0) {
+      appbar.setAttribute("style","width:100vw;position:absolute;");
+      UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";
+      if (contentScroll.scrollTop >= contentScroll.offsetHeight) {
+        if (toTopBtn.className != "fadeIn") {
+          toTopBtn.setAttribute("onclick","scrollToTop();");
+          toTopBtn.setAttribute("class","fadeIn");
+          toTopBtn.style="";
+        };
+        document.getElementById("sidebar_left_parent").setAttribute("style", "display:none;");
+        document.getElementById("sidebar_left").setAttribute("style", "display:none;");
+        setTimeout(()=>{
+          appbar.setAttribute("style","width:100vw;position:relative;");
+          document.getElementById("sidebar").show();
+          document.getElementById("sidebar").dismiss();
+          document.getElementById("sidebar_left_parent").setAttribute("style", "");
+          document.getElementById("sidebar_left").setAttribute("style", "");
+        }, 100);
+      };
+    };
+  }, 100);
+}); 
+//检查页面设置元素并应用
+if (!!document.getElementById("mdRender_config")) {
+  const config=document.getElementById("mdRender_config");
+  if (Math.floor(config.dataset.sideshipHide) < 0) {
+    // sideship-hide Int 禁用指定边栏链接
+    document.getElementById("side_ship_"+Math.floor(config.dataset.sideshipHide)).setAttribute("type", "filled-tonal");
+    document.getElementById("side_ship_"+Math.floor(config.dataset.sideshipHide)).setAttribute("clickable", "false");
+  };
+  if (config.hasAttribute("data-title")) {
+    // title Str 强制覆写UI标题
+    setUItitle(config.dataset.title);
+  };
+} else {const config=false;};
+//建站时长刷新
+function RefreshCountup(StartY,StartM,StartD) {let now = Date.now();end = new Date(StartY,StartM-1,StartD);ends = end.getTime();let ss = ends - now;let s = Math.floor(ss/1000);let day= -1*Math.floor(s / 60 / 60 / 24);let hours = -1*Math.floor(s / 60 / 60 % 24);let min = -1*Math.floor(s / 60 % 60 );let sec = -1*Math.floor(s % 60 );timeElement.innerHTML = "<center><small>本站已建立"+day+"天"+hours+"时"+min+"分"+sec+"秒</small></center>";};
+const timeElement=document.getElementById('time');
+var Timing_intervalID = setInterval(() => {RefreshCountup(2022,7,20)}, 1000);
 console.log('%cPages Markdown Re-Render\nCopyright (C) 2024 kdxiaoyi. All right reserved.','color:#90BBB1;')
