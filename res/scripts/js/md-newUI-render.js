@@ -150,8 +150,10 @@ addEventListener("hashchange", (event) => {
 });
 /* 另外要处理页面首次加载完成后章节锚点不会被处理的问题 */
 window.addEventListener("load", (event) => {
-  openURL(window.location.hash, "");
-  appbar.setAttribute("style","width:100vw;position:absolute;");
-  setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
+  if (window.location.hash != "") {
+    openURL(window.location.hash, "");
+    appbar.setAttribute("style","width:100vw;position:absolute;");
+    setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
+  };
 });
 console.log('%cPages Markdown Re-Render\nCopyright (C) 2024 kdxiaoyi. All right reserved.','color:#90BBB1;')
