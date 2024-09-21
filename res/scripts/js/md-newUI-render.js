@@ -50,13 +50,13 @@ document.body.innerHTML = `
     }
   </style>
   <s-page theme="white" class="page_root">
-    <s-appbar>
+    <s-appbar id="appbar">
      <!--左侧菜单按钮-->
       <s-icon-button type="filled-tonal" slot="navigation" onclick='document.getElementById("sidebar").toggle();'>
         <s-icon type="menu"></s-icon>
       </s-icon-button>
      <!--标题-->
-      <div slot="headline" id="UIt">  </div>
+      <div slot="headline" id="UIt" style="opacity:0;">  </div>
      <!--右侧按钮-->
       <s-icon-button type="outlined" class="fadeOut" style="display:none;" id="toTop" slot="action" onclick="javascript:void(0);"><s-icon type="arrow_upward"></s-icon></s-icon-button>
     </s-appbar>
@@ -98,10 +98,11 @@ document.body.innerHTML = `
 `;
 // 通用API函数
 function scrollToTop() {
-  var toTop_interval_speed = -(contentScroll.scrollTop/(200));
-  var toTop_intervalID = setInterval(() => {
+  var toTop_interval_speed = -(contentScroll.scrollTop/(80));
+  if (toTop_intervalID != -1) {toTop_interval_speed = toTop_interval_speed*1.5;return;};
+  toTop_intervalID = setInterval(() => {
     contentScroll.scrollBy(0,toTop_interval_speed);
-    if (contentScroll.scrollTop == 0) {clearInterval(toTop_intervalID);};
+    if (contentScroll.scrollTop == 0) {clearInterval(toTop_intervalID);toTop_intervalID=-1};
   }, 1);
 };
 const UIt=document.getElementById("UIt");
@@ -119,11 +120,7 @@ const title=document.querySelector("#contentBG > header > h1");
 const title_height=document.querySelector("#contentBG > header").offsetHeight - document.querySelector("#contentBG > header > h2").offsetHeight;
 toTopBtn.addEventListener("animationend", (event) => {if (toTopBtn.className == "fadeOut") {toTopBtn.style="display: none;";};});
 contentScroll.onscroll = function() {
-  if (contentScroll.scrollTop >= title_height) {
-    setUItitle(title.innerHTML);
-  } else {
-    setUItitle("");
-  };
+  UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";
   if (contentScroll.scrollTop >= contentScroll.offsetHeight) {
     if (toTopBtn.className != "fadeIn") {
       toTopBtn.setAttribute("onclick","scrollToTop();");
@@ -139,4 +136,22 @@ contentScroll.onscroll = function() {
     };
   };
 };
+//回顶操作初始化
+var toTop_intervalID = -1;
+//读取页面标题
+setUItitle(title.innerHTML);
+//章节锚点额外处理（<a href="#xxx"></a>）
+/* 因为这里有个bug，浏览器处理#时会把正文内容置到整个窗口，导致其它元素被隐藏
+   所以需要利用absolute布局特性刷新appbar位置 */
+const appbar=document.getElementById("appbar");
+addEventListener("hashchange", (event) => {
+  appbar.setAttribute("style","width:100vw;position:absolute;");
+  setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
+});
+/* 另外要处理页面首次加载完成后章节锚点不会被处理的问题 */
+window.addEventListener("load", (event) => {
+  openURL(window.location.hash, "");
+  appbar.setAttribute("style","width:100vw;position:absolute;");
+  setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
+});
 console.log('%cPages Markdown Re-Render\nCopyright (C) 2024 kdxiaoyi. All right reserved.','color:#90BBB1;')
