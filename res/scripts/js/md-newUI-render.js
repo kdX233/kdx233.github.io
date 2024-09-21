@@ -185,19 +185,23 @@ document.ready (function() {
 }); 
 //检查页面设置元素并应用
 if (!!document.getElementById("mdRender_config")) {
-  const config=document.getElementById("mdRender_config");
-  if (Math.floor(config.dataset.sideshipHide) < 0) {
+  let configDiv=document.getElementById("mdRender_config");
+  if (Math.floor(configDiv.dataset.sideshipHide) < 0) {
     // sideship-hide Int 禁用指定边栏链接
-    document.getElementById("side_ship_"+Math.floor(config.dataset.sideshipHide)).setAttribute("type", "filled-tonal");
-    document.getElementById("side_ship_"+Math.floor(config.dataset.sideshipHide)).setAttribute("clickable", "false");
+    document.getElementById("side_ship_"+Math.floor(configDiv.dataset.sideshipHide)).setAttribute("type", "filled-tonal");
+    document.getElementById("side_ship_"+Math.floor(configDiv.dataset.sideshipHide)).setAttribute("clickable", "false");
+    document.getElementById("side_ship_"+Math.floor(configDiv.dataset.sideshipHide)).setAttribute("onclick", "void(0);");
   };
-  if (config.hasAttribute("data-title")) {
+  if (configDiv.hasAttribute("data-title")) {
     // title Str 强制覆写UI标题
-    setUItitle(config.dataset.title);
+    setUItitle(configDiv.dataset.title);
   };
-} else {const config=false;};
+};
 //建站时长刷新
 function RefreshCountup(StartY,StartM,StartD) {let now = Date.now();end = new Date(StartY,StartM-1,StartD);ends = end.getTime();let ss = ends - now;let s = Math.floor(ss/1000);let day= -1*Math.floor(s / 60 / 60 / 24);let hours = -1*Math.floor(s / 60 / 60 % 24);let min = -1*Math.floor(s / 60 % 60 );let sec = -1*Math.floor(s % 60 );timeElement.innerHTML = "<center><small>本站已建立"+day+"天"+hours+"时"+min+"分"+sec+"秒</small></center>";};
 const timeElement=document.getElementById('time');
 var Timing_intervalID = setInterval(() => {RefreshCountup(2022,7,20)}, 1000);
-console.log('%cPages Markdown Re-Render\nCopyright (C) 2024 kdxiaoyi. All right reserved.','color:#90BBB1;')
+console.log('%cPages Markdown Re-Render\nCopyright (C) 2024 kdxiaoyi. All right reserved.','color:#90BBB1;');
+//移除不必要的元素
+/* 该元素为加载新UI失败时平替，即老UI */
+document.getElementById("old_menu").setAttribute("style", "display:none;");
