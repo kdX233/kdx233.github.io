@@ -1,6 +1,8 @@
 // 将Github Pages自动生成的Markdown渲染页面进行自动重绘
 // Powered by SoberJS
 // 同时未来会增加看图插件等等
+
+//插入重渲染代码
 document.body.innerHTML = `
   <!-- Pages Markdown Re-Render -->
   <!-- 页面重渲染插入代码开始 -->
@@ -52,7 +54,7 @@ document.body.innerHTML = `
   <s-page theme="white" class="page_root">
     <s-appbar id="appbar">
      <!--左侧菜单按钮-->
-      <s-icon-button type="filled-tonal" slot="navigation" onclick='document.getElementById("sidebar").toggle();'>
+      <s-icon-button type="filled-tonal" slot="navigation" onclick='document.getElementById("sidebar").toggle();console.output("切换Sidebar显示");'>
         <s-icon type="menu"></s-icon>
       </s-icon-button>
      <!--标题-->
@@ -97,14 +99,26 @@ document.body.innerHTML = `
     </s-drawer>
   </s-page>
 `;
+function getQueryString(name) { let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); let r = window.location.search.substr(1).match(reg); if (r != null) { return unescape(r[2]); }; return null; };
+//debug模式的检测与切换
+function msg(Message, ConfirmText) {let infoJson={};infoJson.text=Message;if (ConfirmText==undefined) {infoJson.action="";} else {infoJson.action=ConfirmText;};customElements.get('s-snackbar').show(infoJson);console.output("创建了新的Snakbar\n"+JSON.stringify(infoJson));return infoJson;};
+document.debugging = false;
+function debug(mode) {if (mode==true) {document.debugging=true;msg("调试模式已启用","了解");return document.debugging;};if (mode==false) {document.debugging=false;msg("调试模式已禁用","了解");} else {document.debugging=!document.debugging;};return document.debugging;};
+console.output = function (Message) {if (document.debugging) {console.log(Message);};};
+let localReg = /(127\.0\.0\.1)|(0\.0\.0\.0)|(localhost)/i;
+if (localReg.test(window.location.href)) {debug(true);msg("检测到本地调试","了解");};
+if (getQueryString("debug")!=null) {debug(true);msg("检测到调试命令行","了解");};
 // 通用API函数
 function scrollToTop() {
+  window.location.hash = "";
   var toTop_interval_speed = -(contentScroll.scrollTop/(80));
   if (toTop_intervalID != -1) {toTop_interval_speed = toTop_interval_speed*1.5;return;};
   toTop_intervalID = setInterval(() => {
     contentScroll.scrollBy(0,toTop_interval_speed);
-    if (contentScroll.scrollTop == 0) {clearInterval(toTop_intervalID);toTop_intervalID=-1};
+    console.output("回顶循环#"+toTop_intervalID+"执行操作");
+    if (contentScroll.scrollTop == 0) {clearInterval(toTop_intervalID);console.output("回顶循环#"+toTop_intervalID+"操作完成");toTop_intervalID=-1;};
   }, 1);
+  console.output("创建新的回顶循环句柄"+toTop_intervalID);
 };
 const UIt=document.getElementById("UIt");
 function setUItitle(Title) {UIt.innerHTML=Title;};
@@ -117,12 +131,13 @@ const title=document.querySelector("#contentBG > header > h1");
 const title_height=document.querySelector("#contentBG > header").offsetHeight - document.querySelector("#contentBG > header > h2").offsetHeight;
 toTopBtn.addEventListener("animationend", (event) => {if (toTopBtn.className == "fadeOut") {toTopBtn.style="display: none;";};});
 contentScroll.onscroll = function() {
-  if (contentScroll.scrollTop/title_height <= 1.5) {UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";};
+  if (contentScroll.scrollTop/title_height <= 1.5) {UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";console.output("UItitle透明度改变");};
   if (contentScroll.scrollTop >= contentScroll.offsetHeight) {
     if (toTopBtn.className != "fadeIn") {
       toTopBtn.setAttribute("onclick","scrollToTop();");
       toTopBtn.setAttribute("class","fadeIn");
       toTopBtn.style="";
+      console.output("显示回顶按钮");
     };
   } else {
     if (toTopBtn.className != "fadeOut") {
@@ -130,6 +145,7 @@ contentScroll.onscroll = function() {
       toTopBtn.setAttribute("class","fadeOut");
       toTopBtn.style="display: none;";
       toTopBtn.style="";
+      console.output("隐藏回顶按钮");
     };
   };
 };
@@ -137,16 +153,19 @@ contentScroll.onscroll = function() {
 var toTop_intervalID = -1;
 //读取页面标题
 setUItitle(title.innerHTML);
+console.output("设置UI标题\nUItitle.innerHTML="+title.innerHTML);
 //修改Scroll-View到真实高度
 const appbar=document.getElementById("appbar");
 const contentBG=document.getElementById("contentBG");
 contentBG.style.height=`${contentBG.offsetHeight+appbar.offsetHeight}px`;
+console.output("修改页面真实高度\ncontentBG.style.height="+contentBG.style.height);
 //章节锚点额外处理（<a href="#xxx"></a>）
 /* 因为这里有个bug，浏览器处理#时会把正文内容置到整个窗口，导致其它元素被隐藏
    所以需要利用absolute布局特性刷新appbar位置 */
 addEventListener("hashchange", (event) => {
   appbar.setAttribute("style","width:100vw;position:absolute;");
   setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
+  console.output("Hash改变，重绘UI\nwindow.location.hash="+window.location.hash);
 });
 /* 另外要处理页面首次加载完成后章节锚点不会被处理的问题 */
 document.ready=function(callback){if(document.addEventListener){document.addEventListener('DOMContentLoaded',function(){document.removeEventListener('DOMContentLoaded',arguments.callee,false);callback()},false)}else if(document.attachEvent){document.attachEvent('onreadystatechange',function(){if(document.readyState=="complete"){document.detachEvent("onreadystatechange",arguments.callee);callback()}})}else if(document.lastChild==document.body){callback()}}
@@ -157,6 +176,8 @@ document.ready (function() {
     console.log("找到章节锚点 "+window.location.hash);
     appbar.setAttribute("style","width:100vw;position:absolute;");
     setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
+    addEventListener("load",()=>{appbar.setAttribute("style","width:100vw;position:absolute;");setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 10);});
+    console.output("检测到页面载入Hash\nwindow.location.hash="+window.location.hash);
   };
   /* 修复#:~:text=导致的布局异常
      不完美的修复方法，但是不能接管#:~:text=的处理就只能这样了 */
@@ -180,21 +201,25 @@ document.ready (function() {
           document.getElementById("sidebar_left").setAttribute("style", "");
         }, 100);
       };
+    console.output("检测到页面异常滚动，已重绘UI");
     };
   }, 100);
 }); 
 //检查页面设置元素并应用
 if (!!document.getElementById("mdRender_config")) {
   let configDiv=document.getElementById("mdRender_config");
-  if (Math.floor(configDiv.dataset.sideshipHide) < 0) {
+  if (Math.floor(configDiv.dataset.sideshipHide) >= 0) {
     // sideship-hide Int 禁用指定边栏链接
-    document.getElementById("side_ship_"+Math.floor(configDiv.dataset.sideshipHide)).setAttribute("type", "filled-tonal");
-    document.getElementById("side_ship_"+Math.floor(configDiv.dataset.sideshipHide)).setAttribute("clickable", "false");
-    document.getElementById("side_ship_"+Math.floor(configDiv.dataset.sideshipHide)).setAttribute("onclick", "void(0);");
+    let sideShipBtn=document.getElementById("side_ship_"+Math.floor(configDiv.dataset.sideshipHide))
+    sideShipBtn.setAttribute("type", "filled-tonal");
+    sideShipBtn.setAttribute("clickable", "false");
+    sideShipBtn.setAttribute("onclick", "void(0);");
+    console.output("Sidebar-btn被配置Div隐藏\n"+"side_ship_"+Math.floor(configDiv.dataset.sideshipHide));
   };
   if (configDiv.hasAttribute("data-title")) {
     // title Str 强制覆写UI标题
     setUItitle(configDiv.dataset.title);
+    console.output("UItitle被覆写\nUItitle.innerHTML"+configDiv.dataset.title);
   };
 };
 //建站时长刷新
