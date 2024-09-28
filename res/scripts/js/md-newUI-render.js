@@ -1,7 +1,7 @@
 // 将Github Pages自动生成的Markdown渲染页面进行自动重绘
 // Powered by SoberJS
 // 同时未来会增加看图插件等等
-
+const PluginVer=["1.0.10",10];
 //插入重渲染代码
 document.body.innerHTML = `
   <!-- Pages Markdown Re-Render -->
@@ -51,7 +51,7 @@ document.body.innerHTML = `
       animation-name: fadeOut;
     }
   </style>
-  <s-page theme="white" class="page_root">
+  <s-page theme="white" class="page_root" id="page_root">
     <s-appbar id="appbar">
      <!--左侧菜单按钮-->
       <s-icon-button type="filled-tonal" slot="navigation" onclick='document.getElementById("sidebar").toggle();console.output("切换Sidebar显示");'>
@@ -99,16 +99,38 @@ document.body.innerHTML = `
     </s-drawer>
   </s-page>
 `;
-function getQueryString(name) { let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); let r = window.location.search.substr(1).match(reg); if (r != null) { return unescape(r[2]); }; return null; };
+// 变量、常量定义区
+const page_root=document.getElementById("page_root");
+const UIt=document.getElementById("UIt");
+const link_a=document.createElement("a");
+const contentScroll=document.getElementById("contentScroll");
+const toTopBtn=document.getElementById("toTop");
+const title=document.querySelector("#contentBG > header > h1");
+const title_height=document.querySelector("#contentBG > header").offsetHeight - document.querySelector("#contentBG > header > h2").offsetHeight;
+const appbar=document.getElementById("appbar");
+const contentBG=document.getElementById("contentBG");
+const timeElement=document.getElementById('time');
 //debug模式的检测与切换
-function msg(Message, ConfirmText) {let infoJson={};infoJson.text=Message;if (ConfirmText==undefined) {infoJson.action="";} else {infoJson.action=ConfirmText;};customElements.get('s-snackbar').show(infoJson);console.output("创建了新的Snakbar\n"+JSON.stringify(infoJson));return infoJson;};
+function getQueryString(name) { let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); let r = window.location.search.substr(1).match(reg); if (r != null) { return unescape(r[2]); }; return null; };
+function msg(Message, ConfirmText, isWarning) {let infoJson={};infoJson.root=document.querySelector('s-page');infoJson.text=Message;if (ConfirmText==undefined) {infoJson.action="";} else {infoJson.action=ConfirmText;};if (isWarning!=undefined) {infoJson.type="error";};customElements.get('s-snackbar').show(infoJson);console.output("创建了新的Snakbar\n"+JSON.stringify(infoJson));return infoJson;};
 document.debugging = false;
 function debug(mode) {if (mode==true) {document.debugging=true;msg("调试模式已启用","了解");return document.debugging;};if (mode==false) {document.debugging=false;msg("调试模式已禁用","了解");} else {document.debugging=!document.debugging;};return document.debugging;};
 console.output = function (Message) {if (document.debugging) {console.log(Message);};};
 let localReg = /(127\.0\.0\.1)|(0\.0\.0\.0)|(localhost)/i;
 if (localReg.test(window.location.href)) {debug(true);msg("检测到本地调试","了解");};
 if (getQueryString("debug")!=null) {debug(true);msg("检测到调试命令行","了解");};
-// 通用API函数
+// 封装的通用API函数
+  /* 列出所有封装的Function:
+      getQueryString(name)
+      msg(Message, ConfirmText)
+      debug(mode)
+      console.output(Message)
+      scrollToTop()
+      setUItitle(Title)
+      openURL(URL,IsInPresentWindow)
+      RefreshCountup(StartY,StartM,StartD)
+      
+  */
 function scrollToTop() {
   window.location.hash = "";
   var toTop_interval_speed = -(contentScroll.scrollTop/(80));
@@ -118,17 +140,11 @@ function scrollToTop() {
     console.output("回顶循环#"+toTop_intervalID+"执行操作");
     if (contentScroll.scrollTop == 0) {clearInterval(toTop_intervalID);console.output("回顶循环#"+toTop_intervalID+"操作完成");toTop_intervalID=-1;};
   }, 1);
-  console.output("创建新的回顶循环句柄"+toTop_intervalID);
+  console.output("创建新的回顶循环句柄#"+toTop_intervalID);
 };
-const UIt=document.getElementById("UIt");
 function setUItitle(Title) {UIt.innerHTML=Title;};
-const link_a=document.createElement("a");
 function openURL(URL,IsInPresentWindow) {if (IsInPresentWindow != undefined) {link_a.target="_self";} else {link_a.target="_blank";};link_a.href=URL;link_a.click();};
 //title动画和回顶按钮显隐
-const contentScroll=document.getElementById("contentScroll");
-const toTopBtn=document.getElementById("toTop");
-const title=document.querySelector("#contentBG > header > h1");
-const title_height=document.querySelector("#contentBG > header").offsetHeight - document.querySelector("#contentBG > header > h2").offsetHeight;
 toTopBtn.addEventListener("animationend", (event) => {if (toTopBtn.className == "fadeOut") {toTopBtn.style="display: none;";};});
 contentScroll.onscroll = function() {
   if (contentScroll.scrollTop/title_height <= 1.5) {UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";console.output("UItitle透明度改变");};
@@ -155,14 +171,13 @@ var toTop_intervalID = -1;
 setUItitle(title.innerHTML);
 console.output("设置UI标题\nUItitle.innerHTML="+title.innerHTML);
 //修改Scroll-View到真实高度
-const appbar=document.getElementById("appbar");
-const contentBG=document.getElementById("contentBG");
 contentBG.style.height=`${contentBG.offsetHeight+appbar.offsetHeight}px`;
 console.output("修改页面真实高度\ncontentBG.style.height="+contentBG.style.height);
 //章节锚点额外处理（<a href="#xxx"></a>）
 /* 因为这里有个bug，浏览器处理#时会把正文内容置到整个窗口，导致其它元素被隐藏
    所以需要利用absolute布局特性刷新appbar位置 */
 addEventListener("hashchange", (event) => {
+  if (window.location.hash == "") {console.output("Hash清空\nwindow.location.hash="+window.location.hash);return;};
   appbar.setAttribute("style","width:100vw;position:absolute;");
   setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
   console.output("Hash改变，重绘UI\nwindow.location.hash="+window.location.hash);
@@ -224,9 +239,8 @@ if (!!document.getElementById("mdRender_config")) {
 };
 //建站时长刷新
 function RefreshCountup(StartY,StartM,StartD) {let now = Date.now();end = new Date(StartY,StartM-1,StartD);ends = end.getTime();let ss = ends - now;let s = Math.floor(ss/1000);let day= -1*Math.floor(s / 60 / 60 / 24);let hours = -1*Math.floor(s / 60 / 60 % 24);let min = -1*Math.floor(s / 60 % 60 );let sec = -1*Math.floor(s % 60 );timeElement.innerHTML = "<center><small>本站已建立"+day+"天"+hours+"时"+min+"分"+sec+"秒</small></center>";};
-const timeElement=document.getElementById('time');
 var Timing_intervalID = setInterval(() => {RefreshCountup(2022,7,20)}, 1000);
-console.log('%cPages Markdown Re-Render\nCopyright (C) 2024 kdxiaoyi. All right reserved.','color:#90BBB1;');
+console.log('%cPages Markdown Re-Render v'+PluginVer[0]+'%c['+PluginVer[1]+'%c]\nCopyright (C) 2024 kdxiaoyi. All right reserved.','color:#90BBB1;','color:#90BBB1;','color:#90BBB1;');
 //移除不必要的元素
 /* 该元素为加载新UI失败时平替，即老UI */
 document.getElementById("old_menu").setAttribute("style", "display:none;");
