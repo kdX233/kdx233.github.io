@@ -1,7 +1,6 @@
 // 将Github Pages自动生成的Markdown渲染页面进行自动重绘
 // Powered by SoberJS
-// 同时未来会增加看图插件等等
-const PluginVer=["1.0.10",10];
+const PluginVer=["1.0.11",11];
 //插入重渲染代码
 document.body.innerHTML = `
   <!-- Pages Markdown Re-Render -->
@@ -87,7 +86,7 @@ document.body.innerHTML = `
           <s-card type="" class="sidebar_head">
             <div id="saying"><center>Keep the spirit of Touching 𝕏.</center></div>
             <div id="time"><center><small>Since 2022-07-19</small></center></div>
-            <div id="saying"><center><small>以<a href="https://kdxiaoyi.top/our_license/#:~:text=这意味着您可以自由使用文档，但请注意：非商业性使用 （NC）、署名 （BY）、无附加限制">CC BY-NC 4.0</a>协议提供内容</small></center></div>
+            <div id="saying"><center><small>以<a href="https://kdxiaoyi.top/our_licens">CC BY-NC 4.0</a>协议提供内容</small></center></div>
           </s-card>
         </div>
       </div>
@@ -110,6 +109,7 @@ const title_height=document.querySelector("#contentBG > header").offsetHeight - 
 const appbar=document.getElementById("appbar");
 const contentBG=document.getElementById("contentBG");
 const timeElement=document.getElementById('time');
+var toTop_intervalID = -1;//回顶操作初始化
 //debug模式的检测与切换
 function getQueryString(name) { let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); let r = window.location.search.substr(1).match(reg); if (r != null) { return unescape(r[2]); }; return null; };
 function msg(Message, ConfirmText, isWarning) {let infoJson={};infoJson.root=document.querySelector('s-page');infoJson.text=Message;if (ConfirmText==undefined) {infoJson.action="";} else {infoJson.action=ConfirmText;};if (isWarning!=undefined) {infoJson.type="error";};customElements.get('s-snackbar').show(infoJson);console.output("创建了新的Snakbar\n"+JSON.stringify(infoJson));return infoJson;};
@@ -119,6 +119,7 @@ console.output = function (Message) {if (document.debugging) {console.log(Messag
 let localReg = /(127\.0\.0\.1)|(0\.0\.0\.0)|(localhost)/i;
 if (localReg.test(window.location.href)) {debug(true);msg("检测到本地调试","了解");};
 if (getQueryString("debug")!=null) {debug(true);msg("检测到调试命令行","了解");};
+
 // 封装的通用API函数
   /* 列出所有封装的Function:
       getQueryString(name)
@@ -128,8 +129,9 @@ if (getQueryString("debug")!=null) {debug(true);msg("检测到调试命令行","
       scrollToTop()
       setUItitle(Title)
       openURL(URL,IsInPresentWindow)
+      refreshAppbar()
       RefreshCountup(StartY,StartM,StartD)
-      
+      selectAllTextInElement(element)
   */
 function scrollToTop() {
   window.location.hash = "";
@@ -144,9 +146,11 @@ function scrollToTop() {
 };
 function setUItitle(Title) {UIt.innerHTML=Title;};
 function openURL(URL,IsInPresentWindow) {if (IsInPresentWindow != undefined) {link_a.target="_self";} else {link_a.target="_blank";};link_a.href=URL;link_a.click();};
+
 //title动画和回顶按钮显隐
 toTopBtn.addEventListener("animationend", (event) => {if (toTopBtn.className == "fadeOut") {toTopBtn.style="display: none;";};});
-contentScroll.onscroll = function() {
+contentScroll.onscroll = function() {refreshAppbar();};
+function refreshAppbar() {
   if (contentScroll.scrollTop/title_height <= 1.5) {UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";console.output("UItitle透明度改变");};
   if (contentScroll.scrollTop >= contentScroll.offsetHeight) {
     if (toTopBtn.className != "fadeIn") {
@@ -165,21 +169,18 @@ contentScroll.onscroll = function() {
     };
   };
 };
-//回顶操作初始化
-var toTop_intervalID = -1;
+
 //读取页面标题
 setUItitle(title.innerHTML);
 console.output("设置UI标题\nUItitle.innerHTML="+title.innerHTML);
-//修改Scroll-View到真实高度
-contentBG.style.height=`${contentBG.offsetHeight+appbar.offsetHeight}px`;
-console.output("修改页面真实高度\ncontentBG.style.height="+contentBG.style.height);
+
 //章节锚点额外处理（<a href="#xxx"></a>）
 /* 因为这里有个bug，浏览器处理#时会把正文内容置到整个窗口，导致其它元素被隐藏
    所以需要利用absolute布局特性刷新appbar位置 */
 addEventListener("hashchange", (event) => {
   if (window.location.hash == "") {console.output("Hash清空\nwindow.location.hash="+window.location.hash);return;};
   appbar.setAttribute("style","width:100vw;position:absolute;");
-  setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
+  setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");refreshAppbar();}, 100);
   console.output("Hash改变，重绘UI\nwindow.location.hash="+window.location.hash);
 });
 /* 另外要处理页面首次加载完成后章节锚点不会被处理的问题 */
@@ -191,7 +192,7 @@ document.ready (function() {
     console.log("找到章节锚点 "+window.location.hash);
     appbar.setAttribute("style","width:100vw;position:absolute;");
     setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 100);
-    addEventListener("load",()=>{appbar.setAttribute("style","width:100vw;position:absolute;");setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");}, 10);});
+    addEventListener("load",()=>{appbar.setAttribute("style","width:100vw;position:absolute;");setTimeout(()=>{appbar.setAttribute("style","width:100vw;position:relative;");refreshAppbar();}, 10);});
     console.output("检测到页面载入Hash\nwindow.location.hash="+window.location.hash);
   };
   /* 修复#:~:text=导致的布局异常
@@ -199,7 +200,7 @@ document.ready (function() {
   setTimeout(()=>{
     if (contentScroll.scrollTop != 0) {
       appbar.setAttribute("style","width:100vw;position:absolute;");
-      UIt.style="opacity:"+(contentScroll.scrollTop/title_height)+";";
+      refreshAppbar();
       if (contentScroll.scrollTop >= contentScroll.offsetHeight) {
         if (toTopBtn.className != "fadeIn") {
           toTopBtn.setAttribute("onclick","scrollToTop();");
@@ -220,11 +221,12 @@ document.ready (function() {
     };
   }, 100);
 }); 
+
 //检查页面设置元素并应用
 if (!!document.getElementById("mdRender_config")) {
   let configDiv=document.getElementById("mdRender_config");
   if (Math.floor(configDiv.dataset.sideshipHide) >= 0) {
-    // sideship-hide Int 禁用指定边栏链接
+    /* sideship-hide Int 禁用指定边栏链接 */
     let sideShipBtn=document.getElementById("side_ship_"+Math.floor(configDiv.dataset.sideshipHide))
     sideShipBtn.setAttribute("type", "filled-tonal");
     sideShipBtn.setAttribute("clickable", "false");
@@ -232,15 +234,63 @@ if (!!document.getElementById("mdRender_config")) {
     console.output("Sidebar-btn被配置Div隐藏\n"+"side_ship_"+Math.floor(configDiv.dataset.sideshipHide));
   };
   if (configDiv.hasAttribute("data-title")) {
-    // title Str 强制覆写UI标题
+    /* title Str 强制覆写UI标题 */
     setUItitle(configDiv.dataset.title);
     console.output("UItitle被覆写\nUItitle.innerHTML"+configDiv.dataset.title);
   };
 };
+
 //建站时长刷新
 function RefreshCountup(StartY,StartM,StartD) {let now = Date.now();end = new Date(StartY,StartM-1,StartD);ends = end.getTime();let ss = ends - now;let s = Math.floor(ss/1000);let day= -1*Math.floor(s / 60 / 60 / 24);let hours = -1*Math.floor(s / 60 / 60 % 24);let min = -1*Math.floor(s / 60 % 60 );let sec = -1*Math.floor(s % 60 );timeElement.innerHTML = "<center><small>本站已建立"+day+"天"+hours+"时"+min+"分"+sec+"秒</small></center>";};
 var Timing_intervalID = setInterval(() => {RefreshCountup(2022,7,20)}, 1000);
 console.log('%cPages Markdown Re-Render v'+PluginVer[0]+'%c['+PluginVer[1]+'%c]\nCopyright (C) 2024 kdxiaoyi. All right reserved.','color:#90BBB1;','color:#90BBB1;','color:#90BBB1;');
+
+//code元素新增复制到剪贴板按钮
+function selectAllTextInElement(element) {
+  let range = document.createRange();
+  range.selectNodeContents(element);
+  let selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+};
+function copyBtnDone(copyBtn, text) {
+  copyBtn.setAttribute("type","filled-tonal");
+  let originalInnerHtml=copyBtn.innerHTML;
+  copyBtn.innerHTML=`<s-icon type="done" slot="start"></s-icon>
+  Copied!`;
+  setTimeout(()=>{
+    copyBtn.setAttribute("type","elevated");
+    copyBtn.innerHTML=`<s-icon slot="start"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"></path></svg></s-icon>
+    Copy`;
+    if (text==window.getSelection().toString()) {
+      window.getSelection().removeAllRanges();
+    };
+  },5000);
+};
+document.querySelectorAll('code').forEach((codeElement) => {
+  let copyCodeBtn = document.createElement('s-chip');
+  copyCodeBtn.setAttribute("type","elevated");
+  copyCodeBtn.setAttribute("clickable","true");
+  if (!navigator.clipboard) {copyCodeBtn.setAttribute("clickable","false");};
+  copyCodeBtn.innerHTML=`<s-icon slot="start"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"></path></svg></s-icon>
+  Copy`;
+  copyCodeBtn.addEventListener('click',() => {
+    window.getSelection().removeAllRanges();
+    selectAllTextInElement(copyCodeBtn.parentElement.querySelectorAll("code")[0]);
+    navigator.clipboard.writeText(window.getSelection().toString()).then(
+      function () {/* clipboard successfully set */
+        copyBtnDone(copyCodeBtn,window.getSelection().toString());
+      },function () {/* clipboard write failed */
+        msg("没有授予剪贴板权限…", "好", true);
+      },
+    );
+  });
+  codeElement.parentNode.insertBefore(copyCodeBtn, codeElement.nextSibling);
+});
+
+//修改Scroll-View到真实高度
+contentBG.style.height=`${contentBG.offsetHeight+appbar.offsetHeight}px`;
+console.output("修改页面真实高度\ncontentBG.style.height="+contentBG.style.height);
+
 //移除不必要的元素
-/* 该元素为加载新UI失败时平替，即老UI */
-document.getElementById("old_menu").setAttribute("style", "display:none;");
+document.getElementById("old_menu")/* 该元素为加载新UI失败时平替，即老UI */.setAttribute("style", "display:none;");
