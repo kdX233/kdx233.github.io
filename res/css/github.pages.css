@@ -1,14 +1,16 @@
 @import "https://rs.kdxiaoyi.top/res/css/font.css";
-/*
-魔改的Github Pages CSS
+/*魔改的Github Pages CSS
 主要去除了标题栏的背景
 并且修改了字体
-*/
+
+适配重渲染脚本*/
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+
 html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%
 }
+
 body {
   margin: 0
 }
@@ -556,7 +558,7 @@ a:hover {
   }}
 
 .page-header {
-  color: #000;
+  color: var(--header-font-color,#000);
   text-align: center;
   background-color: rgba(255,255,255,0);
   background-image: linear-gradient(120deg, rgba(255,255,255,0), rgba(255,255,255,0))
@@ -692,7 +694,7 @@ a:hover {
   font: 1rem Consolas, "Liberation Mono", Menlo, Courier, monospace;
   color: #567482;
   word-wrap: normal;
-  background-color: #f3f6fa;
+  background-color: var(--pre-bg-color,#f3f6fa);
   border: solid 1px #dce6f0;
   border-radius: 0.3rem
 }

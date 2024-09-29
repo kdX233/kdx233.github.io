@@ -3,50 +3,51 @@
 /* html{
     filter:progid:DXImageTransForm.Microsoft.BasicImage(grayscale=1);-webkit-filter:saturate(0);
     -webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none; 
-} */
-/*将上一项解除注释以启用全站黑白*/
+} */  /*解除注释以启用全站黑白*/
 
-body{
+:root {
+  --bg-cover-white: /*浅色遮罩*/
+    url(https://s1.ax1x.com/2022/12/15/zTZeW4.png);
+  --bg-cover-black: /*深色遮罩*/
+    rgba(0,0,0,1);
+  --bg-img: /*背景图片*/
+    url(https://s21.ax1x.com/2024/05/24/pkQwAte.jpg);
+}
+
+@media not (prefers-color-scheme: dark) {
+/* 浅色模式 */
+body, #contentBG {
+  background: var(--bg-cover-white),var(--bg-img);
+}
+.sidebar_username_bg {background:rgba(250,253,252,0.5);}
+}
+@media (prefers-color-scheme: dark) {
+/* 深色模式 */
+body, #contentBG {background: var(--bg-cover-black),var(--bg-img);}
+* {color-scheme:dark;}
+.sidebar_username_bg {background:rgba(5,2,3,0.5);}
+pre {--pre-bg-color:rbg(25 26 28);}
+.page-header {--header-font-color: #f8f8f8;}
+}
+
+body, #contentBG {
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;
+  background-attachment: fixed;
+}
+
+body {
   top: 0;
   left: 0;
   width:100%;
   height:100%;
   min-width: 100%;
-  background: 
-    /*此处放滤镜*/
-    url(https://s1.ax1x.com/2022/12/15/zTZeW4.png),
-    
-    /*背景图片地址设置*/
-    /*url(https://s1.ax1x.com/2023/01/27/pSNL2WD.png);*/
-    url(https://s21.ax1x.com/2024/05/24/pkQwAte.jpg);
-  background-repeat: no-repeat;
-  background-position: 50%;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -o-background-size: cover;
-  background-position: center 0;
-  background-attachment: fixed;
 }
 
-#contentBG {
-  background: 
-    /*此处放滤镜*/
-    url(https://s1.ax1x.com/2022/12/15/zTZeW4.png),
-    
-    /*背景图片地址设置*/
-    /*url(https://s1.ax1x.com/2023/01/27/pSNL2WD.png);*/
-    url(https://s21.ax1x.com/2024/05/24/pkQwAte.jpg);
-
-  background-repeat: no-repeat;
-  background-position: 50%;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -o-background-size: cover;
-  background-position: center 0;
-  background-attachment: fixed;
-}
-
-/*半透明图片(2048x2048)地址：
+/*白色半透明图片(2048x2048)地址：
 pdd源文件 https://share.weiyun.com/BrJEIHtw
 2.5% https://imgse.com/i/zTZ2lj https://s1.ax1x.com/2022/12/15/zTZ2lj.png
 5%  https://imgse.com/i/zojKsJ https://s1.ax1x.com/2022/12/15/zojKsJ.png
@@ -61,6 +62,5 @@ pdd源文件 https://share.weiyun.com/BrJEIHtw
 80% https://imgse.com/i/zTZKyR https://s1.ax1x.com/2022/12/15/zTZKyR.png
 90% https://imgse.com/i/zTZeW4 https://s1.ax1x.com/2022/12/15/zTZeW4.png
 */
-/*
-无压背景(4800*2700)：https://s1.ax1x.com/2022/12/14/zIoB7D.jpg
-*/
+/*原神四神无压背景(4800*2700)：https://s1.ax1x.com/2022/12/14/zIoB7D.jpg
+    url(https://s1.ax1x.com/2023/01/27/pSNL2WD.png);*/

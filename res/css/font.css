@@ -281,7 +281,7 @@
 @font-face {font-family:"MiSans L3";src:local("MiSans L3"),url("https://rs.kdxiaoyi.top/res/fonts/MiSans L3/ae7a235b112246f5d9e7c9fe7b93214b.woff2") format("woff2");font-style: normal;font-weight: 400;font-display: swap;unicode-range:U+24963-249da,U+249dc-24a77;}
 @font-face {font-family:"MiSans L3";src:local("MiSans L3"),url("https://rs.kdxiaoyi.top/res/fonts/MiSans L3/44a4b3500dc05939c1ed3cca76d32835.woff2") format("woff2");font-style: normal;font-weight: 400;font-display: swap;unicode-range:U+20,U+2eb89-2ebe0,U+30edd-30ede;}
 
-* {
+*, .font-default {
   font-family: "din", "MiSans Normal", "MiSans L3", system-ui, sans-serif;
 }
 
