@@ -10,7 +10,7 @@ const   /*启用查看大图查看原图 跳转至imgse查看页而不是源文�
 const   /*启用查看大图查看原图按钮*/conf_imgView_open=true;
 const /*启用建站时长计时 [是否启用t/f,年,月,日]*/conf_time=[true,2022,7,20];
 const /*左侧边栏·一言*/conf_saying=`Keep the spirit of Touching 𝕏.`;
-const /*左侧边栏·第1格·背景图片*/conf_sidebar_headimg_src=`https://kdxiaoyi.top/favicon.ico`;
+const /*左侧边栏·第1格·背景图片*/conf_sidebar_headimg_src=`https://s21.ax1x.com/2024/10/13/pAYHVdP.jpg`;
 const   /*左侧边栏·第1格·背景图片描述*/conf_sidebar_headimg_alt=`@kdxiaoyi`;
 const /*左侧边栏·第2格内容*/conf_sidebar_links=`
 <s-chip id="side_ship_0" onclick="openURL('/','')" clickable="true" class="sidebar_btn">
