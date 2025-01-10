@@ -10,5 +10,5 @@ title: "Archived Projects"
 ## 对联
 首页的春节对联 [传送门](./chinese_duilian/)
 # 2023-01-06
-## 本来是个没实装的，就不写链接了
+## 本来是个没实装的，就不写链接了（已删除）
 `genshin_impact`
