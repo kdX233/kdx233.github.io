@@ -1,0 +1,190 @@
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--s-color-outline-variant, #c0c8cc);
+    border-radius: 3px;
+  }
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-color: var(--s-color-outline-variant, #c0c8cc) transparent;
+    }
+  }
+}
+
+@media print {
+  #appbarRoot {
+    display: none !important;
+  }
+
+  #LeftSiderbar {
+    display: none !important;
+  }
+
+  .site-footer {
+    display: none !important;
+  }
+
+  #pContent {
+    height: min-content !important;
+  }
+
+  #pageRoot {
+    height: min-content !important;
+  }
+
+  #mainContent {
+    height: min-content !important;
+  }
+
+  body {
+    height: min-content !important;
+    background-image: none !important;
+  }
+
+  html {
+    height: min-content !important;
+  }
+}
+@page {
+  @top-right {
+    content: "页 " counter(pageNumber);
+  }
+}
+
+body {
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;
+  background-attachment: fixed;
+  background-image: var(--pmd-bg-src);
+  margin: 0 0 0 0;
+}
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+#pageRoot {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+#appbarRoot {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+#mainContent {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+#LeftSiderbar {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar_img {
+  width: 100%;
+  height: 100%;
+}
+.sidebar_head {
+  display: flex;
+  flex-direction: column;
+  width: 94%;
+  padding: 3px 3px 3px 3px;
+  margin: 3% 3% 0% 3%;
+}
+.sidebar_head>div[slot=headline] {
+  margin: 0 16px 0;
+}
+.sidebar_btn {
+  width: 100%;
+  margin: 1% 0 1% 0;
+}
+
+#pContent {
+  display: flex;
+  flex-direction: column;
+}
+.main-card p {
+  margin-top: 0;
+  margin-bottom: 7px
+}
+.main-card {
+  margin: auto auto auto auto;
+  max-width: 90%;
+  display: block;
+  padding: 10px 16px 9px 16px;
+  backdrop-filter: blur(200px);
+}
+
+a {
+  text-decoration: underline dotted;
+  color: #1e6bb8;
+}
+a:hover {
+  text-decoration: underline;
+}
+a s-icon {
+  width: 1em;
+  height: 1em;
+  transform: translateY(-0.05em) translateX(-0.05em);
+}
+
+#pageRoot[dark] * {
+  color-scheme: dark;
+}
+#pageRoot[dark] .highlight {
+  background-color: rgb(39 43 42);
+}
+#pageRoot[dark] .highlight .kd {
+  color: #ffffff;
+}
+#pageRoot[dark] .highlight .kv {
+  color: #ffffff;
+}
+#pageRoot[dark] .highlight .k {
+  color: #ffffff;
+}
+#pageRoot[dark] .highlight .o {
+  color: #ffffff;
+}
+#pageRoot[dark] .highlight .nt {
+  color: #0080ff;
+}
+#pageRoot[dark] .page-header {
+  --header-font-color: #f8f8f8;
+}
+
+.selectable, .selectable_ * {
+  user-select: text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+}
+.unselectable, .unselectable_ * {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+#pageRoot {
+  background: rgba(250,253,252,var(--pmd-bg-alpha-l));
+  backdrop-filter: var(--pmd-bg-blur);
+}
+#pageRoot .main-card {
+  background: rgba(250,253,252,0.4);
+}
+#pageRoot[dark] {
+  background: rgba(5,2,3,var(--pmd-bg-alpha-d));
+  backdrop-filter: var(--pmd-bg-blur);
+}
+#pageRoot[dark] .main-card {
+  background: rgba(5,2,3,0.4);
+}
