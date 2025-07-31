@@ -1,0 +1,90 @@
+<!DOCTYPE HTML><html lang="zh-cn">
+<head>
+  <style></style>
+  <title>栈流Streack</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <script src="https://kdxiaoyi.top/pmd.js"></script>
+  <script src="/res/scripts/js/sober@1.0.6.min.js"></script>
+  <link rel="stylesheet" href="/res/css/-predef.css" />
+  <link rel="stylesheet" href="/res/css/redirect.css" />
+  <link rel="stylesheet" href="/res/css/sober-theme-turquoise.css" />
+  <link rel="stylesheet" href="/res/css/font.css" />
+</head>
+<body>
+  <s-page id="pageRoot" theme="light">
+    <s-appbar id="appbarRoot">
+      <s-tooltip slot="navigation">
+        <s-icon-button id="menuBtn" type="filled-tonal" slot="trigger" onclick="document.querySelector('s-drawer').toggle()">
+          <s-icon name="menu"></s-icon>
+        </s-icon-button>
+        切换侧栏
+      </s-tooltip>
+      <div id="pageTitle" slot="headline">  </div>
+    </s-appbar>
+    <s-drawer id="mainContent">
+      <div id="LeftSiderbar" slot="start"><s-scroll-view class="unselectable" style="height: 100%; padding-bottom: 1rem;">
+        <s-card id="slot_1" type="" class="sidebar_head"></s-card>
+        <s-card id="slot_2" type="" class="sidebar_head"></s-card>
+        <s-card id="slot_3" type="" class="sidebar_head">
+          <s-fold folded="true" id="user_setting_parent">
+            <s-chip slot="trigger" clickable="true" class="sidebar_btn">
+              <s-icon slot="start"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"></path></svg></s-icon>
+              阅读设置
+            </s-chip>
+            <div id="user_settings">
+              <s-navigation id="color_theme_prefer" style="background: none;">
+                <s-navigation-item id="color_theme_prefer_a" value="auto" selected="true">
+                  <s-icon slot="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M312-320h64l32-92h146l32 92h62L512-680h-64L312-320Zm114-144 52-150h4l52 150H426Zm54 436L346-160H160v-186L28-480l132-134v-186h186l134-132 134 132h186v186l132 134-132 134v186H614L480-28Zm0-112 100-100h140v-140l100-100-100-100v-140H580L480-820 380-720H240v140L140-480l100 100v140h140l100 100Zm0-340Z"></path></svg></s-icon>
+                  <div slot="text">自动</div>
+                </s-navigation-item>
+                <s-navigation-item id="color_theme_prefer_l" value="light">
+                  <s-icon name="light_mode" slot="icon"></s-icon>
+                  <div slot="text">白昼</div>
+                </s-navigation-item>
+                <s-navigation-item id="color_theme_prefer_d" value="dark">
+                  <s-icon name="dark_mode" slot="icon"></s-icon>
+                  <div slot="text">极夜</div>
+                </s-navigation-item>
+              </s-navigation>
+            </div>
+          </s-fold>
+          <s-fold folded="true" id="index_links_parent" style="display:none">
+            <s-chip slot="trigger" clickable="true" class="sidebar_btn">
+              <s-icon slot="start"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-80q-50 0-85-35t-35-85v-560q0-50 35-85t85-35h440v640H240q-17 0-28.5 11.5T200-200q0 17 11.5 28.5T240-160h520v-640h80v720H240Zm120-240h240v-480H360v480Zm-80 0v-480h-40q-17 0-28.5 11.5T200-760v447q10-3 19.5-5t20.5-2h40Zm-80-480v487-487Z"></path></svg></s-icon>
+              目录
+            </s-chip>
+            <div id="index_links"><ul></ul></div>
+          </s-fold>
+        </s-card>
+        <s-card id="slot_4" type="" class="sidebar_head">
+          <div id="slot_4_saying"></div>
+          <div id="slot_4_time"><center><small>Since 2024-12-25</small></center></div>
+          <div id="slot_4_license"></div> 
+        </s-card>
+      </div></s-scroll-view>
+      <s-scroll-view id="pContent" class="selectable">
+        <s-card id="notice" class="main-card unselectable">
+          <h1 id="msg">请稍后，<br>您将被重定向。</h1>
+          <p id="goal">请坐和放宽。</p>
+          <s-button onclick="window.history.back();">
+            <s-icon slot="start" name="arrow_back"></s-icon>
+            返回上一页
+          </s-button>
+          <s-button id="goBtn" disabled="true">
+            <s-icon slot="end" name="arrow_forward"></s-icon>
+            立即前往<span id="secDisplay"> (3)</span>
+          </s-button>
+          <s-linear-progress id="counter" animated="true"></s-linear-progress>
+        </s-card>
+        <div class="unselectable" id="no_script">
+          <h1>您似乎没有启用JavaScript，而这是此网站正常运行所必须的。<br>此外，该页面不支持过老的浏览器内核。</h1>
+        </div>
+      </s-scroll-view>
+    </s-drawer>
+    <div id="config" data-default_from="栈流Streack" data-default_uri="https://kdxiaoyi.top/Streack"></div>
+  </s-page>
+  <script src="/res/scripts/js/redirect.js"></script>
+</body>
+</html>
