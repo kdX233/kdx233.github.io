@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Git | PUSH → ~HEAD@Github/Gitee",
+      "promptOnClose": true,
+      "type": "shell",
+      "command": "git push origin&&git push gitee",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "Git | PUSH → master@Github/Gitee",
+      "promptOnClose": true,
+      "type": "shell",
+      "command": "git push origin master&&git push gitee master",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "Git | PULL → master@Gitee",
+      "promptOnClose": true,
+      "type": "shell",
+      "command": "git pull gitee master",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Git | PULL → master@Github",
+      "promptOnClose": true,
+      "type": "shell",
+      "command": "git pull github master",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+  ]
+}
