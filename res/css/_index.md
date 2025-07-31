@@ -18,3 +18,6 @@ SoberJS UI库自定义主题（青绿色）
 
 ## [-predef.css](./-predef.css)
 基于PMD v2框架的自定义页面所用CSS，提供部分常用样式与PMD框架样式
+
+## [redirect.css](./redirect.css)
+用于重定向页面的CSS
