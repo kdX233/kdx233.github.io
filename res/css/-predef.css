@@ -1,0 +1,115 @@
+/* 常用样式 */
+.unselectable,#unselectable {user-select: none;}
+.selectable,#selectable {user-select: text;}
+.center {text-align: center; margin-left: auto; margin-right: auto;}
+.right {text-align: right; margin-left: auto;}
+.gradient {
+  color: transparent;
+  background: linear-gradient(to right, var(--streack-predef-gradient-1, #2691d8), var(--streack-predef-gradient-2, #6dd5fa));
+  -webkit-background-clip: text;
+  background-clip: text;
+  width: fit-content;
+}
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--s-color-outline-variant, #c0c8cc);
+    border-radius: 3px;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-color: var(--s-color-outline-variant, #c0c8cc) transparent;
+    }
+  }
+}
+
+/*字体设置*/
+@font-face{font-family:"Mojangles";src:url("https://rs.kdxiaoyi.top/res/fonts/Mojangles.ttf") format("truetype")}
+html body s-page * .Mojangles, html body s-page * .Mojangles * {font-family: "Mojangles" !important;}
+/* 这些字体样式包含在font.css中，一般可用 */
+html body s-page * .MiSans, html body s-page * .MiSans * {font-family: "MiSans Normal" !important;}
+html body s-page * .MiSansL3, html body s-page * .MiSansL3 * {font-family: "MiSans L3" !important;}
+/* 下列字体样式需要引用rs.kdxiaoyi.top之对应字体CSS */
+html body s-page * .WenQuanWeiMiHei, html body s-page * .WenQuanWeiMiHei * {font-family: "WenQuanWeiMiHei" !important;}
+html body s-page * .DIN, html body s-page * .DIN * {font-family: "din" !important;}
+html body s-page * .SourceHanSerifCN, html body s-page * .SourceHanSerifCN * {font-family: "SourceHanSerifCN" !important;}
+
+/*文章元素样式*/
+a {
+  text-decoration: underline dotted;
+  color: #1e6bb8;
+}
+a:hover {
+  text-decoration: underline;
+}
+a s-icon {
+  width: 1em;
+  height: 1em;
+  transform: translateY(-0.05em) translateX(-0.05em);
+}
+h1 {
+  margin-bottom: 0;
+}
+
+/* Sober */
+s-menu {
+  background: var(--s-color-background, #F8F9FB);
+  background-clip: border-box;
+  border-radius: 12px;
+}
+s-menu.sub {
+  background: var(--s-color-surface-container-low, #F2F4F5);
+}
+s-menu-item s-card[slot="menu"] {
+  width: 96%;
+  max-width: 96%;
+  height: max-content;
+  margin: 0 2% 0 2%;
+}
+
+/* 打印格式 */
+@media print {
+  #appbarRoot {
+    display: none !important;
+  }
+
+  #LeftSiderbar {
+    display: none !important;
+  }
+
+  .site-footer {
+    display: none !important;
+  }
+
+  #pContent {
+    height: min-content !important;
+  }
+
+  #pageRoot {
+    height: min-content !important;
+  }
+
+  #mainContent {
+    height: min-content !important;
+  }
+
+  body {
+    height: min-content !important;
+    background-image: none !important;
+  }
+
+  html {
+    height: min-content !important;
+  }
+}
+@page {
+  @top-right {
+    content: "页 " counter(pageNumber);
+  }
+}
