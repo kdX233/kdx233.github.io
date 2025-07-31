@@ -180,6 +180,7 @@ a s-icon {
 }
 #pageRoot .main-card {
   background: rgba(250,253,252,0.4);
+  backdrop-filter: var(--pmd-bg-blur);
 }
 #pageRoot[dark] {
   background: rgba(5,2,3,var(--pmd-bg-alpha-d));
