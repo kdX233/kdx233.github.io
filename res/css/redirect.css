@@ -124,3 +124,6 @@ s-linear-progress {
 span {
   width: fit-content;
 }
+div#config {
+  display: none;
+}
