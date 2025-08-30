@@ -243,6 +243,16 @@ try {
 };
 
 log.divider("浏览器API支持");
+// Flash（反向检测）
+try {
+  if (navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash']) {
+    log.output("Flash 支持(Flash)", "发现Flash入口，您正暴露于危险之中。", true);
+  } else {
+    log.output("Flash 支持(Flash)", "Flash方法无法使用，这是现代浏览器的标志之一！");
+  };
+} catch (e) {
+  log.output("Flash 支持(Flash)", e, false);
+};
 // Cookie 支持
 try {
   document.cookie = "testcookie=1";
@@ -296,16 +306,6 @@ try {
   log.output("通知API支持(Notifications API)", "获取到了Notifications API入口");
 } catch (e) {
   log.output("通知API支持(Notifications API)", e, true);
-};
-// Flash（反向检测）
-try {
-  if (navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash']) {
-    log.output("Flash 支持(Flash)", "发现Flash入口，您正暴露于危险之中。", true);
-  } else {
-    log.output("Flash 支持(Flash)", "Flash方法无法使用，这是现代浏览器的标志之一！");
-  };
-} catch (e) {
-  log.output("Flash 支持(Flash)", e, false);
 };
 
 // 结束诊断
