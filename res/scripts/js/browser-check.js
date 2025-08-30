@@ -1,15 +1,16 @@
-const pageElement = {
+var pageElement = {
   info: document.getElementById("info"),
   result: document.getElementById("result"),
   log: document.getElementById("log"),
 };
-const log = {
+var log = {
   err_count: 0,
   success_count: 0,
+  force_err: false,
   output: function (title, text, unpass) {
-    const div = document.createElement("div");
+    div = document.createElement("div");
     div.classList.add("log-entry");
-    const t = document.createElement("p");
+    t = document.createElement("p");
     t.innerHTML = `<b>${title.replace(/\n/, "<br>")}</b>`;
     if (!!unpass) {
       t.innerHTML += "<br><span style='color:var(--color-err);'>⚠︎ 未通过</span>";
@@ -18,7 +19,7 @@ const log = {
       t.innerHTML += "<br><span style='color:var(--color-okay);'>✓ 已通过</span>";
       log.success_count += 1;
     };
-    const i = document.createElement("p");
+    i = document.createElement("p");
     i.classList.add("code");
     i.innerHTML = `${text.replace(/\n/, "<br>")}`;
     div.appendChild(t);
@@ -26,21 +27,21 @@ const log = {
     pageElement.log.appendChild(div);
   },
   divider: function (title) {
-    const div = document.createElement("hr");
+    div = document.createElement("hr");
     pageElement.log.appendChild(div);
   },
   count: function () {
-    if (log.err_count > 0 && log.success_count >= log.err_count) {
+    if (log.err_count > 0 && log.success_count >= log.err_count && !log.force_err) {
       pageElement.result.style.backgroundColor = "var(--color-warn)";
       pageElement.result.style.color = "var(--color-warn-f)";
       pageElement.result.innerHTML = `您的浏览器存在部分不支持的功能，<b>可能</b>可以正常访问此站点。<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
     };
-    if (log.err_count > 0 && log.success_count < log.err_count) {
+    if (log.err_count > 0 && log.success_count < log.err_count || log.force_err) {
       pageElement.result.style.backgroundColor = "var(--color-err)";
       pageElement.result.style.color = "var(--color-err-f)";
       pageElement.result.innerHTML = `您的浏览器不支持很多功能，亦无法正常访问此站点，请升级内核。<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
     };
-    if (log.err_count == 0) {
+    if (log.err_count == 0 && !log.force_err) {
       pageElement.result.style.backgroundColor = "var(--color-okay)";
       pageElement.result.style.color = "var(--color-okay-f)";
       pageElement.result.innerHTML = `您的浏览器完美支持了所有检测到的功能，亦可正常访问此站点！<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
@@ -105,6 +106,7 @@ try {
   log.output("SoberJS 框架(sober)", `已检测到Sober类，其中定义了Page对象。`);
 } catch (e) {
   log.output("SoberJS 框架(sober)", e, true);
+  log.force_err = true;
 };
 // pmd
 try {
@@ -113,15 +115,54 @@ try {
   log.output("Page-md-reRender 框架(pmd)", `已检测到pmd类，其中定义了conf.info.saying="${conf.info.saying}"。`);
 } catch (e) {
   log.output("Page-md-reRender 框架(pmd)", e, true);
+  log.force_err = true;
 };
 
 log.divider("JavaScript特性支持");
+// WebWorker
+try {
+  if (!self.Worker) { throw new Error("Worker 未定义") };
+  log.output("Web Worker", "获取到了Web Worker入口");
+} catch (e) {
+  log.output("Web Worker", e, true);
+};
+// class
+try {
+  new Function("class A {}; return new A();")();
+  log.output("类(Class)", "成功构造了类");
+} catch (e) {
+  log.output("类(Class)", e, true);
+};
+// Template Literals
+try {
+  new Function("const a = 1; const b = 2; return `测试模板字符串：${a+b}`")();
+  log.output("模板字符串(Template Literals)", "成功构造了模板字符串");
+} catch (e) {
+  log.output("模板字符串(Template Literals)", e, true);
+};
+// const/let
+try {
+  new Function("let a = 1; const b = 2; return a + b;")();
+  log.output("块级作用域变量(const/let)", "成功构造了块级作用域变量");
+} catch (e) {
+  log.output("块级作用域变量(const/let)", e, true);
+  log.force_err = true;
+};
+// forEach
+try {
+  new Function("const a = [1,2,3]; let s = 0; a.forEach(v => { s += v; }); return s;")();
+  log.output("遍历数组(forEach)", "操作成功完成");
+} catch (e) {
+  log.output("遍历数组(forEach)", e, true);
+  log.force_err = true;
+};
 // ()=>
 try {
   new Function("()=>{}");
   log.output("箭头函数(Arrow Function)", "成功构造了箭头函数");
 } catch (e) {
   log.output("箭头函数(Arrow Function)", e, true);
+  log.force_err = true;
 };
 // Fetch
 try {
@@ -138,6 +179,22 @@ try {
 } catch (e) {
   log.output("异步函数", e, true);
 };
+// 私有类方法
+try {
+  new Function("class A { #p = 1; getP() { return this.#p; } }; return (new A()).getP()")();
+  log.output("私有类方法(Private Class Methods)", `成功构造了包含私有方法的类`);
+} catch (e) {
+  log.output("私有类方法(Private Class Methods)", e, true);
+};
+// 可选链操作符
+try {
+  new Function("const a = { b: { c: 1 } }; return a?.b?.c")();
+  log.output("可选链操作符(Optional Chaining)", `成功构造了可选链操作符`);
+} catch (e) {
+  log.output("可选链操作符(Optional Chaining)", e, true);
+};
+
+log.divider("CSS特性支持");
 // 样式表变量
 try {
   const s = document.createElement("style");
@@ -152,27 +209,37 @@ try {
   };
 } catch (e) {
   log.output("样式表变量(CSS Variables)", e, true);
+  log.force_err = true;
 };
-// 私有类方法
+// Flexbox
 try {
-  new Function("class A { #p = 1; getP() { return this.#p; } }; return (new A()).getP()")();
-  log.output("私有类方法(Private Class Methods)", `成功构造了包含私有方法的类`);
+  a = false;
+  if ('CSS' in window && 'supports' in CSS) { a = CSS.supports("display", "flex") };
+  var el = document.createElement('div');
+  el.style["display"] = "flex";
+  if (!!el.style["display"] === "flex" || a) {
+    log.output("Flexbox布局", "已构造并校验了flex");
+  } else {
+    throw new Error(`构造的Grid应用再读取后无法校验：读取到的值为"${el.style["display"]}"，预期值为"grid"`);
+  };
 } catch (e) {
-  log.output("私有类方法(Private Class Methods)", e, true);
+  log.output("Flexbox布局", e, true);
+  log.force_err = true;
 };
-// 模板字符串
+// Grid
 try {
-  new Function("const a = 1; const b = 2; return `测试模板字符串：${a+b}`")();
-  log.output("模板字符串(Template String)", "成功构造了模板字符串");
+  a = false;
+  if ('CSS' in window && 'supports' in CSS) { a = CSS.supports("display", "grid") };
+  var el = document.createElement('div');
+  el.style["display"] = "grid";
+  if (!!el.style["display"] === "grid" || a) {
+    log.output("Grid布局", "已构造并校验了grid");
+  } else {
+    throw new Error(`构造的Grid应用再读取后无法校验：读取到的值为"${el.style["display"]}"，预期值为"grid"`);
+  };
 } catch (e) {
-  log.output("模板字符串(Template String)", e, true);
-};
-// 可选链操作符
-try {
-  new Function("const a = { b: { c: 1 } }; return a?.b?.c")();
-  log.output("可选链操作符(Optional Chaining)", `成功构造了可选链操作符`);
-} catch (e) {
-  log.output("可选链操作符(Optional Chaining)", e, true);
+  log.output("Grid布局", e, true);
+  log.force_err = true;
 };
 
 log.divider("浏览器API支持");
@@ -215,6 +282,30 @@ try {
   log.output("会话存储支持(Session Storage)", (sessionStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !sessionStorageEnabled);
 } catch (e) {
   log.output("会话存储支持(Session Storage)", "否", true);
+};
+// Clipboard API 支持
+try {
+  if (!navigator.clipboard) { throw new Error("navigator.clipboard未定义") };
+  log.output("剪贴板API支持(Clipboard API)", "获取到了Clipboard API入口");
+} catch (e) {
+  log.output("剪贴板API支持(Clipboard API)", e, true);
+};
+// Notifications API 支持
+try {
+  if (!self.Notification) { throw new Error("NotificationAPI入口未找到") };
+  log.output("通知API支持(Notifications API)", "获取到了Notifications API入口");
+} catch (e) {
+  log.output("通知API支持(Notifications API)", e, true);
+};
+// Flash（反向检测）
+try {
+  if (navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash']) {
+    log.output("Flash 支持(Flash)", "发现Flash入口，您正暴露于危险之中。", true);
+  } else {
+    log.output("Flash 支持(Flash)", "Flash方法无法使用，这是现代浏览器的标志之一！");
+  };
+} catch (e) {
+  log.output("Flash 支持(Flash)", e, false);
 };
 
 // 结束诊断
