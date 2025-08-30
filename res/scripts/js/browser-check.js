@@ -40,7 +40,7 @@ var log = {
     if (log.err_count > 0 && log.success_count < log.err_count || log.force_err) {
       pageElement.result.style.backgroundColor = "var(--color-err)";
       pageElement.result.style.color = "var(--color-err-f)";
-      pageElement.result.innerHTML = `您的浏览器不支持很多功能，亦无法正常访问此站点，请升级内核。<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
+      pageElement.result.innerHTML = `您的浏览器不支持较多或关键功能，亦无法正常访问此站点，请升级内核。<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
     };
     if (log.err_count == 0 && !log.force_err) {
       pageElement.result.style.backgroundColor = "var(--color-okay)";
