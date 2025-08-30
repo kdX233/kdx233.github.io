@@ -10,7 +10,7 @@ const log = {
     const div = document.createElement("div");
     div.classList.add("log-entry");
     const t = document.createElement("p");
-    t.innerHTML = `<b>${title.replace(/\n/,"<br>")}</b>`;
+    t.innerHTML = `<b>${title.replace(/\n/, "<br>")}</b>`;
     if (!!unpass) {
       t.innerHTML += "<br><span style='color:var(--color-err);'>⚠︎ 未通过</span>";
       log.err_count += 1;
@@ -20,7 +20,7 @@ const log = {
     };
     const i = document.createElement("p");
     i.classList.add("code");
-    i.innerHTML = `${text.replace(/\n/,"<br>")}`;
+    i.innerHTML = `${text.replace(/\n/, "<br>")}`;
     div.appendChild(t);
     div.appendChild(i);
     pageElement.log.appendChild(div);
@@ -33,17 +33,17 @@ const log = {
     if (log.err_count > 0 && log.success_count >= log.err_count) {
       pageElement.result.style.backgroundColor = "var(--color-warn)";
       pageElement.result.style.color = "var(--color-warn-f)";
-      pageElement.result.innerHTML = `您的浏览器存在部分不支持的功能，<b>可能</b>可以正常访问此站点。<br><small>通过的项目：${log.success_count}/${log.err_count+log.success_count}</small>`;
+      pageElement.result.innerHTML = `您的浏览器存在部分不支持的功能，<b>可能</b>可以正常访问此站点。<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
     };
     if (log.err_count > 0 && log.success_count < log.err_count) {
       pageElement.result.style.backgroundColor = "var(--color-err)";
       pageElement.result.style.color = "var(--color-err-f)";
-      pageElement.result.innerHTML = `您的浏览器不支持很多功能，亦无法正常访问此站点，请升级内核。<br><small>通过的项目：${log.success_count}/${log.err_count+log.success_count}</small>`;
+      pageElement.result.innerHTML = `您的浏览器不支持很多功能，亦无法正常访问此站点，请升级内核。<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
     };
     if (log.err_count == 0) {
       pageElement.result.style.backgroundColor = "var(--color-okay)";
       pageElement.result.style.color = "var(--color-okay-f)";
-      pageElement.result.innerHTML = `您的浏览器完美支持了所有检测到的功能，亦可正常访问此站点！<br><small>通过的项目：${log.success_count}/${log.err_count+log.success_count}</small>`;
+      pageElement.result.innerHTML = `您的浏览器完美支持了所有检测到的功能，亦可正常访问此站点！<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
     };
     document.body.scrollTop = 0;
   },
@@ -100,16 +100,16 @@ try {
 log.divider("框架支持");
 // sober
 try {
-  if (typeof sober === "undefined") {throw new Error("Sober类不存在")};
-  if (!sober.Page) {throw new Error("sober.Page 未定义")};
+  if (typeof sober === "undefined") { throw new Error("Sober类不存在") };
+  if (!sober.Page) { throw new Error("sober.Page 未定义") };
   log.output("SoberJS 框架(sober)", `已检测到Sober类，其中定义了Page对象。`);
 } catch (e) {
   log.output("SoberJS 框架(sober)", e, true);
 };
 // pmd
 try {
-  if (typeof conf === "undefined") {throw new Error("pmd类不存在")};
-  if (!conf.info.saying) {throw new Error("pmd类存在，但无法读取设置项conf.info.saying")};
+  if (typeof conf === "undefined") { throw new Error("pmd类不存在") };
+  if (!conf.info.saying) { throw new Error("pmd类存在，但无法读取设置项conf.info.saying") };
   log.output("Page-md-reRender 框架(pmd)", `已检测到pmd类，其中定义了conf.info.saying="${conf.info.saying}"。`);
 } catch (e) {
   log.output("Page-md-reRender 框架(pmd)", e, true);
@@ -125,14 +125,14 @@ try {
 };
 // Fetch
 try {
-  if (!self.fetch) {throw new Error("Fetch 未定义")};
+  if (!self.fetch) { throw new Error("Fetch 未定义") };
   log.output("Fetch API", "支持：获取到了Fetch API入口");
 } catch (e) {
   log.output("Fetch API", e, true);
 };
 // 异步函数（Promise,await/async）
 try {
-  if (!self.Promise) {throw new Error("Promise 未定义")};
+  if (!self.Promise) { throw new Error("Promise 未定义") };
   new Function("return (async function(){ return true; })")();
   log.output("异步函数", "支持：已通过Promise和async/await的检测");
 } catch (e) {
@@ -179,13 +179,13 @@ try {
 };
 // 本地存储支持
 try {
-  const localStorageEnabled = (function() {
+  const localStorageEnabled = (function () {
     const test = "test";
     try {
       localStorage.setItem(test, test);
       localStorage.removeItem(test);
       return true;
-    } catch(e) {
+    } catch (e) {
       return false;
     };
   })();
@@ -195,13 +195,13 @@ try {
 };
 // 会话存储支持
 try {
-  const sessionStorageEnabled = (function() {
+  const sessionStorageEnabled = (function () {
     const test = "test";
     try {
       sessionStorage.setItem(test, test);
       sessionStorage.removeItem(test);
       return true;
-    } catch(e) {
+    } catch (e) {
       return false;
     };
   })();
