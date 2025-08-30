@@ -1,0 +1,26 @@
+<head readme="">
+    <title>javascript:alert() - API on kdxiaoyi.top</title>
+    <script type="text/javascript">
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            };
+            return null;
+        }
+    </script>
+    <script>
+        if (getQueryString('encoded') == 1) {
+            alert(decodeURI(decodeURI(getQueryString('text'))));
+            window.history.back()
+        } else {
+            console.log('First Visviting.Next URL is ' + encodeURI(encodeURI(window.location)) + '&encoded=1')
+            window.location = encodeURI(encodeURI(window.location)) + '&encoded=1';
+        }
+    </script>
+</head>
+
+<body>
+
+</body>

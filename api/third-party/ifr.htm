@@ -1,0 +1,91 @@
+<!-- 浏览框架 -->
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8" />
+    <title README="本页面内容不代表kdxiaoyi.top的任何观点">浏览框架 - kdxiaoyi.top</title>
+    <style type="text/css">
+        body,html,iframe {
+            margin: 0 0;
+            width: 99.85%;
+            height: 99%
+        }
+        .center{margin: 0 auto;text-align: center;} /*简单的一个居中CSS*/
+    </style>
+    <script>
+        function getQueryString(name) {let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");let r = window.location.search.substr(1).match(reg);if (r != null) {return unescape(r[2]);};return null;};
+        function back() {
+            // 定义返回函数
+            window.history.back(-1);
+            return;
+        };
+        function goto() {
+            // 前往目标页面
+            if (getQueryString("goto") == "f") {
+                return;
+            } else {
+                window.location = document.getElementById("ifr").src;
+            }
+            return;
+        };
+        function tip() {
+            // 展现提示
+            alert("相关内容由以下第三方提供。kdxiaoyi.top不对其行为负责。\n\n" + document.getElementById("ifr").src);
+        };
+        function url_box_copy() {
+            // 复制网址
+            url_box_refill(); //防止网址刷新不及时
+        };
+        function url_box_refill() {
+            // var iframeWindow = document.getElementById('ifr').contentWindow;
+            // var currentHref = iframeWindow.document.location.href;
+            var url = document.getElementById("ifr").contentWindow.location.href;
+            document.getElementById("inputBox").value = currentHref;
+            return;
+        };
+    </script>
+</head>
+
+<body>
+    <!-- 页面UI部分 -->
+    <div class="center">
+        <button id="submit" onclick="back()" type="button" function="back">← 返回</button>
+        <button id="tip" onclick="tip()" function="tip">声明</button>
+        <button id="goto" onclick="goto()" function="goto">前往目标网址 →</button>
+        <!-- <input class="inputBox" onclick="url_box_copy" function="url_box_copy" id="txt" type="text" name="txt" readonly="readonly" width=1000px value=""></input> -->
+    </div>
+    <div style="text-align:center;height:99%"><iframe id="ifr" onclick="url_box_refill()"
+        src="https://rs.kdxiaoyi.top/res/errors/api.ifr_not-found-url.html" frameborder="no" width="100%" height="99%">233</iframe>
+    </div>
+
+    <!-- 页面逻辑部分 -->
+    <script>
+        // 判断是否启用前往目标页
+        if (getQueryString("goto") == "f") {
+            var button_goto = document.getElementById("goto");
+            button_goto.disabled = true;
+            //document.getElementById("goto").disabled = "true";
+            document.getElementById("goto").type = "hidden";
+            button_goto.type = "hidden";
+        };
+        // 页面运行载入框架
+        document.getElementById("ifr").src = getQueryString("url");
+    // // 为URL地址框挂钩，点击时刷新URL
+    // document.getElementById("inputBox").value=document.getElementById("ifr").src;
+    // var $inputBox = document.querySelector('#inputBox');
+    // var $ifr = document.querySelector('#ifr');
+    // $inputBox.addEventListener('click', function() {
+    //   console.log("HOOK回调触发 - Refresh URL - Vaule = "+$ifr.src);
+    //   document.getElementById("inputBox").value=$ifr.src;
+    // })
+    // // 同理和iframe挂钩
+    // document.getElementById("ifr").value=document.getElementById("ifr").src;
+    // var $ifr = document.querySelector('#ifr');
+    // var $ifr = document.querySelector('#ifr');
+    // $ifr.addEventListener('click', function() {
+    //   console.log("HOOK回调触发 - Refresh URL - Vaule = "+$ifr.src);
+    //   document.getElementById("inputBox").value=$ifr.src;
+    // })
+    </script>
+</body>
+<!-- Debug URL ?&url=http://kdxiaoyi.top -->

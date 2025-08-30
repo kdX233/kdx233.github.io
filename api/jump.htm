@@ -1,0 +1,30 @@
+<head readme="用于页面跳转">
+    <title>正在跳转… | kdxiaoyi.top</title>
+    <script type="text/javascript">
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            };
+            return null;
+        }
+        function back() {
+            if (getQueryString('back') == "1") { window.history.back(); }
+            return
+        }
+    </script>
+    <script>
+        window.location = getQueryString('u');
+        // 这个u就是参数名
+        setTimeout(back(), 1000);
+    </script>
+</head>
+
+<body>
+    <h1>正在跳转，请稍后……</h1>
+    <input id="url" name="url" value="#null"></input>
+    <a href="https://kdxiaoyi.top/">
+        <h6>kdxiaoyi.top</h6>
+    </a>
+</body>

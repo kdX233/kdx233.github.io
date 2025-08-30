@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- 
+    kdxiaoyi.top 从未有意冒充微软及微软下属部门提供此API，也不对第三方调用此接口导致的任何后果负责。
+    API完全来自Microsoft提供的服务。本页面本质是iframe套娃，仅为了方便调用。
+    此页面不受LICENSE.MD的约束。
+
+    ** 在中国(China)，“Microsoft”、“Office”、“微软”均是由“微软(中国)有限公司”注册的商标。
+-->
+<html lang="cn">
+
+<head>
+    <title>Microsoft Office Web Client API</title>
+    <link rel="shortcut icon" href="https://rs.kdxiaoyi.top/res/images/icon/ms-office.ico">
+    </link>
+    <script>
+        function getQueryString(name) {// 正则取参数，典中典
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        }
+        function load() {
+            // 取参数并尝试打开文件
+            var url_src = getQueryString("src");
+            console.log("src参数 = " + url_src);
+            var url_src_ = encodeURIComponent(url_src);
+            console.log("UrlEncode后src参数 = " + url_src_);
+            if (url_src != null) {
+                var url_ = "https://view.officeapps.live.com/op/view.aspx?wdOrigin=BROWSELINK&src=" + url_src_
+                document.getElementById("ifr").src = url_
+                console.log("最终URL = " + url_)
+            };
+            return;
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html,body {
+            width: 100%;
+            height: 100%;
+        }
+        .container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- GUI部分 -->
+    <div class="container"><iframe id="ifr" onclick="url_box_refill()"
+            src="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Frs.kdxiaoyi.top%2Fres%2Fdocs%2Fapi_example%2FERROR.doc&wdOrigin=BROWSELINK"
+            frameborder="no" width="100%" height="99.5%">233</iframe></div>
+
+    <!-- 页面逻辑部分 -->
+    <script>
+        load();
+    </script>
+</body>
+
+</html>
