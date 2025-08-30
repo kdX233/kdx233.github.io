@@ -5,6 +5,7 @@ var pageElement = {
   log: document.getElementById("log"),
 };
 var log = {
+  rate: /* 错误率阈值 */0.2,
   err_count: 0,
   success_count: 0,
   force_err: false,
@@ -32,20 +33,21 @@ var log = {
     pageElement.log.appendChild(div);
   },
   count: function () {
-    if (log.err_count > 0 && log.success_count >= log.err_count && !log.force_err) {
+    total = log.err_count + log.success_count;
+    if (log.err_count > 0 && log.err_count/total < log.rate && !log.force_err) {
       pageElement.result.style.backgroundColor = "var(--color-warn)";
       pageElement.result.style.color = "var(--color-warn-f)";
-      pageElement.result.innerHTML = `您的浏览器存在部分不支持的功能，<b>可能</b>可以正常访问此站点。<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
+      pageElement.result.innerHTML = `您的浏览器存在部分不支持的功能，<b>可能</b>可以正常访问此站点。<br><small>通过的项目：${log.success_count}/${total}</small>`;
     };
-    if (log.err_count > 0 && log.success_count < log.err_count || log.force_err) {
+    if (log.err_count > 0 && log.err_count/total >= log.rate || log.force_err) {
       pageElement.result.style.backgroundColor = "var(--color-err)";
       pageElement.result.style.color = "var(--color-err-f)";
-      pageElement.result.innerHTML = `您的浏览器不支持较多或关键功能，亦无法正常访问此站点，请升级内核。<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
+      pageElement.result.innerHTML = `您的浏览器不支持较多或关键功能，亦无法正常访问此站点，请升级内核。<br><small>通过的项目：${log.success_count}/${total}</small>`;
     };
     if (log.err_count == 0 && !log.force_err) {
       pageElement.result.style.backgroundColor = "var(--color-okay)";
       pageElement.result.style.color = "var(--color-okay-f)";
-      pageElement.result.innerHTML = `您的浏览器完美支持了所有检测到的功能，亦可正常访问此站点！<br><small>通过的项目：${log.success_count}/${log.err_count + log.success_count}</small>`;
+      pageElement.result.innerHTML = `您的浏览器完美支持了所有检测到的功能，亦可正常访问此站点！<br><small>通过的项目：${log.success_count}/${total}</small>`;
     };
     document.body.scrollTop = 0;
   },
@@ -253,23 +255,25 @@ try {
 };
 
 log.divider("浏览器API支持");
-// Flash（反向检测）
+// WebGL
 try {
-  if (navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash']) {
-    log.output("Flash 支持(Flash)", "发现Flash入口，您正暴露于危险之中。", true);
+  canvas = document.createElement("canvas");
+  gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+  if (gl && gl instanceof WebGLRenderingContext) {
+    log.output("canvas与WebGL", "获取到了WebGL入口");
   } else {
-    log.output("Flash 支持(Flash)", "Flash方法无法使用，这是现代浏览器的标志之一！");
+    throw new Error("无法获取WebGLRenderingContext");
   };
 } catch (e) {
-  log.output("Flash 支持(Flash)", e, false);
+  log.output("canvas与WebGL", e, true);
 };
 // Cookie 支持
 try {
   document.cookie = "testcookie=1";
   const cookieEnabled = document.cookie.indexOf("testcookie=") != -1;
-  log.output("Cookie 支持(Cookie Enabled)", (cookieEnabled ? "操作成功完成" : "支持但已被禁用，这可能是因为本检测在file://协议头下运行"), !cookieEnabled);
+  log.output("Cookies", (cookieEnabled ? "操作成功完成" : "支持但已被禁用，这可能是因为本检测在file://协议头下运行"), !cookieEnabled);
 } catch (e) {
-  log.output("Cookie 支持(Cookie Enabled)", e, true);
+  log.output("Cookies", e, true);
 };
 // 本地存储支持
 try {
@@ -283,9 +287,9 @@ try {
       return false;
     };
   })();
-  log.output("本地存储支持(Local Storage)", (localStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !localStorageEnabled);
+  log.output("本地存储(Local Storage)", (localStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !localStorageEnabled);
 } catch (e) {
-  log.output("本地存储支持(Local Storage)", e, true);
+  log.output("本地存储(Local Storage)", e, true);
 };
 // 会话存储支持
 try {
@@ -299,26 +303,55 @@ try {
       return false;
     };
   })();
-  log.output("会话存储支持(Session Storage)", (sessionStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !sessionStorageEnabled);
+  log.output("会话存储(Session Storage)", (sessionStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !sessionStorageEnabled);
 } catch (e) {
-  log.output("会话存储支持(Session Storage)", "否", true);
+  log.output("会话存储(Session Storage)", "否", true);
 };
 // Clipboard API 支持
 try {
   if (!navigator.clipboard) { throw new Error("navigator.clipboard未定义") };
-  log.output("剪贴板API支持(Clipboard API)", "获取到了Clipboard API入口");
+  log.output("剪贴板(Clipboard API)", "获取到了Clipboard API入口");
 } catch (e) {
-  log.output("剪贴板API支持(Clipboard API)", e, true);
+  log.output("剪贴板(Clipboard API)", e, true);
 };
 // Notifications API 支持
 try {
   if (!self.Notification) { throw new Error("NotificationAPI入口未找到") };
-  log.output("通知API支持(Notifications API)", "获取到了Notifications API入口");
+  log.output("通知(Notifications API)", "获取到了Notifications API入口");
 } catch (e) {
-  log.output("通知API支持(Notifications API)", e, true);
+  log.output("通知(Notifications API)", e, true);
+};
+// WebScoket 支持
+try {
+  if (!self.WebSocket) { throw new Error("WebSocket 未定义") };
+  log.output("WebSocket", "获取到了WebSocket入口");
+} catch (e) {
+  log.output("WebSocket", e, true);
 };
 
-// 结束诊断
+log.divider("老旧API");
+// Silverlight（始终为真）
+try {
+  if (navigator.mimeTypes && navigator.mimeTypes['application/x-silverlight']) {
+    log.output("Silverlight", "发现Silverlight入口",);
+  } else {
+    log.output("Silverlight", "Silverlight方法无法使用");
+  };
+} catch (e) {
+  log.output("Silverlight", e);
+};
+// Flash（反向检测）
+try {
+  if (navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash']) {
+    log.output("Flash", "发现Flash入口，您正暴露于危险之中。", true);
+  } else {
+    log.output("Flash", "Flash方法无法使用，这是现代浏览器的标志之一！");
+  };
+} catch (e) {
+  log.output("Flash", e, false);
+};
+
+// endup
 log.count();
 
 } catch (e) {
