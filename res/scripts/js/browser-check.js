@@ -1,3 +1,4 @@
+try {
 var pageElement = {
   info: document.getElementById("info"),
   result: document.getElementById("result"),
@@ -48,6 +49,13 @@ var log = {
     };
     document.body.scrollTop = 0;
   },
+};
+} catch (e) {
+  /* 检测无法初始化时的兜底 */
+  pageElement.result.style.backgroundColor = "var(--color-err)";
+  pageElement.result.style.color = "var(--color-err-f)";
+  pageElement.result.innerHTML = `检测已被中断，因为检测无法初始化。<br>这说明您的浏览器内核极其老旧，不支持JavaScript基本语法。<br><small>错误信息：${e}</small>`;
+  console.error(e);
 };
 
 try {
