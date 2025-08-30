@@ -10,10 +10,12 @@ var log = {
   success_count: 0,
   force_err: false,
   output: function (title, text, unpass) {
+    if (typeof title !== "string") { title = String(title) };
+    if (typeof text !== "string") { text = String(text) };
     div = document.createElement("div");
     div.classList.add("log-entry");
     t = document.createElement("p");
-    t.innerHTML = `<b>${title.replace(/\n/, "<br>")}</b>`;
+    t.innerHTML = `<b>${title.replace(/\n/g, "<br>")}</b>`;
     if (!!unpass) {
       t.innerHTML += "<br><span style='color:var(--color-err);'>⚠︎ 未通过</span>";
       log.err_count += 1;
@@ -23,7 +25,7 @@ var log = {
     };
     i = document.createElement("p");
     i.classList.add("code");
-    i.innerHTML = `${text.replace(/\n/, "<br>")}`;
+    i.innerHTML = `${text.replace(/\n/g, "<br>")}`;
     div.appendChild(t);
     div.appendChild(i);
     pageElement.log.appendChild(div);
@@ -130,6 +132,114 @@ try {
   log.force_err = true;
 };
 
+log.divider("浏览器API支持");
+// Geolocation API 支持
+try {
+  if (!navigator.geolocation) { throw new Error("navigator.geolocation未定义") };
+  c = "";
+  navigator.geolocation.getCurrentPosition(function(p) {c = p.coordinates;});
+  log.output("地理位置(Geolocation API)", `成功调用此API，返回：\n纬度${c.latitude}, 经度${c.longitude}, 定位精度${c.accuracy}米. \n海拔${c.altitude}米, 海拔精度${c.altitudeAccuracy}米. \n朝向${c.heading}°, 速度${c.speed}米/秒.`);
+} catch (e) {
+  log.output("地理位置(Geolocation API)", e, true);
+};
+// Clipboard API 支持
+try {
+  if (!navigator.clipboard) { throw new Error("navigator.clipboard未定义") };
+  log.output("剪贴板(Clipboard API)", "获取到了Clipboard API入口");
+} catch (e) {
+  log.output("剪贴板(Clipboard API)", e, true);
+};
+// Notifications API 支持
+try {
+  if (!self.Notification) { throw new Error("NotificationAPI入口未找到") };
+  Notification.requestPermission((result) => {
+    if (result == 'granted') {
+      new Notification("浏览器支持检测 - kdxiaoyi.top", { body: "您好，收到此通知表示您已授予此站点通知权限，且浏览器支持发送通知。\n\n中国智造，慧及全球。\nThe quick brown fox jumps over a lazy dog.", icon: "" })
+    };
+  });
+  log.output("通知(Notifications API)", "获取到了Notifications API入口，已尝试发送一个通知：若没有收到，检查是否授予此站点通知权限和浏览器的系统通知权限");
+} catch (e) {
+  log.output("通知(Notifications API)", e, true);
+};
+// PDF View
+try {
+  e = document.createElement("embed");
+  e.type = "application/pdf";
+  e.src='data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PC9UeXBlIC9DYXRhbG9nL1BhZ2VzIDIgMCBSCj4+CmVuZG9iagoKMiAwIG9iago8PC9UeXBlIC9QYWdlcy9LaWRzIFsgMyAwIFIgXQo+PgplbmRvYmoKCjMgMCBvYmoKPDwvVHlwZSAvUGFnZS9NZWRpYUJveCBbIDAgMCA2MTIgNzkyIF0KL0NvbnRlbnRzIDQgMCBSCi9SZXNvdXJjZXMgPDwvRm9udCA8PC9GIFsgNSAwIFIgXSA+PgovUHJvY1NldCAvUERGL1hPYmplY3QgPDwvSW1hZ2UgNiAwIFIgPj4KPj4KL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXQo+PgplbmRvYmoKCjQgMCBvYmoKPDwvTGVuZ3RoIDU3Pj4Kc3RyZWFtCnic7VnLTsMwELzzK5g4cRQaExEJ';
+  if (e.type != 'application/pdf') {throw new Error("未能加载构造的PDF");};
+  log.output("PDF查看", "操作成功完成");
+} catch (e) {
+  log.output("PDF查看", e, true);
+};
+// WebGL
+try {
+  canvas = document.createElement("canvas");
+  gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+  if (gl && gl instanceof WebGLRenderingContext) {
+    log.output("canvas与WebGL", "获取到了canvas入口，获取到了WebGL入口");
+  } else {
+    throw new Error("无法获取WebGLRenderingContext");
+  };
+} catch (e) {
+  log.output("canvas与WebGL", e, true);
+};
+// svg
+try {
+  if (!document.createElementNS) { throw new Error("createElementNS 未定义") };
+  svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  if (!(svg instanceof SVGElement)) { throw new Error("无法构造SVGElement") };
+  log.output("SVG矢量图", "已创建SVG图像");
+} catch (e) {
+  log.output("SVG矢量图", e, true);
+};
+// Cookie 支持
+try {
+  document.cookie = "testcookie=1";
+  const cookieEnabled = document.cookie.indexOf("testcookie=") != -1;
+  log.output("Cookies", (cookieEnabled ? "操作成功完成" : "支持但已被禁用，这可能是因为本检测在file://协议头下运行"), !cookieEnabled);
+} catch (e) {
+  log.output("Cookies", e, true);
+};
+// 本地存储支持
+try {
+  const localStorageEnabled = (function () {
+    const test = "test";
+    try {
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    };
+  })();
+  log.output("本地存储(Local Storage)", (localStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !localStorageEnabled);
+} catch (e) {
+  log.output("本地存储(Local Storage)", e, true);
+};
+// 会话存储支持
+try {
+  const sessionStorageEnabled = (function () {
+    const test = "test";
+    try {
+      sessionStorage.setItem(test, test);
+      sessionStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    };
+  })();
+  log.output("会话存储(Session Storage)", (sessionStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !sessionStorageEnabled);
+} catch (e) {
+  log.output("会话存储(Session Storage)", "否", true);
+};
+// WebScoket 支持
+try {
+  if (!self.WebSocket) { throw new Error("WebSocket 未定义") };
+  log.output("WebSocket", "获取到了WebSocket入口");
+} catch (e) {
+  log.output("WebSocket", e, true);
+};
+
 log.divider("JavaScript特性支持");
 // WebWorker
 try {
@@ -144,6 +254,20 @@ try {
   log.output("类(Class)", "成功构造了类");
 } catch (e) {
   log.output("类(Class)", e, true);
+};
+// 私有类方法
+try {
+  new Function("class A { #p = 1; getP() { return this.#p; } }; return (new A()).getP()")();
+  log.output("私有类方法(Private Class Methods)", `成功构造了包含私有方法的类`);
+} catch (e) {
+  log.output("私有类方法(Private Class Methods)", e, true);
+};
+// Query Selector
+try {
+  log.output("查询选择器(Query Selector)", `选中"div"：${document.body.querySelectorAll("div")}`);
+} catch (e) {
+  log.output("查询选择器(Query Selector)", e, true);
+  log.force_err = true;
 };
 // Template Literals
 try {
@@ -168,6 +292,14 @@ try {
   log.output("遍历数组(forEach)", e, true);
   log.force_err = true;
 };
+// addEventListener
+try {
+  new Function("self.addEventListener('load', () => {}); return true;")();
+  log.output("addEventListener", "操作成功完成");
+} catch (e) {
+  log.output("addEventListener", e, true);
+  log.force_err = true;
+};
 // ()=>
 try {
   new Function("()=>{}");
@@ -183,6 +315,13 @@ try {
 } catch (e) {
   log.output("Fetch API", e, true);
 };
+// XMLHttpRequest
+try {
+  if (!self.XMLHttpRequest) { throw new Error("XMLHttpRequest 未定义") };
+  log.output("XMLHttpRequest", "获取到了XMLHttpRequest入口");
+} catch (e) {
+  log.output("XMLHttpRequest", e, true);
+};
 // 异步函数（Promise,await/async）
 try {
   if (!self.Promise) { throw new Error("Promise 未定义") };
@@ -190,13 +329,6 @@ try {
   log.output("异步函数", "已通过Promise和async/await的检测");
 } catch (e) {
   log.output("异步函数", e, true);
-};
-// 私有类方法
-try {
-  new Function("class A { #p = 1; getP() { return this.#p; } }; return (new A()).getP()")();
-  log.output("私有类方法(Private Class Methods)", `成功构造了包含私有方法的类`);
-} catch (e) {
-  log.output("私有类方法(Private Class Methods)", e, true);
 };
 // 可选链操作符
 try {
@@ -252,81 +384,6 @@ try {
 } catch (e) {
   log.output("Grid布局", e, true);
   log.force_err = true;
-};
-
-log.divider("浏览器API支持");
-// WebGL
-try {
-  canvas = document.createElement("canvas");
-  gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-  if (gl && gl instanceof WebGLRenderingContext) {
-    log.output("canvas与WebGL", "获取到了WebGL入口");
-  } else {
-    throw new Error("无法获取WebGLRenderingContext");
-  };
-} catch (e) {
-  log.output("canvas与WebGL", e, true);
-};
-// Cookie 支持
-try {
-  document.cookie = "testcookie=1";
-  const cookieEnabled = document.cookie.indexOf("testcookie=") != -1;
-  log.output("Cookies", (cookieEnabled ? "操作成功完成" : "支持但已被禁用，这可能是因为本检测在file://协议头下运行"), !cookieEnabled);
-} catch (e) {
-  log.output("Cookies", e, true);
-};
-// 本地存储支持
-try {
-  const localStorageEnabled = (function () {
-    const test = "test";
-    try {
-      localStorage.setItem(test, test);
-      localStorage.removeItem(test);
-      return true;
-    } catch (e) {
-      return false;
-    };
-  })();
-  log.output("本地存储(Local Storage)", (localStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !localStorageEnabled);
-} catch (e) {
-  log.output("本地存储(Local Storage)", e, true);
-};
-// 会话存储支持
-try {
-  const sessionStorageEnabled = (function () {
-    const test = "test";
-    try {
-      sessionStorage.setItem(test, test);
-      sessionStorage.removeItem(test);
-      return true;
-    } catch (e) {
-      return false;
-    };
-  })();
-  log.output("会话存储(Session Storage)", (sessionStorageEnabled ? "操作成功完成" : "支持但已被禁用，请检查安全上下文"), !sessionStorageEnabled);
-} catch (e) {
-  log.output("会话存储(Session Storage)", "否", true);
-};
-// Clipboard API 支持
-try {
-  if (!navigator.clipboard) { throw new Error("navigator.clipboard未定义") };
-  log.output("剪贴板(Clipboard API)", "获取到了Clipboard API入口");
-} catch (e) {
-  log.output("剪贴板(Clipboard API)", e, true);
-};
-// Notifications API 支持
-try {
-  if (!self.Notification) { throw new Error("NotificationAPI入口未找到") };
-  log.output("通知(Notifications API)", "获取到了Notifications API入口");
-} catch (e) {
-  log.output("通知(Notifications API)", e, true);
-};
-// WebScoket 支持
-try {
-  if (!self.WebSocket) { throw new Error("WebSocket 未定义") };
-  log.output("WebSocket", "获取到了WebSocket入口");
-} catch (e) {
-  log.output("WebSocket", e, true);
 };
 
 log.divider("老旧API");
