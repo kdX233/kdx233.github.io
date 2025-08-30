@@ -73,7 +73,7 @@ try {
 };
 // 安全上下文
 try {
-  log.output("安全上下文(Secure Context)", (self.isSecureContext ? "是：获取到安全上下文接口，当前是安全上下文。" : "否：获取到安全上下文接口，但当前不是是安全上下文。\n这通常是因为没有使用HTTPS协议访问本站点，建议切换到HTTPS协议导致的。本站已启用ForceHTTPS，目前可能配置故障。"), !self.isSecureContext);
+  log.output("安全上下文(Secure Context)", (self.isSecureContext ? "是：获取到安全上下文接口，当前是安全上下文。" : "否：获取到安全上下文接口，但当前不是安全上下文。\n这通常是因为没有使用HTTPS协议访问本站点，建议切换到HTTPS协议导致的。本站已启用ForceHTTPS，目前可能配置故障。"), !self.isSecureContext);
 } catch (e) {
   log.output("安全上下文(Secure Context)", e, true);
 };
