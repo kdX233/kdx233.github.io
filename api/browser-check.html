@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="zh-cn">
+<head>
+  <title>浏览器支持检测 - kdxiaoyi.top</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <script src="https://rs.kdxiaoyi.top/res/scripts/js/sober@1.0.6.min.js"></script>
+  <script src="https://kdxiaoyi.top/pmd.js"></script>
+  <link rel="stylesheet" href="https://rs.kdxiaoyi.top/res/css/sober-theme-turquoise.css" />
+  <link rel="stylesheet" href="https://rs.kdxiaoyi.top/res/css/-predef.css" />
+  <link rel="stylesheet" href="https://rs.kdxiaoyi.top/res/css/font.css" />
+  <style>
+    body * {
+      --color-info: #1A73E7;
+      --color-info-f: #fff;
+      --color-warn: #FBC116;
+      --color-warn-f: #000;
+      --color-err: #E23B2E;
+      --color-err-f: #fff;
+      --color-okay: #30C496;
+      --color-okay-f: #000;
+      --color-gray: #e0e3e2;
+      transition: all .5s ease-in-out;
+    }
+    div {
+      width: 60vw;
+      padding: .5rem .8rem .5rem .8rem;
+      margin: 0 auto .6rem auto;
+      border-radius: 12px;
+    }
+    hr {
+      color: #70787D;
+      margin: 4px;
+    }
+    p {
+      margin: .5rem 0 .5rem 0;
+      white-space: normal;
+      word-break: break-all;
+      overflow-wrap: break-word;
+    }
+    div.log-entry {
+      width: 100%;
+      height: fit-content;
+      margin: 0 0 .3rem 0;
+      padding: 0 0 0 0;
+      display: flex;
+      align-items: baseline;
+    }
+    div.log-entry > *:first-child {
+      margin: 0 .5rem 0 0;
+      min-width: 4.6em;
+      max-width: 35%;
+      word-break: normal;
+      color: var(--color-info);
+    }
+    h1,h2,h3,h4,h5,h6 {margin: .5rem 0 .5rem 0;}
+    .code,#code {font-family: Consolas, Menlo, Monaco, Liberation Mono, Lucida Console, monospace;}
+  </style>
+</head>
+<body>
+  <div id="info" class="unselectable" style="background-color: var(--color-gray);">
+    <h2 style="color: var(--color-info);">浏览器支持检测</h2>
+    <p>此页面用于检测您所使用的浏览器是否支持本站的所有功能，同时也提供一些诊断信息。</p>
+    <p>
+      我们<b>强烈建议</b>您将浏览器内核版本升至最新，以享受更快的速度和更全面的功能支持。<br>
+      在全部主流浏览器中，只有<a href="https://google.cn/chrome/" target="_blank">Google Chrome</a>、<a href="https://www.microsoft.com/zh-cn/edge/download" target="_blank">Microsoft Edge</a>和<a href="https://www.firefox.com/" target="_blank">Mozilla Firefox</a>的内核版本保持最新。其余浏览器的内核版本可能不是最新的。<br>
+      若你想使用国产浏览器，我们虽不推荐你这样做但仍然建议使用这些内核较高的浏览器：星愿浏览器、傲游浏览器、华为浏览器。
+    </p>
+    <p>
+      快速链接：
+      <a href="https://kdxiaoyi.top" target="_blank">主站</a> | 
+      <a href="https://bing.com" target="_blank">Bing.com</a> | 
+      <a href="https://space.bilibili.com/1987247870" target="_blank">Bilibili.com</a>
+    </p>
+  </div>
+  <div id="result" class="center" style="background-color: var(--color-info); color: var(--color-info-f);">正在执行诊断……</div>
+  <div id="log"></div>
+  <script src="../res/scripts/js/browser-check.js"></script>
+</body>
+</html>
