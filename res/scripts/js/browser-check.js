@@ -50,6 +50,8 @@ var log = {
   },
 };
 
+try {
+
 log.divider("浏览器基本信息");
 // 用户代理字符串
 try {
@@ -310,3 +312,11 @@ try {
 
 // 结束诊断
 log.count();
+
+} catch (e) {
+  /* 检测无法运行时的兜底 */
+  pageElement.result.style.backgroundColor = "var(--color-err)";
+  pageElement.result.style.color = "var(--color-err-f)";
+  pageElement.result.innerHTML = `检测已被中断，因为检测无法继续运行。<br>这说明您的浏览器内核极其老旧，不支持JavaScript基本语法。<br><small>错误信息：${e}</small>`;
+  console.error(e);
+};
