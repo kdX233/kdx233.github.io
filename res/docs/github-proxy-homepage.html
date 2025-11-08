@@ -108,7 +108,7 @@
                   </svg>
                 </s-icon>
               </s-icon-button>
-              读取剪贴板
+              粘贴并查询
             </s-tooltip>
             <s-tooltip slot="end">
               <s-icon-button id="clearBtn" slot="trigger">
@@ -126,6 +126,7 @@
               </s-icon-button>
               发起代理
             </s-tooltip>
+            <div id="inputerr" slot="text"></div>
           </s-text-field>
           <p>
             文件链接支持Release、Archive和File。前两者由Cloudflare代理加速，后者由JsDelivr代理加速。<br>
@@ -148,6 +149,11 @@
   </s-page>
 </body>
 <script>
+input = document.getElementById("input");
+err = document.getElementById("inputerr");
+paste = document.getElementById("pasteBtn");
+clear = document.getElementById("clearBtn");
+enter = document.getElementById("enterBtn");
 /**
  * 弹出轻量消息提示框
  * @param {string} Message 消息文本
@@ -177,23 +183,42 @@ function msg(Message, ConfirmBtnText, type, duration, onclick, align, icon) {
 };
 function newSearch(uri) {
   var reg = /^((https|http):\/\/)?(github\.com\/.+?\/.+?\/(?:releases|archive|blob|raw|suites)|((?:raw|gist)\.(?:githubusercontent|github)\.com))\/.+$/i;
-  if (reg.test(uri) == false) {msg('请输入合法网址','٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ');return;};
-  goto.setAttribute("href",`https://gh.kdxiaoyi.top/`+uri);
+  if (reg.test(uri) == false) {
+    msg('请输入合法网址', '٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ', "好", true);
+    err.innerHTML = "输入格式错误";
+    input.error = "true";
+    return;
+  };
+  goto.setAttribute("href", `https://gh.kdxiaoyi.top/` + uri);
   goto.click();
 };
 //link域识别
-let mainMirrorReg = /kdxiaoyi\.top\//i;
-let euorgMirrorReg = /eu\.org\//i;
-let cfMirrorReg = /workers\.dev\//i;
-let localReg = /(127\.0\.0\.1)|(0\.0\.0\.0)|(localhost)/i;
-{
-  if (localReg.test(window.location.href)) {msg("检测到本地调试状态，代理加速将不可用。","了解");document.getElementById("_pmd-pageTitle").innerHTML=`Github Proxy [LoaclDebug]`;};
-  if (mainMirrorReg.test(window.location.href)) {document.getElementById("link-main").setAttribute("class","disabled-a");};
-  if (euorgMirrorReg.test(window.location.href)) {document.getElementById("link-euorg").setAttribute("class","disabled-a");};
-  if (cfMirrorReg.test(window.location.href)) {document.getElementById("link-cf").setAttribute("class","disabled-a");};
+try {
+  let localReg = /(127\.0\.0\.1)|(0\.0\.0\.0)|(localhost)/i;
+  if (localReg.test(window.location.href)) { msg("检测到本地调试状态，代理加速将不可用。", "了解", "info"); document.getElementById("_pmd-pageTitle").innerHTML = `Github Proxy [LoaclDebug]`; };
+  let mainMirrorReg = /kdxiaoyi\.top\//i;
+  if (mainMirrorReg.test(window.location.href)) { document.getElementById("link-main").setAttribute("class", "disabled-a"); };
+  let euorgMirrorReg = /eu\.org\//i;
+  if (euorgMirrorReg.test(window.location.href)) { document.getElementById("link-euorg").setAttribute("class", "disabled-a"); };
+  let cfMirrorReg = /workers\.dev\//i;
+  if (cfMirrorReg.test(window.location.href)) { document.getElementById("link-cf").setAttribute("class", "disabled-a"); };
+} catch(e) {
+  console.error("Caught error when handling visit_origin", e);
 };
+//按钮实现
+input.addEventListener("keydown", (e) => {
+  if (e.key == "Enter") { newSearch(input.value); err.innerHTML = ""; input.error = ""; };
+});
+paste.addEventListener("click", () => { navigator.clipboard.readText().then((t) => {
+  input.value = t;
+  err.innerHTML = "";
+  input.error = "";
+  newSearch(input.value);
+}); });
+clear.addEventListener("click", () => { input.value = ""; err.innerHTML = ""; input.error = ""; });
+enter.addEventListener("click", () => { newSearch(input.value); err.innerHTML = ""; input.error = ""; });
 //移除noscript标识
-console.log ("Github-proxy");console.log("Copyright (C) 2025, kdxiaoyi. All right reserved.\nSee more @ //kdx233.github.io/licen");
+console.log("Github-proxy"); console.log("Copyright (C) 2025, kdxiaoyi. All right reserved.\nSee more @ //kdx233.github.io/licen");
 document.getElementById("noscript").setAttribute("style", "display:none;");
 </script>
 </html>
