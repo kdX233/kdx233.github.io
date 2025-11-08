@@ -97,7 +97,7 @@
             如果哪天不能用了，多半是Cloudflare配额用完了，请等待下个月再试吧。
           </p>
           <h1>开始使用</h1>
-          <s-text-field style="margin: .3em 0 .1em .1em;" id="input" label="请输入目标链接" value="">
+          <s-text-field error="" style="margin: 1em 0 .1em .1em;" id="input" label="请输入目标链接" value="">
             <s-tooltip slot="start">
               <s-icon-button id="pasteBtn" slot="trigger">
                 <s-icon>
@@ -149,11 +149,11 @@
   </s-page>
 </body>
 <script>
-input = document.getElementById("input");
-err = document.getElementById("inputerr");
-paste = document.getElementById("pasteBtn");
-clear = document.getElementById("clearBtn");
-enter = document.getElementById("enterBtn");
+const input = document.getElementById("input");
+const err = document.getElementById("inputerr");
+const paste = document.getElementById("pasteBtn");
+const clear = document.getElementById("clearBtn");
+const enter = document.getElementById("enterBtn");
 /**
  * 弹出轻量消息提示框
  * @param {string} Message 消息文本
@@ -184,13 +184,16 @@ function msg(Message, ConfirmBtnText, type, duration, onclick, align, icon) {
 function newSearch(uri) {
   var reg = /^((https|http):\/\/)?(github\.com\/.+?\/.+?\/(?:releases|archive|blob|raw|suites)|((?:raw|gist)\.(?:githubusercontent|github)\.com))\/.+$/i;
   if (reg.test(uri) == false) {
+    console.warn("Illeagal pattern: ", uri);
     msg('请输入合法网址', '٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ', "好", true);
     err.innerHTML = "输入格式错误";
     input.error = "true";
     return;
   };
+  let goto = document.createElement("a");
   goto.setAttribute("href", `https://gh.kdxiaoyi.top/` + uri);
   goto.click();
+  goto.remove();
 };
 //link域识别
 try {
@@ -207,7 +210,7 @@ try {
 };
 //按钮实现
 input.addEventListener("keydown", (e) => {
-  if (e.key == "Enter") { newSearch(input.value); err.innerHTML = ""; input.error = ""; };
+  if (e.key == "Enter") { err.innerHTML = ""; input.error = ""; newSearch(input.value); };
 });
 paste.addEventListener("click", () => { navigator.clipboard.readText().then((t) => {
   input.value = t;
@@ -216,7 +219,7 @@ paste.addEventListener("click", () => { navigator.clipboard.readText().then((t) 
   newSearch(input.value);
 }); });
 clear.addEventListener("click", () => { input.value = ""; err.innerHTML = ""; input.error = ""; });
-enter.addEventListener("click", () => { newSearch(input.value); err.innerHTML = ""; input.error = ""; });
+enter.addEventListener("click", () => { err.innerHTML = ""; input.error = ""; newSearch(input.value); });
 //移除noscript标识
 console.log("Github-proxy"); console.log("Copyright (C) 2025, kdxiaoyi. All right reserved.\nSee more @ //kdx233.github.io/licen");
 document.getElementById("noscript").setAttribute("style", "display:none;");
