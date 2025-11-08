@@ -93,9 +93,47 @@
         <div style="width:90%;margin: 1em auto 1em auto;">
           <h1>欢迎！</h1>
           <p>
-            欢迎使用Github-Proxy！本服务器由<a href="//kdxiaoyi.top">@kdxiaoyi</a>使用Cloudflare提供。<br>
+            欢迎使用Github-Proxy！本服务由<a href="//kdxiaoyi.top">@kdxiaoyi</a>使用Cloudflare提供。<br>
             如果哪天不能用了，多半是Cloudflare配额用完了，请等待下个月再试吧。
           </p>
+          <h1>开始使用</h1>
+          <s-text-field style="margin: .3em 0 .1em .1em;" id="input" label="请输入目标链接" value="">
+            <s-tooltip slot="start">
+              <s-icon-button id="pasteBtn" slot="trigger">
+                <s-icon>
+                  <svg viewBox="0 -960 960 960">
+                    <path
+                      d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z">
+                    </path>
+                  </svg>
+                </s-icon>
+              </s-icon-button>
+              读取剪贴板
+            </s-tooltip>
+            <s-tooltip slot="end">
+              <s-icon-button id="clearBtn" slot="trigger">
+                <s-icon name="close"></s-icon>
+              </s-icon-button>
+              清空
+            </s-tooltip>
+            <s-tooltip slot="end">
+              <s-icon-button id="enterBtn" slot="trigger">
+                <s-icon>
+                  <svg viewBox="0 -960 960 960">
+                    <path d="M80-240v-480h80v480H80Zm560 0-57-56 144-144H240v-80h487L584-664l56-56 240 240-240 240Z"></path>
+                  </svg>
+                </s-icon>
+              </s-icon-button>
+              发起代理
+            </s-tooltip>
+          </s-text-field>
+          <p>
+            文件链接支持Release、Archive和File。前两者由Cloudflare代理加速，后者由JsDelivr代理加速。<br>
+            所用链接可带协议头也可不带。<br>
+            您可将链接中的<code>github.com</code>替换为<code>gh.kdxiaoyi.top</code>以直接调用本服务。
+            <b>注意，目前暂不支持项目文件夹</b>
+          </p>
+          <h1>其它事宜</h1>
           <p>
             以下域名均导向此服务，您可以任选其一：<br>
             <a id="link-main" href="//gh.kdxiaoyi.top" target="_blank">gh.kdxiaoyi.top</a> | 
