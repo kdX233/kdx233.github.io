@@ -190,9 +190,16 @@ function checkURL(url) {
     /^(?:https?:\/\/)?gist\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+$/i,
     /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i,
   ];
-  return exp.some((e) => {
-    e.test(url);
-  });
+  let r = [false];
+  for (let e from exp) {
+    r.unshift(e.test(url));
+    if (r[0]) { break; };
+  };
+  if (r[0]) {
+    return true;
+  } else {
+    return false;
+  };
 };
 function putErr(msg) {
   if (!msg) {
@@ -239,8 +246,8 @@ paste.addEventListener("click", () => { navigator.clipboard.readText().then((t) 
 clear.addEventListener("click", () => { input.value = ""; putErr(); });
 enter.addEventListener("click", () => { putErr(); newSearch(input.value); });
 //entry参数处理
-if (!!window.location.pathname) {
-  input.value = window.location.pathname;
+if ((window.location.pathname != '/') && (window.location.pathname != '')) {
+  input.value = window.location.pathname.replace(/^\/+/, '');
   putErr("不是一个有效的地址");
 };
 //移除noscript标识
