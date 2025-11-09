@@ -155,6 +155,12 @@ const paste = document.getElementById("pasteBtn");
 const clear = document.getElementById("clearBtn");
 const enter = document.getElementById("enterBtn");
 /**
+ * 返回指定的URL参数
+ * @param {string} name 获取的参数名
+ * @returns {string|null} 参数结果，没有返回null
+ */
+function getQueryString(name) { let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); let r = window.location.search.substr(1).match(reg); if (r != null) { return unescape(r[2]); }; return null; };
+/**
  * 弹出轻量消息提示框
  * @param {string} Message 消息文本
  * @param {string} [ConfirmBtnText=''] 确认按钮文字
@@ -181,13 +187,32 @@ function msg(Message, ConfirmBtnText, type, duration, onclick, align, icon) {
   customElements.get("s-snackbar").builder(infoJSON);
   return infoJSON;
 };
-function newSearch(uri) {
-  var reg = /^((https|http):\/\/)?(github\.com\/.+?\/.+?\/(?:releases|archive|blob|raw|suites)|((?:raw|gist)\.(?:githubusercontent|github)\.com))\/.+$/i;
-  if (reg.test(uri) == false) {
-    console.warn("Illeagal pattern: ", uri);
-    msg('请输入合法网址', '٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ', "好", true);
-    err.innerHTML = "输入格式错误";
+function checkURL(url) {
+  const exp = [
+    /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:releases|archive)\/.*$/i,
+    /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:blob|raw)\/.*$/i,
+    /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:info|git-).*$/i,
+    /^(?:https?:\/\/)?raw\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+?\/.+$/i,
+    /^(?:https?:\/\/)?gist\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+$/i,
+    /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i,
+  ];
+  return exp.some((e) => {
+    e.test(url);
+  });
+};
+function putErr(msg) {
+  if (!msg) {
+    err.innerHTML = "";
+    input.error = "";
+  } else {
+    err.innerHTML = msg;
     input.error = "true";
+  };
+  return;
+};
+function newSearch(uri) {
+  if (checkURL(uri) == false) {;
+    putErr("不是一个有效的地址");
     return;
   };
   let goto = document.createElement("a");
@@ -214,12 +239,16 @@ input.addEventListener("keydown", (e) => {
 });
 paste.addEventListener("click", () => { navigator.clipboard.readText().then((t) => {
   input.value = t;
-  err.innerHTML = "";
-  input.error = "";
+  putErr();
   newSearch(input.value);
 }); });
-clear.addEventListener("click", () => { input.value = ""; err.innerHTML = ""; input.error = ""; });
-enter.addEventListener("click", () => { err.innerHTML = ""; input.error = ""; newSearch(input.value); });
+clear.addEventListener("click", () => { input.value = ""; putErr(); });
+enter.addEventListener("click", () => { putErr(); newSearch(input.value); });
+//entry参数处理
+if (!!getQueryString("entry")) {
+  input.value = getQueryString("entry");
+  putErr("不是一个有效的地址");
+};
 //移除noscript标识
 console.log("Github-proxy"); console.log("Copyright (C) 2025, kdxiaoyi. All right reserved.\nSee more @ //kdx233.github.io/licen");
 document.getElementById("noscript").setAttribute("style", "display:none;");
