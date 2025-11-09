@@ -155,12 +155,6 @@ const paste = document.getElementById("pasteBtn");
 const clear = document.getElementById("clearBtn");
 const enter = document.getElementById("enterBtn");
 /**
- * 返回指定的URL参数
- * @param {string} name 获取的参数名
- * @returns {string|null} 参数结果，没有返回null
- */
-function getQueryString(name) { let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); let r = window.location.search.substr(1).match(reg); if (r != null) { return unescape(r[2]); }; return null; };
-/**
  * 弹出轻量消息提示框
  * @param {string} Message 消息文本
  * @param {string} [ConfirmBtnText=''] 确认按钮文字
@@ -245,8 +239,8 @@ paste.addEventListener("click", () => { navigator.clipboard.readText().then((t) 
 clear.addEventListener("click", () => { input.value = ""; putErr(); });
 enter.addEventListener("click", () => { putErr(); newSearch(input.value); });
 //entry参数处理
-if (!!getQueryString("entry")) {
-  input.value = getQueryString("entry");
+if (!!window.location.pathname) {
+  input.value = window.location.pathname;
   putErr("不是一个有效的地址");
 };
 //移除noscript标识
