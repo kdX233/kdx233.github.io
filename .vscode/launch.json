@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Build Jekyll with LiveReload [Linux]",
+      "command": "bundle exec jekyll serve --port 5501 --livereload&wait $!;read -n1 -s -r -p \"\nAny key to terminate.\";exit 0",
+      "type": "node-terminal",
+      "request": "launch"
+    },
+    {
+      "name": "Attach to Chrome",
+      "port": 9222,
+      "request": "attach",
+      "type": "chrome",
+      "webRoot": "${workspaceFolder}",
+    }
+  ]
+}
