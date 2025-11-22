@@ -81,6 +81,7 @@
       -webkit-user-select: none;
     }
   </style>
+  <style id="input-var"></style>
 </head>
 <body>
   <s-page id="_pmd-pageRoot" theme="light">
@@ -97,7 +98,7 @@
             如果哪天不能用了，多半是Cloudflare配额用完了，请等待下个月再试吧。
           </p>
           <h1>开始使用</h1>
-          <s-text-field error="" style="margin: 1em 0 .1em .1em;" id="input" label="请输入目标链接" value="">
+          <s-text-field error="" style="margin: 1em 0 .1em .1em; width: min(var(--ghproxy-input-length, auto), 100%);" id="input" label="目标链接（未来计划支持自动提取）" value="">
             <s-tooltip slot="start">
               <s-icon-button id="pasteBtn" slot="trigger">
                 <s-icon>
@@ -275,8 +276,13 @@ try {
   console.error("Caught error when handling visit_origin", e);
 };
 //按钮实现
+function updatewidth() {
+  const style = document.getElementById("input-var");
+  style.innerHTML = `s-text-field#input{--ghproxy-input-length:max(300px,calc(150px + ${input.value.length}ch))}`;
+};
 input.addEventListener("keydown", (e) => {
   if (e.key == "Enter") { err.innerHTML = ""; input.error = ""; newSearch(input.value); };
+  updatewidth();
 });
 paste.addEventListener("click", () => {
   navigator.clipboard.readText().then((t) => {
@@ -293,10 +299,12 @@ paste.addEventListener("click", () => {
     for (let e of eg) {
       if (t.toLowerCase() != e[0]) { continue; };
       input.value = e[2];
+      updatewidth();
       putErr(e[1]);
       return;
     };
     input.value = t;
+    updatewidth();
     putErr("");
     newSearch(input.value);
   }).catch((err) => {
@@ -304,11 +312,12 @@ paste.addEventListener("click", () => {
     console.error("Caught Error when handling Event.PasteBtn: ", err);
   });
 });
-clear.addEventListener("click", () => { input.value = ""; putErr(); });
+clear.addEventListener("click", () => { input.value = ""; updatewidth(); putErr(); });
 enter.addEventListener("click", () => { putErr(); newSearch(input.value); });
 //entry参数处理
 if ((window.location.pathname != '/') && (window.location.pathname != '')) {
   input.value = window.location.pathname.replace(/^\/+/, '');
+  updatewidth();
   putErr("不是一个有效的地址");
 };
 //移除noscript标识
