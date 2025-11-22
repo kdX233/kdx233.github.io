@@ -108,7 +108,8 @@
                   </svg>
                 </s-icon>
               </s-icon-button>
-              粘贴并查询
+              粘贴并查询<br>
+              希望你不要用来查些奇怪的。
             </s-tooltip>
             <s-tooltip slot="end">
               <s-icon-button id="clearBtn" slot="trigger">
@@ -239,6 +240,22 @@ input.addEventListener("keydown", (e) => {
   if (e.key == "Enter") { err.innerHTML = ""; input.error = ""; newSearch(input.value); };
 });
 paste.addEventListener("click", () => { navigator.clipboard.readText().then((t) => {
+  const tReg = [
+    // 666来审计来的
+    // 或许你可以试试？
+    [new String(), "剪贴板中没有任何东西……", ""],
+    ["windows", "Windows 11 未响应", "https://s21.ax1x.com/2025/11/22/pZkuCcR.png?note=网图侵删ww"],
+    ["conan", "暂未发现死神，为您推荐哀酱♥️", "https://s21.ax1x.com/2025/11/22/pZkukB6.jpg"],
+    ["castorice", "现在发现死神了……？", "https://s21.ax1x.com/2025/11/22/pZkuFnx.jpg"],
+    ["nahida", "发现原批！", "https://s21.ax1x.com/2025/11/22/pZkVSVe.jpg?note=网图侵删www"],
+    ["firefly", "这是格拉默铁骑老兵，你敢和她对视3秒吗", "https://s21.ax1x.com/2025/11/22/pZku939.jpg?note=网图侵删wwwww"],
+  ];
+  for (let e of tReg) {
+    if (t.toLowerCase() != e[0]) { continue; };
+    input.value = e[2];
+    putErr(e[1]);
+    return;
+  };
   input.value = t;
   putErr();
   newSearch(input.value);
