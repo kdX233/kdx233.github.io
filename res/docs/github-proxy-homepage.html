@@ -191,7 +191,7 @@ function checkURL(url) {
     /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i,
   ];
   let r = [false];
-  for (let e from exp) {
+  for (let e of exp) {
     r.unshift(e.test(url));
     if (r[0]) { break; };
   };
