@@ -182,6 +182,45 @@ function msg(Message, ConfirmBtnText, type, duration, onclick, align, icon) {
   customElements.get("s-snackbar").builder(infoJSON);
   return infoJSON;
 };
+/**
+ * 从任意文本中提取所有 URL，返回数组。
+ * 支持：
+ *   - 中文域名、未 URL-Encode 的字符
+ *   - 带协议头（http/https）或裸域名
+ *   - 禁止连续匹配，确保每个 URL 独立
+ * **Created by Kimi AI*
+ * @param {string} text
+ * @returns {string[]} 所有匹配到的 URL 列表
+ */
+function extractURLs(text) {
+  // 1. 将中文域名/idn 部分先做 punycode 转码，避免正则盲区
+  //    浏览器自带 `URL` 接口，可以把非法/中文域名自动转 punycode
+  const idnSafe = text.replace(
+    // 匹配“可能的中文域名”部分（允许汉字、字母、数字、-、.）
+    /([a-zA-Z0-9\u4e00-\u9fa5\-]+\.)+[a-zA-Z\u4e00-\u9fa5]{2,}/g,
+    (m) => {
+      try {
+        // 加上临时协议头，让浏览器帮我们转 punycode
+        return new URL(`http://${m}`).host;
+      } catch {
+        return m; // 转不了就原样返回
+      }
+    }
+  );
+  // 2. 正则提取 URL
+  //    协议部分：(?:(?:https?:)?//)   -> 允许 // 或 http:// 或 https://
+  //    域名部分：\S+?                -> 非贪婪匹配任意非空白
+  //    排除末尾常见标点：(?![,.;:!?)\]}>])  -> 防止把后面的标点算进去
+  const re = /(?:(?:https?:)?\/\/)\S+?(?=[,.;:!?)\]}>]?(?:\s|$))/g;
+  const withProtocol = idnSafe.match(re) || [];
+  // 3. 再单独提取“无协议头”但看起来是域名的片段
+  //    要求：以字母/数字/中文开头，带点号，TLD 至少 2 字母
+  const reNoProto =
+    /(?<=^|\s)([a-zA-Z0-9\u4e00-\u9fa5][a-zA-Z0-9\u4e00-\u9fa5\-]*(?:\.[a-zA-Z0-9\u4e00-\u9fa9\-]+)+\.[a-zA-Z]{2,})(?=[,.;:!?)\]}>]?(?:\s|$))/g;
+  const noProtocol = idnSafe.match(reNoProto) || [];
+  // 4. 合并、去重、返回
+  return Array.from(new Set([...withProtocol, ...noProtocol]));
+};
 function checkURL(url) {
   const exp = [
     /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:releases|archive)\/.*$/i,
@@ -239,27 +278,32 @@ try {
 input.addEventListener("keydown", (e) => {
   if (e.key == "Enter") { err.innerHTML = ""; input.error = ""; newSearch(input.value); };
 });
-paste.addEventListener("click", () => { navigator.clipboard.readText().then((t) => {
-  const tReg = [
-    // 666来审计来的
-    // 或许你可以试试？
-    [new String(), "剪贴板中没有任何东西……", ""],
-    ["windows", "Windows 11 未响应", "https://s21.ax1x.com/2025/11/22/pZkuCcR.png?note=网图侵删ww"],
-    ["conan", "暂未发现死神，为您推荐哀酱♥️", "https://s21.ax1x.com/2025/11/22/pZkukB6.jpg"],
-    ["castorice", "现在发现死神了……？", "https://s21.ax1x.com/2025/11/22/pZkuFnx.jpg"],
-    ["nahida", "发现原批！", "https://s21.ax1x.com/2025/11/22/pZkVSVe.jpg?note=网图侵删www"],
-    ["firefly", "这是格拉默铁骑老兵，你敢和她对视3秒吗", "https://s21.ax1x.com/2025/11/22/pZku939.jpg?note=网图侵删wwwww"],
-  ];
-  for (let e of tReg) {
-    if (t.toLowerCase() != e[0]) { continue; };
-    input.value = e[2];
-    putErr(e[1]);
-    return;
-  };
-  input.value = t;
-  putErr();
-  newSearch(input.value);
-}); });
+paste.addEventListener("click", () => {
+  navigator.clipboard.readText().then((t) => {
+    const eg = [
+      // 666来审计来的
+      // 或许你可以试试？
+      [new String(), "剪贴板中没有任何东西……", ""],
+      ["windows", "Windows 11 未响应", "https://s21.ax1x.com/2025/11/22/pZkuCcR.png?note=网图侵删ww"],
+      ["conan", "暂未发现死神，为您推荐哀酱♥️", "https://s21.ax1x.com/2025/11/22/pZkukB6.jpg"],
+      ["castorice", "现在发现死神了……？", "https://s21.ax1x.com/2025/11/22/pZkuFnx.jpg"],
+      ["nahida", "发现原批！", "https://s21.ax1x.com/2025/11/22/pZkVSVe.jpg?note=网图侵删www"],
+      ["firefly", "这是格拉默铁骑老兵，你敢和她对视3秒吗", "https://s21.ax1x.com/2025/11/22/pZku939.jpg?note=网图侵删wwwww"],
+    ];
+    for (let e of eg) {
+      if (t.toLowerCase() != e[0]) { continue; };
+      input.value = e[2];
+      putErr(e[1]);
+      return;
+    };
+    input.value = t;
+    putErr("");
+    newSearch(input.value);
+  }).catch((err) => {
+    msg("无法获取剪贴板，请检查对应权限。", "好", true);
+    console.error("Caught Error when handling Event.PasteBtn: ", err);
+  });
+});
 clear.addEventListener("click", () => { input.value = ""; putErr(); });
 enter.addEventListener("click", () => { putErr(); newSearch(input.value); });
 //entry参数处理
