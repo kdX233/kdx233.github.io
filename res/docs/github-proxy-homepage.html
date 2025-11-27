@@ -176,7 +176,7 @@
           全不选
         </s-tooltip>
         <s-tooltip>
-          <s-icon-button slot="trigger">
+          <s-icon-button onclick="urlSelector.selection.revertAll()" slot="trigger">
             <s-icon>
               <svg viewBox="0 -960 960 960">
                 <path
@@ -365,11 +365,11 @@ const urlSelector = {
     };
   },
   init: function() {
-    // if (this.list.length == 1) {
-    //   debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
-    //   openURL(this.list[0]);
-    //   return;
-    // };
+    if (this.list.length == 1) {
+      debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
+      openURL(this.list[0]);
+      return;
+    };
     this.checked = new Array(this.list.length).fill(false);
     this.elements.listRoot.innerHTML = ``;
     this.elements.list = [];
@@ -412,7 +412,10 @@ const urlSelector = {
       return urlSelector.checked[id];
     },
     revertAll: function () {
-      msg("暂未实现")
+      urlSelector.checked.forEach((b, i) => {
+        urlSelector.checked[i] = !b;
+        urlSelector.elements.list[i].btn.checked = !b;
+      });
       debuginfo(
         `修改UI列表：全部反选 ：`,
         `urlSelector.list = [${urlSelector.list.join(", ")}]`,
