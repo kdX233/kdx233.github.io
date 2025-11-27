@@ -150,7 +150,7 @@
     </s-drawer>
     <s-dialog id="urls_dialog">
       <div slot="headline"> 识别到多个URL </div>
-      <div slot="text">
+      <div slot="text" class="unselectable">
         <s-tooltip>
           <s-icon-button onclick="urlSelector.selection.setAll(true)" slot="trigger">
             <s-icon>
@@ -187,7 +187,8 @@
           </s-icon-button>
           反选
         </s-tooltip>
-        <div style="width: auto; height: .2rem;"></div>
+        <span id="value">0</span> / <span id="full">0</span>
+        <div style="width: max-content; height: auto; margin: .2rem 0 .2rem 0;"></div>
         <s-table style="overflow: auto; display: block">
           <s-tbody id="list_root">
             <s-tr>
@@ -338,6 +339,8 @@ function putErr(msg) {
 const urlSelector = {
   lock: false,
   elements:{
+    value: document.getElementById("value"),
+    max: document.getElementById("full"),
     root: document.getElementById("urls_dialog"),
     list: [],
     listRoot: document.getElementById("list_root"),
@@ -392,6 +395,9 @@ const urlSelector = {
       this.elements.listRoot.appendChild(parent);
       this.elements.list.push({parent: parent, urlinfo: urlinfo, btn: btn});
     });
+    this.elements.max.innerHTML = this.list.length;
+    this.elements.value.innerHTML = 0;
+    this.selection.selected = 0;
     this.elements.root.showed = true;
     debuginfo(
       "待选择UI列表创建完成：",
@@ -401,8 +407,15 @@ const urlSelector = {
     );
   },
   selection: {
-    increase: function() {},
-    decrease: function() {},
+    selected: 0,
+    increase: function() {
+      this.selected += 1;
+      urlSelector.elements.value.innerHTML = this.selected;
+    },
+    decrease: function() {
+      this.selected -= 1;
+      urlSelector.elements.value.innerHTML = this.selected;
+    },
     revert: function (id) {
       id = Math.floor(id);
       if (id > (urlSelector.checked.length - 1) || id < 0) {
@@ -410,6 +423,7 @@ const urlSelector = {
         return;
       };
       urlSelector.checked[id] = !urlSelector.checked[id];
+      if (urlSelector.checked[id]) {this.increase();} else {this.decrease()};
       debuginfo(
         `修改UI列表：反选#${id} ：`,
         `urlSelector.list = [${urlSelector.list.join(", ")}]`,
@@ -421,6 +435,7 @@ const urlSelector = {
     revertAll: function () {
       urlSelector.checked.forEach((b, i) => {
         urlSelector.checked[i] = !b;
+        if (urlSelector.checked[i]) {this.increase();} else {this.decrease()};
         urlSelector.elements.list[i].btn.checked = !b;
       });
       debuginfo(
@@ -437,12 +452,15 @@ const urlSelector = {
         urlSelector.elements.list.forEach((i) => {
           i.btn.checked = true;
         });
+        this.selected = urlSelector.list.length;
       } else {
         urlSelector.checked.fill(false);
         urlSelector.elements.list.forEach((i) => {
           i.btn.checked = false;
         });
+        this.selected = 0;
       };
+      urlSelector.elements.value.innerHTML = this.selected;
       debuginfo(
         `修改UI列表：全部设为${b} ：`,
         `urlSelector.list = [${urlSelector.list.join(", ")}]`,
