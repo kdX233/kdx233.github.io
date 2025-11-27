@@ -98,7 +98,7 @@
             如果哪天不能用了，多半是Cloudflare配额用完了，请等待下个月再试吧。
           </p>
           <h1>开始使用</h1>
-          <s-text-field error="" style="margin: 1em 0 .1em .1em; width: min(var(--ghproxy-input-length, auto), 100%);" id="input" label="目标链接（未来计划支持自动提取）" value="">
+          <s-text-field error="" style="margin: 1em 0 .1em .1em; width: min(var(--ghproxy-input-length, auto), 100%);" id="input" label="目标链接 | 支持自动提取" value="">
             <s-tooltip slot="start">
               <s-icon-button id="pasteBtn" slot="trigger">
                 <s-icon>
@@ -208,6 +208,22 @@ function throwCaughtError(...args) {
   return e;
 };
 /**
+ * 打开一个URI
+ * @param {string} URI: 目标URI
+ * @param {boolen} IsInPresentWindow: 是否指定当前窗口
+ */
+function openURL(URI, IsInPresentWindow) {
+  let linkEle = document.createElement("a");
+  if (!!IsInPresentWindow) {
+    linkEle.target = "_self";
+  } else {
+    linkEle.target = "_blank";
+  };
+  linkEle.href = URI;
+  linkEle.click();
+  return linkEle;
+};
+/**
  * 从任意文本中提取所有 URL，返回数组。
  * 支持：
  *   - 中文域名、未 URL-Encode 的字符
@@ -272,12 +288,12 @@ const urlSelector = {
   checked: [],
   modifyChecked: function(id) {
     id = Math.floor(id);
-    if (id >= (urlSelector.checked.length - 1) || id < 0) {
+    if (id >= (this.checked.length - 1) || id < 0) {
       throwCaughtError("指定的待选URL并不存在。", `@urlSelector.modifyChecked(): 数组越界：指定的待选URL并不存在。下标上限为${urlSelector.list.length - 1}但选中了${id}；当前列表为[${urlSelector.list.join(", ")}]`);
       return;
     };
-    urlSelector.checked[id] = !urlSelector.checked[id];
-    return urlSelector.checked[id];
+    this.checked[id] = !this.checked[id];
+    return this.checked[id];
   },
   checkURL: function(url) {
     const exp = [
@@ -299,12 +315,29 @@ const urlSelector = {
       return false;
     };
   },
-  init: function(URLArray) {},
+  init: function() {
+    if (this.list.length == 1) {
+      openURL(this.list[0]);
+      return;
+    };
+  },
 };
 function newSearch(txt) {
   if (urlSelector.lock) {
     throwCaughtError("当前已有查询会话，请先完成。", "@newSearch(): 检测到urlSelector的占用锁。");
+    return;
   };
+  urlSelector.list = extractURLs(txt);
+  /* 去除不符合条件的 */
+  urlSelector.list.filter((i) => {
+    return checkURL(i);
+  });
+  /* 初步筛选空列表 */
+  if (urlSelector.list.length == 0) {
+    putErr("没有发现有效链接");
+    return;
+  };
+  urlSelector.init();
 };
 
 //link域识别
