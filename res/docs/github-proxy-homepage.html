@@ -148,9 +148,18 @@
         </div>
       </s-scroll-view>
     </s-drawer>
-  </s-page>
+    <s-dialog id="urls_dialog">
+      <div slot="headline"> 识别到多个URL </div>
+      <div slot="text">
+        
+      </div>
+      <s-button slot="action" type="text">全部打开</s-button>
+      <s-button slot="action" type="text">关闭</s-button>
+    </s-dialog>
+    </s-page>
 </body>
 <script>
+//预定义工具函数与常量
 const input = document.getElementById("input");
 const err = document.getElementById("inputerr");
 const paste = document.getElementById("pasteBtn");
@@ -182,6 +191,21 @@ function msg(Message, ConfirmBtnText, type, duration, onclick, align, icon) {
   if (icon) { infoJSON.icon = icon; };
   customElements.get("s-snackbar").builder(infoJSON);
   return infoJSON;
+};
+/**
+ * 抛出一个被捕获的异常。这会显示一条页面内通知并向Console输出错误。
+ * @param {any} 不限数量，均初始化为错误信息。\n只有第一条参数会被显示为通知。
+ * @returns {Error} 初始化的错误。
+ * @throws {Error} 不接受空参数。
+ */
+function throwCaughtError(...args) {
+  if (args.length = 0) {
+    throw new Error("不接受空参数");
+  };
+  let e = new Error(...args);
+  console.error("Caught Error:\n", e);
+  msg(args[0], "好", true);
+  return e;
 };
 /**
  * 从任意文本中提取所有 URL，返回数组。
@@ -222,26 +246,11 @@ function extractURLs(text) {
   // 4. 合并、去重、返回
   return Array.from(new Set([...withProtocol, ...noProtocol]));
 };
-function checkURL(url) {
-  const exp = [
-    /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:releases|archive)\/.*$/i,
-    /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:blob|raw)\/.*$/i,
-    /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:info|git-).*$/i,
-    /^(?:https?:\/\/)?raw\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+?\/.+$/i,
-    /^(?:https?:\/\/)?gist\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+$/i,
-    /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i,
-  ];
-  let r = [false];
-  for (let e of exp) {
-    r.unshift(e.test(url));
-    if (r[0]) { break; };
-  };
-  if (r[0]) {
-    return true;
-  } else {
-    return false;
-  };
-};
+/**
+ * 将当前页面的「URL输入框」设置为错误状态
+ * @param {string} msg: 提示信息。为空则清空错误状态。
+ * @returns {undefined}
+ */
 function putErr(msg) {
   if (!msg) {
     err.innerHTML = "";
@@ -252,16 +261,54 @@ function putErr(msg) {
   };
   return;
 };
-function newSearch(uri) {
-  if (checkURL(uri) == false) {;
-    putErr("不是一个有效的地址");
-    return;
-  };
-  let goto = document.createElement("a");
-  goto.setAttribute("href", `https://gh.kdxiaoyi.top/` + uri);
-  goto.click();
-  goto.remove();
+
+//URL处理逻辑
+const urlSelector = {
+  lock: false,
+  elements:{
+    root: document.getElementById("urls_dialog"),
+  },
+  list: [],
+  checked: [],
+  modifyChecked: function(id) {
+    id = Math.floor(id);
+    if (id >= (urlSelector.checked.length - 1) || id < 0) {
+      msg("数组越界：指定的待选URL并不存在。", "好", true);
+      console.error("Caught Error while handling urlSelector.modifyChecked(): 数组越界：指定的待选URL并不存在。");
+      return;
+    };
+    urlSelector.checked[id] = !urlSelector.checked[id];
+    return urlSelector.checked[id];
+  },
+  checkURL: function(url) {
+    const exp = [
+      /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:releases|archive)\/.*$/i,
+      /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:blob|raw)\/.*$/i,
+      /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:info|git-).*$/i,
+      /^(?:https?:\/\/)?raw\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+?\/.+$/i,
+      /^(?:https?:\/\/)?gist\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+$/i,
+      /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i,
+    ];
+    let r = [false];
+    for (let e of exp) {
+      r.unshift(e.test(url));
+      if (r[0]) { break; };
+    };
+    if (r[0]) {
+      return true;
+    } else {
+      return false;
+    };
+  },
+  init: function(URLArray) {},
 };
+function newSearch(txt) {
+  if (urlSelector.lock) {
+    msg("查询锁被占用，当前已有查询会话，请先完成。", "好", true);
+    console.error("Caught Error when handling newSearch(): 查询锁被占用，当前已有查询会话，请先完成。");
+  };
+};
+
 //link域识别
 try {
   let localReg = /(127\.0\.0\.1)|(0\.0\.0\.0)|(localhost)/i;
@@ -275,7 +322,8 @@ try {
 } catch(e) {
   console.error("Caught error when handling visit_origin", e);
 };
-//按钮实现
+
+//更新输入框长度
 function updatewidth() {
   const style = document.getElementById("input-var");
   style.innerHTML = `s-text-field#input{--ghproxy-input-length:max(300px,calc(150px + ${input.value.length}ch))}`;
@@ -284,7 +332,9 @@ input.addEventListener("keydown", (e) => {
   if (e.key == "Enter") { err.innerHTML = ""; input.error = ""; newSearch(input.value); };
   updatewidth();
 });
-paste.addEventListener("click", () => {
+
+//按钮实现
+paste/* 粘贴 */.addEventListener("click", () => {
   navigator.clipboard.readText().then((t) => {
     const eg = [
       // 666来审计来的
@@ -312,14 +362,16 @@ paste.addEventListener("click", () => {
     console.error("Caught Error when handling Event.PasteBtn: ", err);
   });
 });
-clear.addEventListener("click", () => { input.value = ""; updatewidth(); putErr(); });
-enter.addEventListener("click", () => { putErr(); newSearch(input.value); });
+clear/* 清空 */.addEventListener("click", () => { input.value = ""; updatewidth(); putErr(); });
+enter/* 运行 */.addEventListener("click", () => { putErr(); newSearch(input.value); });
+
 //entry参数处理
 if ((window.location.pathname != '/') && (window.location.pathname != '')) {
   input.value = window.location.pathname.replace(/^\/+/, '');
   updatewidth();
   putErr("不是一个有效的地址");
 };
+
 //移除noscript标识
 console.log("Github-proxy"); console.log("Copyright (C) 2025, kdxiaoyi. All right reserved.\nSee more @ //kdx233.github.io/licen");
 document.getElementById("noscript").setAttribute("style", "display:none;");
