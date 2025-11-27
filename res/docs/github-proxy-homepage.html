@@ -256,7 +256,7 @@ function throwCaughtError(...args) {
  * 向Console输出调试信息。
  * @param {any} 不限数量，均初始化为调试信息。
  */
-function debuginfo(...args) {if (!document.GHProxy_inDebugingMode) {return;};console.info(args.join("\n"));return;};
+function debuginfo (...args) {if (!document.GHProxy_inDebugingMode) {return;};console.info(args.join("\n"));return;};
 /** [独占]
  * 打开一个URI
  * @param {string} URI: 目标URI
@@ -265,7 +265,7 @@ function debuginfo(...args) {if (!document.GHProxy_inDebugingMode) {return;};con
 function openURL(URI, IsInPresentWindow) {
   if (document.GHProxy_inDebugingMode) {
     msg("打开链接：" + URI, "好");
-    debuginfo("打开链接：" + URI, "是否在当前窗口：" + IsInPresentWindow, "@openURL()");
+    // debuginfo("打开链接：" + URI, "是否在当前窗口：" + IsInPresentWindow, "@openURL()");
     return;
   }
   let linkEle = document.createElement("a");
@@ -326,11 +326,11 @@ function putErr(msg) {
   if (!msg) {
     err.innerHTML = "";
     input.error = "";
-    debuginfo("URL输入框：清空错误状态");
+    // debuginfo("URL输入框：清空错误状态");
   } else {
     err.innerHTML = msg;
     input.error = "true";
-    debuginfo("URL输入框：设置错误状态：" + msg, "@putErr()");
+    // debuginfo("URL输入框：设置错误状态：" + msg, "@putErr()");
   };
   return;
 };
@@ -374,7 +374,7 @@ const urlSelector = {
     };
     this.lock = true;
     if (this.list.length == 1) {
-      debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
+      // debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
       openURL(this.list[0]);
       return;
     };
@@ -399,12 +399,7 @@ const urlSelector = {
     this.elements.value.innerHTML = 0;
     this.selection.selected = 0;
     this.elements.root.showed = true;
-    debuginfo(
-      "待选择UI列表创建完成：",
-      `urlSelector.list = [${this.list.join(", ")}]`,
-      `urlSelector.checked = [${this.checked.join(", ")}]`,
-      "@urlSelector.init()"
-    );
+    // debuginfo("待选择UI列表创建完成：",`urlSelector.list = [${this.list.join(", ")}]`,`urlSelect or.checked = [${this.checked.join(", ")}]` ,"@urlSelector.init()");
   },
   selection: {
     selected: 0,
@@ -424,12 +419,7 @@ const urlSelector = {
       };
       urlSelector.checked[id] = !urlSelector.checked[id];
       if (urlSelector.checked[id]) {this.increase();} else {this.decrease()};
-      debuginfo(
-        `修改UI列表：反选#${id} ：`,
-        `urlSelector.list = [${urlSelector.list.join(", ")}]`,
-        `urlSelector.checked = [${urlSelector.checked.join(", ")}]`,
-        "@urlSelector.selection.revert()"
-      );
+      // debuginfo("修改UI列表：反选#${id} ：",`urlSelector.list = [${this.list.join(", ")}]`,`urlSelect or.checked = [${this.checked.join(", ")}]` ,"@urlSelector.init()");
       return urlSelector.checked[id];
     },
     revertAll: function () {
@@ -438,12 +428,7 @@ const urlSelector = {
         if (urlSelector.checked[i]) {this.increase();} else {this.decrease()};
         urlSelector.elements.list[i].btn.checked = !b;
       });
-      debuginfo(
-        `修改UI列表：全部反选 ：`,
-        `urlSelector.list = [${urlSelector.list.join(", ")}]`,
-        `urlSelector.checked = [${urlSelector.checked.join(", ")}]`,
-        "@urlSelector.selection.revertAll()"
-      );
+      // debuginfo("修改UI列表：全部反选 ：",`urlSelector.list = [${this.list.join(", ")}]`,`urlSelect or.checked = [${this.checked.join(", ")}]` ,"@urlSelector.init()");
       return;
     },
     setAll: function (b) {
@@ -461,13 +446,7 @@ const urlSelector = {
         this.selected = 0;
       };
       urlSelector.elements.value.innerHTML = this.selected;
-      debuginfo(
-        `修改UI列表：全部设为${b} ：`,
-        `urlSelector.list = [${urlSelector.list.join(", ")}]`,
-        `urlSelector.checked = [${urlSelector.checked.join(", ")}]`,
-        "@urlSelector.selection.setAll()"
-      );
-      return;
+      // debuginfo("修改UI列表：全部设为${b} ：",`urlSelector.list = [${this.list.join(", ")}]`,`urlSelect or.checked = [${this.checked.join(", ")}]` ,"@urlSelector.init()");
     },
   },
   openAll: function () {
@@ -489,10 +468,10 @@ const urlSelector = {
   exit: function () {
     this.elements.root.showed = false;
     this.lock = false;
-    debuginfo("退出选择器。", "@urlSelector.exit()");
+    // debuginfo("退出选择器。", "@urlSelector.exit()");
   },
   test: function(num) {
-    debuginfo("开始URL列表测试，填充数量：" + Math.floor(num));
+    // debuginfo("开始URL列表测试，填充数量：" + Math.floor(num));
     for (let i = 0; i < num; i++) {
       urlSelector.list.push("TestItem#" + Math.floor(Math.random() * 1e9));
     };
@@ -505,11 +484,14 @@ function newSearch(txt) {
     return;
   };
   urlSelector.list = extractURLs(txt);
-  debuginfo(`找到全部未筛选URL：["${urlSelector.list.join('", "')}"]`, "@newSearch()");
+  // debuginfo(`找到全部未筛选URL：["${urlSelector.list.join('", "')}"]`, "@newSearch()");
   /* 去除不符合条件的 */
   urlSelector.list.filter((i) => {
     let b = urlSelector.checkURL(i);
-    if (!b) { debuginfo("去除不匹配的URL：" + i, "@newSearch()"); };
+    if (!b) {
+      // debuginfo("去除不匹配的URL：" + i, "@newSearch()");
+      placeholer = undefined;
+    };
     return b;
   });
   /* 初步筛选空列表 */
