@@ -197,7 +197,7 @@
           </s-tbody>
         </s-table>
         </div>
-        <s-button slot="action" type="text">关闭</s-button>
+        <s-button onclick="urlSelector.exit()" slot="action" type="text">关闭</s-button>
         <s-button slot="action" type="text">打开所选</s-button>
     </s-dialog>
     </s-page>
@@ -365,6 +365,11 @@ const urlSelector = {
     };
   },
   init: function() {
+    if (this.lock) {
+      throwCaughtError("当前已有查询会话，请先完成。", "@urlSelector.init(): 检测到urlSelector的占用锁。");
+      return;
+    };
+    this.lock = true;
     if (this.list.length == 1) {
       debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
       openURL(this.list[0]);
@@ -446,6 +451,11 @@ const urlSelector = {
     },
   },
   openAll: function () {},
+  exit: function () {
+    this.elements.root.showed = false;
+    this.lock = false;
+    debuginfo("退出选择器。", "@urlSelector.exit()");
+  },
   test: function(num) {
     debuginfo("开始URL列表测试，填充数量：" + Math.floor(num));
     for (let i = 0; i < num; i++) {
