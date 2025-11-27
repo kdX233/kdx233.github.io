@@ -392,34 +392,31 @@ const urlSelector = {
       "待选择UI列表创建完成：",
       `urlSelector.list = [${this.list.join(", ")}]`,
       `urlSelector.checked = [${this.checked.join(", ")}]`,
-      `urlSelector.elements.list = [${this.elements.list.join(", ")}]`,
       "@urlSelector.init()"
     );
   },
   selection: {
     revert: function (id) {
       id = Math.floor(id);
-      if (id > (this.checked.length - 1) || id < 0) {
+      if (id > (urlSelector.checked.length - 1) || id < 0) {
         throwCaughtError("指定的待选URL并不存在。", `@urlSelector.selection.revert(): 数组越界：指定的待选URL并不存在。下标上限为${urlSelector.list.length - 1}但选中了${id}；当前列表为[${urlSelector.list.join(", ")}]`);
         return;
       };
-      this.checked[id] = !this.checked[id];
+      urlSelector.checked[id] = !urlSelector.checked[id];
       debuginfo(
         `修改UI列表：反选#${id} ：`,
-        `urlSelector.list = [${this.list.join(", ")}]`,
-        `urlSelector.checked = [${this.checked.join(", ")}]`,
-        `urlSelector.elements.list = [${this.elements.list.join(", ")}]`,
+        `urlSelector.list = [${urlSelector.list.join(", ")}]`,
+        `urlSelector.checked = [${urlSelector.checked.join(", ")}]`,
         "@urlSelector.selection.revert()"
       );
-      return this.checked[id];
+      return urlSelector.checked[id];
     },
     revertAll: function () {
       msg("暂未实现")
       debuginfo(
         `修改UI列表：全部反选 ：`,
-        `urlSelector.list = [${this.list.join(", ")}]`,
-        `urlSelector.checked = [${this.checked.join(", ")}]`,
-        `urlSelector.elements.list = [${this.elements.list.join(", ")}]`,
+        `urlSelector.list = [${urlSelector.list.join(", ")}]`,
+        `urlSelector.checked = [${urlSelector.checked.join(", ")}]`,
         "@urlSelector.selection.revertAll()"
       );
       return;
@@ -438,15 +435,21 @@ const urlSelector = {
       };
       debuginfo(
         `修改UI列表：全部设为${b} ：`,
-        `urlSelector.list = [${this.list.join(", ")}]`,
-        `urlSelector.checked = [${this.checked.join(", ")}]`,
-        `urlSelector.elements.list = [${this.elements.list.join(", ")}]`,
+        `urlSelector.list = [${urlSelector.list.join(", ")}]`,
+        `urlSelector.checked = [${urlSelector.checked.join(", ")}]`,
         "@urlSelector.selection.setAll()"
       );
       return;
     },
   },
   openAll: function () {},
+  test: function(num) {
+    debuginfo("开始URL列表测试，填充数量：" + Math.floor(num));
+    for (let i = 0; i < num; i++) {
+      urlSelector.list.push("TestItem#" + Math.floor(Math.random() * 1e9));
+    };
+    this.init();
+  },
 };
 function newSearch(txt) {
   if (urlSelector.lock) {
