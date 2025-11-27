@@ -151,10 +151,54 @@
     <s-dialog id="urls_dialog">
       <div slot="headline"> 识别到多个URL </div>
       <div slot="text">
-        
-      </div>
-      <s-button slot="action" type="text">全部打开</s-button>
-      <s-button slot="action" type="text">关闭</s-button>
+        <s-tooltip>
+          <s-icon-button onclick="urlSelector.selection.setAll(true)" slot="trigger">
+            <s-icon>
+              <svg viewBox="0 -960 960 960">
+                <path
+                  d="M280-280v-400h400v400H280Zm80-80h240v-240H360v240ZM200-200v80q-33 0-56.5-23.5T120-200h80Zm-80-80v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm80-160h-80q0-33 23.5-56.5T200-840v80Zm80 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80q0 33-23.5 56.5T760-120Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80q33 0 56.5 23.5T840-760h-80Z">
+                </path>
+              </svg>
+            </s-icon>
+          </s-icon-button>
+          全选
+        </s-tooltip>
+        <s-tooltip>
+          <s-icon-button onclick="urlSelector.selection.setAll(false)" slot="trigger">
+            <s-icon>
+              <svg viewBox="0 -960 960 960">
+                <path
+                  d="M791-56 567-280H280v-287L56-791l56-57 736 736-57 56ZM360-360h127L360-487v127Zm320-33-80-80v-127H473l-80-80h287v287ZM200-200v80q-33 0-56.5-23.5T120-200h80Zm-80-80v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm160 480v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 480v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80q33 0 56.5 23.5T840-760h-80Z">
+                </path>
+              </svg>
+            </s-icon>
+          </s-icon-button>
+          全不选
+        </s-tooltip>
+        <s-tooltip>
+          <s-icon-button slot="trigger">
+            <s-icon>
+              <svg viewBox="0 -960 960 960">
+                <path
+                  d="M400-240v-480h480v480H400Zm80-80h320v-320H480v320Zm-240 80v-80h80v80h-80Zm0-400v-80h80v80h-80ZM80-240v-80h80v80H80Zm0-200v-80h80v80H80Zm0-200v-80h80v80H80Zm560 160Z">
+                </path>
+              </svg>
+            </s-icon>
+          </s-icon-button>
+          反选
+        </s-tooltip>
+        <div style="width: auto; height: .2rem;"></div>
+        <s-table style="overflow: auto; display: block">
+          <s-tbody id="list_root">
+            <s-tr>
+              <s-td>item2</s-td>
+              <s-td>item3</s-td>
+            </s-tr>
+          </s-tbody>
+        </s-table>
+        </div>
+        <s-button slot="action" type="text">关闭</s-button>
+        <s-button slot="action" type="text">打开所选</s-button>
     </s-dialog>
     </s-page>
 </body>
@@ -295,18 +339,11 @@ const urlSelector = {
   lock: false,
   elements:{
     root: document.getElementById("urls_dialog"),
+    list: [],
+    listRoot: document.getElementById("list_root"),
   },
   list: [],
   checked: [],
-  modifyChecked: function(id) {
-    id = Math.floor(id);
-    if (id >= (this.checked.length - 1) || id < 0) {
-      throwCaughtError("指定的待选URL并不存在。", `@urlSelector.modifyChecked(): 数组越界：指定的待选URL并不存在。下标上限为${urlSelector.list.length - 1}但选中了${id}；当前列表为[${urlSelector.list.join(", ")}]`);
-      return;
-    };
-    this.checked[id] = !this.checked[id];
-    return this.checked[id];
-  },
   checkURL: function(url) {
     const exp = [
       /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:releases|archive)\/.*$/i,
@@ -328,12 +365,88 @@ const urlSelector = {
     };
   },
   init: function() {
-    if (this.list.length == 1) {
-      debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
-      openURL(this.list[0]);
-      return;
-    };
+    // if (this.list.length == 1) {
+    //   debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
+    //   openURL(this.list[0]);
+    //   return;
+    // };
+    this.checked = new Array(this.list.length).fill(false);
+    this.elements.listRoot.innerHTML = ``;
+    this.elements.list = [];
+    this.list.forEach((i, num) => {
+      let parent = document.createElement("s-tr");
+      let urlinfo = document.createElement("s-td");
+      let btn = document.createElement("s-checkbox");
+      btn.addEventListener("change", (e) => {
+        urlSelector.selection.revert(num);
+        e.target.checked = urlSelector.checked[num];
+      });
+      urlinfo.innerHTML = `<a href="${i}" target="_blank">${i}</a>`;
+      parent.appendChild(document.createElement("s-td").appendChild(btn));
+      parent.appendChild(urlinfo);
+      this.elements.listRoot.appendChild(parent);
+      this.elements.list.push({parent: parent, urlinfo: urlinfo, btn: btn});
+    });
+    this.elements.root.showed = true;
+    debuginfo(
+      "待选择UI列表创建完成：",
+      `urlSelector.list = [${this.list.join(", ")}]`,
+      `urlSelector.checked = [${this.checked.join(", ")}]`,
+      `urlSelector.elements.list = [${this.elements.list.join(", ")}]`,
+      "@urlSelector.init()"
+    );
   },
+  selection: {
+    revert: function (id) {
+      id = Math.floor(id);
+      if (id > (this.checked.length - 1) || id < 0) {
+        throwCaughtError("指定的待选URL并不存在。", `@urlSelector.selection.revert(): 数组越界：指定的待选URL并不存在。下标上限为${urlSelector.list.length - 1}但选中了${id}；当前列表为[${urlSelector.list.join(", ")}]`);
+        return;
+      };
+      this.checked[id] = !this.checked[id];
+      debuginfo(
+        `修改UI列表：反选#${id} ：`,
+        `urlSelector.list = [${this.list.join(", ")}]`,
+        `urlSelector.checked = [${this.checked.join(", ")}]`,
+        `urlSelector.elements.list = [${this.elements.list.join(", ")}]`,
+        "@urlSelector.selection.revert()"
+      );
+      return this.checked[id];
+    },
+    revertAll: function () {
+      msg("暂未实现")
+      debuginfo(
+        `修改UI列表：全部反选 ：`,
+        `urlSelector.list = [${this.list.join(", ")}]`,
+        `urlSelector.checked = [${this.checked.join(", ")}]`,
+        `urlSelector.elements.list = [${this.elements.list.join(", ")}]`,
+        "@urlSelector.selection.revertAll()"
+      );
+      return;
+    },
+    setAll: function (b) {
+      if (b) {
+        urlSelector.checked.fill(true);
+        urlSelector.elements.list.forEach((i) => {
+          i.btn.checked = true;
+        });
+      } else {
+        urlSelector.checked.fill(false);
+        urlSelector.elements.list.forEach((i) => {
+          i.btn.checked = false;
+        });
+      };
+      debuginfo(
+        `修改UI列表：全部设为${b} ：`,
+        `urlSelector.list = [${this.list.join(", ")}]`,
+        `urlSelector.checked = [${this.checked.join(", ")}]`,
+        `urlSelector.elements.list = [${this.elements.list.join(", ")}]`,
+        "@urlSelector.selection.setAll()"
+      );
+      return;
+    },
+  },
+  openAll: function () {},
 };
 function newSearch(txt) {
   if (urlSelector.lock) {
