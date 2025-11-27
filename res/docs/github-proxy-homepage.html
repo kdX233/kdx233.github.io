@@ -198,7 +198,7 @@
         </s-table>
         </div>
         <s-button onclick="urlSelector.exit()" slot="action" type="text">关闭</s-button>
-        <s-button slot="action" type="text">打开所选</s-button>
+        <s-button onclick="urlSelector.openAll()" slot="action" type="text">打开所选</s-button>
     </s-dialog>
     </s-page>
 </body>
@@ -401,6 +401,8 @@ const urlSelector = {
     );
   },
   selection: {
+    increase: function() {},
+    decrease: function() {},
     revert: function (id) {
       id = Math.floor(id);
       if (id > (urlSelector.checked.length - 1) || id < 0) {
@@ -450,7 +452,22 @@ const urlSelector = {
       return;
     },
   },
-  openAll: function () {},
+  openAll: function () {
+    let selected = [];
+    this.checked.forEach((b, i) => {
+      if (!b) { return; };
+        selected.push(this.list[i]);
+    });
+    if (/* 没有选中的 */selected.length == 0) {
+      throwCaughtError("没有选中的项目。", "没有选中的项目，无法解锁占用锁。", "@urlSelector.openAll()");
+    } else {
+      msg(`即将开始请求${selected.length}条链接。`, "好");
+      selected.forEach((u) => {
+        openURL(u, false);
+      });
+    };
+    this.exit();
+  },
   exit: function () {
     this.elements.root.showed = false;
     this.lock = false;
