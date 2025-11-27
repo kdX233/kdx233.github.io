@@ -199,11 +199,11 @@ function msg(Message, ConfirmBtnText, type, duration, onclick, align, icon) {
  * @throws {Error} 不接受空参数。
  */
 function throwCaughtError(...args) {
-  if (args.length = 0) {
+  if (args.length == 0) {
     throw new Error("不接受空参数");
   };
-  let e = new Error(...args);
-  console.error("Caught Error:\n", e);
+  let e = new Error(args.join("\n"));
+  console.error("Caught Error: ", e);
   msg(args[0], "好", true);
   return e;
 };
@@ -273,8 +273,7 @@ const urlSelector = {
   modifyChecked: function(id) {
     id = Math.floor(id);
     if (id >= (urlSelector.checked.length - 1) || id < 0) {
-      msg("数组越界：指定的待选URL并不存在。", "好", true);
-      console.error("Caught Error while handling urlSelector.modifyChecked(): 数组越界：指定的待选URL并不存在。");
+      throwCaughtError("指定的待选URL并不存在。", `@urlSelector.modifyChecked(): 数组越界：指定的待选URL并不存在。下标上限为${urlSelector.list.length - 1}但选中了${id}；当前列表为[${urlSelector.list.join(", ")}]`);
       return;
     };
     urlSelector.checked[id] = !urlSelector.checked[id];
@@ -304,8 +303,7 @@ const urlSelector = {
 };
 function newSearch(txt) {
   if (urlSelector.lock) {
-    msg("查询锁被占用，当前已有查询会话，请先完成。", "好", true);
-    console.error("Caught Error when handling newSearch(): 查询锁被占用，当前已有查询会话，请先完成。");
+    throwCaughtError("当前已有查询会话，请先完成。", "@newSearch(): 检测到urlSelector的占用锁。");
   };
 };
 
@@ -320,7 +318,7 @@ try {
   let cfMirrorReg = /workers\.dev\//i;
   if (cfMirrorReg.test(window.location.href)) { document.getElementById("link-cf").setAttribute("class", "disabled-a"); };
 } catch(e) {
-  console.error("Caught error when handling visit_origin", e);
+  throwCaughtError("未能识别站点域名。", "@link[try]: ", e);
 };
 
 //更新输入框长度
@@ -358,8 +356,7 @@ paste/* 粘贴 */.addEventListener("click", () => {
     putErr("");
     newSearch(input.value);
   }).catch((err) => {
-    msg("无法获取剪贴板，请检查对应权限。", "好", true);
-    console.error("Caught Error when handling Event.PasteBtn: ", err);
+    throwCaughtError("无法获取剪贴板内容，请检查是否授予权限。", '@btn."paste".event.click: 无法获取剪贴板。', '@navigator.clipboard.readText(): 抛出了Error:', err);
   });
 });
 clear/* 清空 */.addEventListener("click", () => { input.value = ""; updatewidth(); putErr(); });
