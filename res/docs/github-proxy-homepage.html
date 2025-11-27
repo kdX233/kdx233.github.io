@@ -207,12 +207,22 @@ function throwCaughtError(...args) {
   msg(args[0], "好", true);
   return e;
 };
-/**
+/** [独占]
+ * 向Console输出调试信息。
+ * @param {any} 不限数量，均初始化为调试信息。
+ */
+function debuginfo(...args) {if (!document.GHProxy_inDebugingMode) {return;};console.info(args.join("\n"));return;};
+/** [独占]
  * 打开一个URI
  * @param {string} URI: 目标URI
  * @param {boolen} IsInPresentWindow: 是否指定当前窗口
  */
 function openURL(URI, IsInPresentWindow) {
+  if (document.GHProxy_inDebugingMode) {
+    msg("打开链接：" + URI, "好");
+    debuginfo("打开链接：" + URI, "是否在当前窗口：" + IsInPresentWindow, "@openURL()");
+    return;
+  }
   let linkEle = document.createElement("a");
   if (!!IsInPresentWindow) {
     linkEle.target = "_self";
@@ -262,7 +272,7 @@ function extractURLs(text) {
   // 4. 合并、去重、返回
   return Array.from(new Set([...withProtocol, ...noProtocol]));
 };
-/**
+/** [独占]
  * 将当前页面的「URL输入框」设置为错误状态
  * @param {string} msg: 提示信息。为空则清空错误状态。
  * @returns {undefined}
@@ -271,9 +281,11 @@ function putErr(msg) {
   if (!msg) {
     err.innerHTML = "";
     input.error = "";
+    debuginfo("URL输入框：清空错误状态");
   } else {
     err.innerHTML = msg;
     input.error = "true";
+    debuginfo("URL输入框：设置错误状态：" + msg, "@putErr()");
   };
   return;
 };
@@ -317,6 +329,7 @@ const urlSelector = {
   },
   init: function() {
     if (this.list.length == 1) {
+      debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
       openURL(this.list[0]);
       return;
     };
@@ -328,9 +341,12 @@ function newSearch(txt) {
     return;
   };
   urlSelector.list = extractURLs(txt);
+  debuginfo(`找到全部未筛选URL：["${urlSelector.list.join('", "')}"]`, "@newSearch()");
   /* 去除不符合条件的 */
   urlSelector.list.filter((i) => {
-    return checkURL(i);
+    let b = urlSelector.checkURL(i);
+    if (!b) { debuginfo("去除不匹配的URL：" + i, "@newSearch()"); };
+    return b;
   });
   /* 初步筛选空列表 */
   if (urlSelector.list.length == 0) {
@@ -343,7 +359,7 @@ function newSearch(txt) {
 //link域识别
 try {
   let localReg = /(127\.0\.0\.1)|(0\.0\.0\.0)|(localhost)/i;
-  if (localReg.test(window.location.href)) { msg("检测到本地调试状态，代理加速将不可用。", "了解", "info"); document.getElementById("_pmd-pageTitle").innerHTML = `Github Proxy [LoaclDebug]`; };
+  if (localReg.test(window.location.href)) { document.GHProxy_inDebugingMode = true; msg("检测到本地调试状态，代理加速将不可用。", "了解", "info"); document.getElementById("_pmd-pageTitle").innerHTML = `Github Proxy [LoaclDebug]`; };
   let mainMirrorReg = /kdxiaoyi\.top\//i;
   if (mainMirrorReg.test(window.location.href)) { document.getElementById("link-main").setAttribute("class", "disabled-a"); };
   let euorgMirrorReg = /eu\.org\//i;
