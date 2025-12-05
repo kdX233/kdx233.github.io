@@ -376,6 +376,7 @@ const urlSelector = {
     if (this.list.length == 1) {
       // debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
       openURL(this.list[0]);
+      this.exit();
       return;
     };
     this.checked = new Array(this.list.length).fill(false);
