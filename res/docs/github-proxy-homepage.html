@@ -375,7 +375,7 @@ const urlSelector = {
     this.lock = true;
     if (this.list.length == 1) {
       // debuginfo("发现单个URL,自动打开：" + this.list, "@urlSelector.init()")
-      openURL(this.list[0]);
+      openURL("/" + this.list[0]);
       this.exit();
       return;
     };
@@ -390,7 +390,7 @@ const urlSelector = {
         urlSelector.selection.revert(num);
         e.target.checked = urlSelector.checked[num];
       });
-      urlinfo.innerHTML = `<a href="${i}" target="_blank">${i}</a>`;
+      urlinfo.innerHTML = `<a href="/${i}" target="_blank">${i}</a>`;
       parent.appendChild(document.createElement("s-td").appendChild(btn));
       parent.appendChild(urlinfo);
       this.elements.listRoot.appendChild(parent);
@@ -461,7 +461,7 @@ const urlSelector = {
     } else {
       msg(`即将开始请求${selected.length}条链接。`, "好");
       selected.forEach((u) => {
-        openURL(u, false);
+        openURL("/" + u, false);
       });
     };
     this.exit();
