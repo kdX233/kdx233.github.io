@@ -1,4 +1,5 @@
 # CSS Library
+该目录下全部文件已弃用，仅存档
 
 ## [github.pages.css](./github.pages.css)
 PMD框架v3才会独立为一个jeklly主题，在此之前都基于其它主题运行。
