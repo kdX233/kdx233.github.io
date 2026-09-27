@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>字体目录</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1b1d20;
+      --muted: #6b7280;
+      --line: #e6e8eb;
+      --line-strong: #c3c9d1;
+      --card: #ffffff;
+      --soft: #f6f7f9;
+      --accent: #2f6feb;
+      --radius: 12px;
+      --preview-size: 30px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d0f11;
+        --fg: #e9ebee;
+        --muted: #99a1a9;
+        --line: #24282c;
+        --line-strong: #3a4046;
+        --card: #131619;
+        --soft: #191d21;
+        --accent: #7ba4ff;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+
+    .site-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: .01em;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px 28px;
+      padding: 14px 18px;
+      margin-bottom: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .field input[type="text"] {
+      width: 260px;
+      max-width: 60vw;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 14px;
+      color: var(--fg);
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color .16s ease;
+    }
+
+    .field input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    .field input[type="range"] {
+      width: 140px;
+      accent-color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      transition: border-color .18s ease;
+    }
+
+    .card:hover {
+      border-color: var(--line-strong);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .tag {
+      margin-left: auto;
+      flex: none;
+      padding: 2px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .tag.css {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .badge {
+      flex: none;
+      margin-left: auto;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--soft);
+    }
+
+    .card-head .badge+.tag {
+      margin-left: 0;
+    }
+
+    .sample {
+      margin: 0;
+      font-size: var(--preview-size);
+      line-height: 1.35;
+      letter-spacing: .01em;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .card.fail .sample {
+      color: var(--muted);
+    }
+
+    .card-foot {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: auto;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .card-foot a,
+    .card-foot button {
+      padding: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      transition: color .16s ease, border-color .16s ease;
+    }
+
+    .card-foot a:hover,
+    .card-foot button:hover {
+      color: var(--fg);
+      border-bottom-color: currentColor;
+    }
+
+    .card-foot button.copied {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .hint,
+    .empty {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .empty {
+      max-width: 640px;
+      line-height: 1.9;
+    }
+
+    .empty code {
+      padding: 1px 5px;
+      border-radius: 5px;
+      background: var(--soft);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 520px) {
+      .wrap {
+        padding: 36px 18px 72px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <h1 class="title">字体目录</h1>
+      <span class="sub" id="count"></span>
+    </header>
+
+    <div class="toolbar">
+      <label class="field">
+        预览文本
+        <input id="preview" type="text" autocomplete="off" spellcheck="false" />
+      </label>
+      <label class="field">
+        字号
+        <input id="size" type="range" min="14" max="72" step="1" />
+      </label>
+    </div>
+
+    <main class="grid" id="grid"></main>
+  </div>
+
+  <noscript>
+    <p class="hint" style="padding:24px">需要启用 JavaScript 才能渲染字体预览。</p>
+  </noscript>
+
+  <script>
+    /* ==========================================================================
+     * 字体目录：声明式配置
+     * 只需在 CATALOG.fonts 中声明，打开页面即自动加载、渲染并展示预览文本。
+     *
+     * 1) 提供 CSS 的字体 —— 写 css 字段（CSS 中的 @font-face 会被自动识别，
+     *    包括字族名与字重；也可用 family 显式指定）：
+     *      { name: '示例字体', css: './example/index.css' }
+     *
+     * 2) 只有字体文件的字体 —— 写 files 字段，自动构造 @font-face 并注入页面：
+     *      { name: '示例字体', files: [
+     *          { weight: 400, style: 'normal', url: './example/regular.woff2' },
+     *          { weight: 700, style: 'normal', url: './example/bold.woff2' }
+     *      ]}
+     *    也可简写为路径字符串：files: ['./example/regular.woff2']。
+     *    字形缺失时不回落到浏览器默认字体，而是按回退链使用其他字体。
+     * ========================================================================== */
+    const CATALOG = {
+      preview: '中国智造，慧及全球。A quick fox jumps over a lazy dog. 0123456789 !@#$%^&*()_+-=[]{};:\'"/?.>,<~`',
+      size: 30,
+      fonts: [
+        { name: 'MiSans VF', css: './MiSans/result.css' },
+        { name: 'MiSans L3', css: './MiSans L3/result.css' },
+        { name: '黄令东齐伋体 QIJIFALLBACK', css: './QIJIFALLBACK/result.css' },
+        { name: '思源宋体 CN', css: './SourceHanSerifCN/result.css' },
+        { name: '思源宋体 SC', css: './SourceHanSerifSC/result.css' },
+        { name: '点阵字体 Unifont', css: './unifont/result.css' },
+        { name: '文泉驿微米黑', css: './WenQuanWeiMiHei/result.css' },
+        { name: 'Mojangles', files: ['./Mojangles.ttf'] },
+        { name: 'DIN Pro Medium', files: ['./DINPro-Medium.otf'] },
+      ],
+    };
+
+    const state = { preview: CATALOG.preview, size: CATALOG.size, items: [] };
+    const $ = (sel, root = document) => root.querySelector(sel);
+
+    /* ---------- 工具函数 ---------- */
+
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+
+    /** 转义为 HTML 属性值；换行用实体表示，避免解析器做空白规范化 */
+    const escAttr = (s) => esc(s).replace(/\r?\n/g, '&#10;');
+
+    /** 转为绝对地址，便于复制给他人使用 */
+    function absoluteUrl(url) {
+      try { return new URL(url, location.href).href; } catch (e) { return String(url); }
+    }
+
+    /** 复制文本到剪贴板：优先 Clipboard API，不可用时回退到临时 textarea */
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) { /* 落到回退方案 */ }
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return ok;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    /* 字形缺失时的回退链：先用系统中已有的其他字体，最后才落到浏览器默认字体 */
+    const FALLBACK_FAMILIES = 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif';
+
+    const FORMAT_BY_EXT = { woff2: 'woff2', woff: 'woff', ttf: 'truetype', otf: 'opentype', ttc: 'truetype', eot: 'embedded-opentype' };
+
+    /** 把 files 中的字符串或对象统一为 { url, weight, style, src } */
+    function normalizeFile(file) {
+      const raw = typeof file === 'string' ? { url: file } : (file || {});
+      const url = String(raw.url || '').trim();
+      const ext = (url.split(/[?#]/)[0].match(/\.([a-z0-9]+)$/i) || [])[1];
+      const format = raw.format || FORMAT_BY_EXT[String(ext || '').toLowerCase()];
+      const src = [
+        raw.local ? `local(${quoteFamily(raw.local)})` : '',
+        url ? `url(${JSON.stringify(url)})${format ? ` format(${JSON.stringify(format)})` : ''}` : '',
+      ].filter(Boolean).join(', ');
+      return { url, weight: String(raw.weight || 400), style: raw.style || 'normal', format, src };
+    }
+
+    /** 构造 @font-face 并注入页面，交给浏览器下载、缓存并处理字形回退 */
+    function injectFontFaces(family, specs) {
+      const style = document.createElement('style');
+      style.setAttribute('data-font-family', family);
+      style.textContent = specs
+        .filter((f) => f.src)
+        .map((f) => `@font-face { font-family: ${quoteFamily(family)}; src: ${f.src};`
+          + ` font-weight: ${f.weight}; font-style: ${f.style}; font-display: swap; }`)
+        .join('\n');
+      document.head.appendChild(style);
+      return style;
+    }
+
+    /** 把字族名包装为 CSS 可用的引号形式 */
+    const quoteFamily = (family) => '"' + String(family).replace(/["\\]/g, '') + '"';
+
+    /** 读取样式表中所有 @font-face 声明 */
+    function readFontFaces(sheet) {
+      const faces = [];
+      if (!sheet) return faces;
+      try {
+        for (const rule of sheet.cssRules) {
+          if (rule.constructor.name !== 'CSSFontFaceRule') continue;
+          faces.push({
+            family: (rule.style.getPropertyValue('font-family') || '').replace(/["']/g, '').trim(),
+            weight: (rule.style.getPropertyValue('font-weight') || '').trim(),
+          });
+        }
+      } catch (e) { /* 跨域样式表无法读取 */ }
+      return faces;
+    }
+
+    /** 从已注册的 FontFace 中收集字重 */
+    function weightsOf(family) {
+      const out = new Set();
+      document.fonts.forEach((f) => {
+        if ((f.family || '').replace(/["']/g, '').trim() === family) out.add(String(f.weight || '400'));
+      });
+      return [...out].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    }
+
+    /* ---------- 加载 ---------- */
+
+    async function loadEntry(entry, index) {
+      const item = {
+        index,
+        name: entry.name || '未命名字体',
+        family: entry.family || entry.name || '未命名字体',
+        kind: entry.css ? 'css' : 'files',
+        entry,
+        weights: [],
+        specs: [],
+        ok: false,
+        styleEl: null,
+      };
+
+      if (entry.css) {
+        const specs = (entry.files || []).map(normalizeFile);
+        item.weights = [...new Set(specs.map((f) => f.weight))]
+          .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+        // 构造 @font-face 并注入页面，由浏览器负责下载与字体回退
+        if (specs.length) item.styleEl = injectFontFaces(item.family, specs);
+
+        const results = await Promise.all(specs.map(async (f) => {
+          try {
+            const faces = await document.fonts.load(`${f.style} ${f.weight} 16px ${quoteFamily(item.family)}`, state.preview);
+            return faces.length > 0;
+          } catch (e) {
+            return false;
+          }
+        }));
+        item.ok = results.some(Boolean) || document.fonts.check(`16px ${quoteFamily(item.family)}`);
+
+        const hrefs = [].concat(entry.css).filter(Boolean);
+        const sheets = [];
+        for (const href of hrefs) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = href;
+          const ok = await new Promise((res) => {
+            link.addEventListener('load', () => res(true), { once: true });
+            link.addEventListener('error', () => res(false), { once: true });
+            document.head.appendChild(link);
+          });
+          if (ok) sheets.push(link.sheet);
+        }
+        if (sheets.length) {
+          const faces = sheets.flatMap(readFontFaces);
+          const family = entry.family || (faces[0] && faces[0].family);
+          if (family) item.family = family;
+          const weights = [...new Set(faces.map((f) => f.weight).filter(Boolean))]
+            .sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }));
+          if (weights.length) item.weights = weights;
+          item.ok = true;
+        }
+        if (!item.weights.length) item.weights = weightsOf(item.family);
+      } else if (entry.files && entry.files.length) {
+        const specs = entry.files.map(normalizeFile);
+        item.specs = specs;
+        item.weights = [...new Set(specs.map((f) => f.weight))]
+          .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+        // 构造 @font-face 并注入页面，由浏览器负责下载与字体回退
+        item.styleEl = injectFontFaces(item.family, specs);
+
+        const results = await Promise.all(specs.map((f) => document.fonts
+          .load(`${f.style} ${f.weight} 16px ${quoteFamily(item.family)}`, state.preview)
+          .then((faces) => faces.length > 0)
+          .catch(() => false)));
+        item.ok = results.some(Boolean) || document.fonts.check(`16px ${quoteFamily(item.family)}`);
+      }
+
+      return item;
+    }
+
+    /* ---------- 渲染 ---------- */
+
+    /** 收集条目声明的资源链接（CSS 地址与字体文件），统一转为绝对地址供复制 */
+    function resourceLinks(entry) {
+      const links = [];
+      for (const css of [].concat(entry.css || []).filter(Boolean)) {
+        links.push({ href: absoluteUrl(css), label: 'CSS 地址' });
+      }
+      for (const file of entry.files || []) {
+        const url = typeof file === 'string' ? file : (file && file.url) || '';
+        if (!url) continue;
+        const full = absoluteUrl(url);
+        links.push({ href: full, label: full.split('/').pop() || full });
+      }
+      return links;
+    }
+
+    /** 生成可直接粘贴使用的 font-family 声明（回退链与卡片预览保持一致） */
+    function fontFamilySnippet(family) {
+      return `font-family: ${quoteFamily(family)}, ui-sans-serif, sans-serif;`;
+    }
+
+    /** 生成可直接粘贴使用的 @font-face 规则（字体地址统一转为绝对路径） */
+    function fontFaceSnippet(family, specs) {
+      return specs.filter((f) => f.url).map((f) => {
+        const src = `url(${JSON.stringify(absoluteUrl(f.url))})`
+          + (f.format ? ` format(${JSON.stringify(f.format)})` : '');
+        return [
+          '@font-face {',
+          `  font-family: ${quoteFamily(family)};`,
+          `  src: ${src};`,
+          `  font-weight: ${f.weight};`,
+          `  font-style: ${f.style};`,
+          '  font-display: swap;',
+          '}',
+        ].join('\n');
+      }).join('\n\n');
+    }
+
+    function render() {
+      const grid = $('#grid');
+      grid.innerHTML = '';
+
+      const frag = document.createDocumentFragment();
+      for (const it of state.items) {
+        const card = document.createElement('article');
+        card.className = 'card' + (it.ok ? '' : ' fail');
+        const meta = it.weights.length ? it.weights.join(' / ') : (it.kind === 'css' ? 'CSS 引入' : '');
+        const links = resourceLinks(it.entry).map((l) => `<button type="button" class="copy"`
+          + ` data-copy="${escAttr(l.href)}" data-label="${escAttr(l.label)}"`
+          + ` title="复制链接：${escAttr(l.href)}">${esc(l.label)}</button>`).join('');
+        // 复制代码片段：CSS 字体给 font-family 声明，字体文件给 @font-face 规则
+        const isCss = it.kind === 'css';
+        const snippet = isCss
+          ? fontFamilySnippet(it.family)
+          : fontFaceSnippet(it.family, it.specs || []);
+        const snippetLabel = isCss ? '复制 font-family' : '复制 @font-face';
+        const snippetBtn = snippet
+          ? `<button type="button" class="copy code" data-copy="${escAttr(snippet)}"`
+          + ` data-label="${snippetLabel}"`
+          + ` title="${escAttr(snippet.replace(/\n\s*/g, ' '))}">${snippetLabel}</button>`
+          : '';
+        card.innerHTML = `
+      <div class="card-head">
+        <h2 class="name">${esc(it.name)}</h2>
+        ${it.ok ? '' : '<span class="badge">未加载</span>'}
+        <span class="tag ${it.kind}">${it.kind === 'css' ? 'CSS' : '字体文件'}</span>
+      </div>
+      <p class="sample" style="font-family:${esc(quoteFamily(it.family))},ui-sans-serif,sans-serif">${esc(state.preview)}</p>
+      <div class="card-foot">
+        <span>${esc(meta)}</span>
+        ${links}${snippetBtn}
+      </div>`;
+        frag.appendChild(card);
+      }
+      grid.appendChild(frag);
+
+      $('#count').textContent = state.items.length ? `${state.items.length} 款字体` : '';
+    }
+
+    function showEmpty() {
+      $('#grid').innerHTML = `
+    <div class="empty">
+      <p>还没有声明字体。打开本文件，在 <code>CATALOG.fonts</code> 中填入字体名称与地址即可。</p>
+      <p>提供 CSS 的字体：<code>{ name: 'Inter', css: './inter/index.css' }</code><br />
+         只有字体文件的字体：<code>{ name: 'Inter', files: [{ weight: 400, url: './inter/regular.woff2' }] }</code></p>
+    </div>`;
+    }
+
+    /* ---------- 初始化 ---------- */
+
+    async function init() {
+      const input = $('#preview');
+      const range = $('#size');
+
+      input.value = state.preview;
+      range.value = state.size;
+      document.documentElement.style.setProperty('--preview-size', state.size + 'px');
+
+      input.addEventListener('input', () => {
+        state.preview = input.value;
+        document.querySelectorAll('.sample').forEach((el) => { el.textContent = state.preview; });
+      });
+
+      range.addEventListener('input', () => {
+        state.size = Number(range.value);
+        document.documentElement.style.setProperty('--preview-size', state.size + 'px');
+      });
+
+      // 卡片底部：点击按钮即复制其 data-copy 内容（资源地址或 font-family 声明）
+      $('#grid').addEventListener('click', async (e) => {
+        const btn = e.target.closest('button.copy');
+        if (!btn) return;
+        const ok = await copyText(btn.dataset.copy || '');
+        const label = btn.dataset.label || btn.textContent;
+        btn.textContent = ok ? '已复制 ✓' : '复制失败';
+        btn.classList.toggle('copied', ok);
+        clearTimeout(btn._resetTimer);
+        btn._resetTimer = setTimeout(() => {
+          btn.textContent = label;
+          btn.classList.remove('copied');
+        }, 1400);
+      });
+
+      const list = Array.isArray(CATALOG.fonts) ? CATALOG.fonts : [];
+      if (!list.length) { showEmpty(); return; }
+
+      $('#grid').innerHTML = '<p class="hint">正在加载字体…</p>';
+
+      for (let i = 0; i < list.length; i++) state.items.push(await loadEntry(list[i], i));
+
+      try { await document.fonts.ready; } catch (e) { /* 忽略 */ }
+      state.items.forEach((it) => { if (!it.weights.length) it.weights = weightsOf(it.family); });
+      state.items.sort((a, b) => a.name.localeCompare(b.name, 'zh-Hans-CN'));
+
+      render();
+    }
+
+    init();
+  </script>
+</body>
+
+</html>
