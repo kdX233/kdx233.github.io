@@ -107,21 +107,21 @@ pageElements = {
 styleEle = document.createElement("style");
 styleEle.innerHTML += `
   html{
-    --pmd-bg-src: url(${conf.img.background.src});
-    --pmd-bg-blur: blur(${conf.img.background.blur}px);
-    --pmd-bg-alpha-l: ${conf.img.background.alpha[0]};
-    --pmd-bg-alpha-d: ${conf.img.background.alpha[1]};
+    --pmd-bg-src: url(${conf?.img.background.src});
+    --pmd-bg-blur: blur(${conf?.img.background.blur}px);
+    --pmd-bg-alpha-l: ${conf?.img.background.alpha[0]};
+    --pmd-bg-alpha-d: ${conf?.img.background.alpha[1]};
   }
 `;
-if (!!conf.info.style) {
-  styleEle.innerHTML += conf.info.style;
+if (!!conf?.info.style) {
+  styleEle.innerHTML += conf?.info.style;
 }
 document.head.appendChild(styleEle);
 /* 侧栏内容覆写 */
-pageElements.content.lsidebar.slot1.innerHTML = `<div slot="image"><img title="${conf.sidebar.solt_1.title}" alt="${conf.sidebar.solt_1.alt}" class="ui-img sidebar_img" pmduiimg="true" src="${conf.sidebar.solt_1.src}"></div><div slot="headline"><span>${conf.sidebar.solt_1.alt}</span></div>`;
-pageElements.content.lsidebar.slot2.innerHTML = conf.sidebar.solt_2.innerHTML;
-pageElements.content.lsidebar.slot4.saying.innerHTML = `<center>${conf.info.saying}</center>`;
-pageElements.content.lsidebar.slot4.license.innerHTML = `<center><small>以<a href="${conf.info.licen.link}">${conf.info.licen.what}</a>协议提供内容</small></center>`;
+pageElements.content.lsidebar.slot1.innerHTML = `<div slot="image"><img title="${conf?.sidebar.solt_1.title}" alt="${conf?.sidebar.solt_1.alt}" class="ui-img sidebar_img" pmduiimg="true" src="${conf?.sidebar.solt_1.src}"></div><div slot="headline"><span>${conf?.sidebar.solt_1.alt}</span></div>`;
+pageElements.content.lsidebar.slot2.innerHTML = conf?.sidebar.solt_2.innerHTML;
+pageElements.content.lsidebar.slot4.saying.innerHTML = `<center>${conf?.info.saying}</center>`;
+pageElements.content.lsidebar.slot4.license.innerHTML = `<center><small>以<a href="${conf?.info.licen.link}">${conf?.info.licen.what}</a>协议提供内容</small></center>`;
 /* 配色功能 */
 function ChangeColorTheme(target, animationCenter) {
   if /* 若传入无效动画中心元素则指定为侧栏按钮 */ (!(animationCenter instanceof HTMLElement)) { animationCenter = pageElements.appbar.menuBtn; };
@@ -182,8 +182,8 @@ function RefreshCountup(countupY, countupM, countupD) {
   /*更新显示*/
   pageElements.content.lsidebar.slot4.time.innerHTML = `<center><small>本站已建立${countupD_}天${countupH}小时${countupM_}分钟${countupS}秒</small></center>`;
 };
-if (conf.info.time[0] && !conf.sidebar.replacement) {
-  pageElements.content.lsidebar.slot4._.timeCountInterval = setInterval(() => {RefreshCountup(conf.info.time[1],conf.info.time[2],conf.info.time[3])}, 1000);
+if (conf?.info.time[0] && !conf?.sidebar.replacement) {
+  pageElements.content.lsidebar.slot4._.timeCountInterval = setInterval(() => {RefreshCountup(conf?.info.time[1],conf?.info.time[2],conf?.info.time[3])}, 1000);
 } else {pageElements.content.lsidebar.slot4.time.remove();};
 
 
