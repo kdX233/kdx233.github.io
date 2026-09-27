@@ -33,12 +33,13 @@
 @font-face{font-family:"Mojangles";src:url("https://rs.kdxiaoyi.top/res/fonts/Mojangles.ttf") format("truetype")}
 html body s-page * .Mojangles, html body s-page * .Mojangles * {font-family: "Mojangles" !important;}
 /* 这些字体样式包含在font.css中，一般可用 */
-html body s-page * .MiSans, html body s-page * .MiSans * {font-family: "MiSans Normal" !important;}
+html body s-page * .MiSans, html body s-page * .MiSans * {font-family: "MiSans VF" !important;}
 html body s-page * .MiSansL3, html body s-page * .MiSansL3 * {font-family: "MiSans L3" !important;}
 /* 下列字体样式需要引用rs.kdxiaoyi.top之对应字体CSS */
 html body s-page * .WenQuanWeiMiHei, html body s-page * .WenQuanWeiMiHei * {font-family: "WenQuanWeiMiHei" !important;}
 html body s-page * .DIN, html body s-page * .DIN * {font-family: "din" !important;}
 html body s-page * .SourceHanSerifCN, html body s-page * .SourceHanSerifCN * {font-family: "SourceHanSerifCN" !important;}
+html body s-page * .SourceHanSerifSC, html body s-page * .SourceHanSerifSC * {font-family: "SourceHanSerifSC" !important;}
 
 /*文章元素样式*/
 a {
